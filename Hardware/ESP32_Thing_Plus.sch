@@ -16273,6 +16273,13 @@ Gain=1+trimpot/thruhole</text>
 <junction x="416.56" y="208.28"/>
 <wire x1="20.32" y1="198.12" x2="419.1" y2="198.12" width="0.1524" layer="91"/>
 <wire x1="419.1" y1="198.12" x2="419.1" y2="208.28" width="0.1524" layer="91"/>
+<pinref part="D232" gate="G$1" pin="DI"/>
+<wire x1="27.94" y1="182.88" x2="20.32" y2="182.88" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="182.88" x2="20.32" y2="175.26" width="0.1524" layer="91"/>
+<pinref part="JP232" gate="G$1" pin="1"/>
+<wire x1="20.32" y1="175.26" x2="35.56" y2="175.26" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="198.12" x2="20.32" y2="182.88" width="0.1524" layer="91"/>
+<junction x="20.32" y="182.88"/>
 </segment>
 </net>
 <net name="DIO2" class="0">
@@ -16285,17 +16292,6 @@ Gain=1+trimpot/thruhole</text>
 <junction x="25.4" y="259.08"/>
 <pinref part="JP199" gate="G$1" pin="1"/>
 <wire x1="25.4" y1="251.46" x2="35.56" y2="251.46" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="DIO121" class="0">
-<segment>
-<pinref part="D232" gate="G$1" pin="DI"/>
-<wire x1="27.94" y1="182.88" x2="20.32" y2="182.88" width="0.1524" layer="91"/>
-<wire x1="20.32" y1="182.88" x2="20.32" y2="175.26" width="0.1524" layer="91"/>
-<pinref part="JP232" gate="G$1" pin="1"/>
-<wire x1="20.32" y1="175.26" x2="35.56" y2="175.26" width="0.1524" layer="91"/>
-<wire x1="20.32" y1="198.12" x2="20.32" y2="182.88" width="0.1524" layer="91"/>
-<junction x="20.32" y="182.88"/>
 </segment>
 </net>
 <net name="N$117" class="0">

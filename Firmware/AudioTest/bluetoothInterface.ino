@@ -29,7 +29,7 @@ void bluetoothHandler(char instructionType)
         }
       }
       break;
-    case 'g':
+    case 'g'://Set indivudal gradient colors
       {
         uint8_t paletteIndex = SerialBT.parseInt();
         uint8_t red = SerialBT.parseInt();

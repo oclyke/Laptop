@@ -11,8 +11,8 @@ bool sendFrame = 1;
 int previousDataLength = 0;
 
 //Wifi settings
-char *ssid;
-char *password;
+char *ssid = "dummySSID";
+char *password = "dummypassword";
 IPAddress local_IP(10, 0, 0, 2);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 0, 0);
@@ -34,10 +34,15 @@ void artRead ()
 
 boolean connectWiFi(void)
 {
-  boolean state = true;
+  bool state = getWiFiOkay();
   int i = 0;
-  ssid = getSSID();
-  password = getPassword();
+  Serial.println(state);
+  if (state);
+  {
+    Serial.print("hey");
+    ssid = getSSID();
+    password = getPassword();
+  }
   if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS))
   {
     Serial.println("STA Failed to configure");
@@ -50,8 +55,8 @@ boolean connectWiFi(void)
   // Wait for connection
   Serial.print("Connecting");
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    if (i > 20) {
+    delay(0);
+    if (i > 250) {
       state = false;
       break;
     }

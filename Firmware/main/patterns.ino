@@ -1,6 +1,6 @@
 void mirrorFFT()
 {
-  computeFFT(MIC);
+  computeFFT(audioSource);
   for (uint8_t x = 0; x < X_LEDS; x++)
   {
     uint8_t xValue = vReal[abs(x - (X_LEDS / 2)) + LOWEST_HZ_BIN];
@@ -19,7 +19,7 @@ void mirrorFFT()
 
 void centerFFT()
 {
-  computeFFT(MIC);
+  computeFFT(audioSource);
   for (uint8_t x = LEFT; x <= RIGHT; x++)
   {
     uint8_t xValue = vReal[abs(x - X_CENTER) + LOWEST_HZ_BIN];
@@ -46,7 +46,7 @@ void centerFFT()
 
 void gradientAudio()
 {
-  computeFFT(MIC);
+  computeFFT(audioSource);
   for (uint8_t x = LEFT; x <= RIGHT; x++)
   {
     uint8_t absX = abs(x - (X_LEDS / 2));
@@ -130,14 +130,14 @@ void topToBottomFade()
 
 void audioRamp()
 {
-  computeFFT(MIC);
+  computeFFT(audioSource);
   singleColorIndex += vReal[LOWEST_HZ_BIN];
   colorSet(ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending));
 }
 
 void momentaryAudioRamp()
 {
-  computeFFT(MIC);
+  computeFFT(audioSource);
   uint8_t avg = fftAvg();
   if (singleColorIndex < avg)
   {
@@ -165,4 +165,3 @@ void resetColorIndex()
     }
   }
 }
-

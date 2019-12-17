@@ -43,12 +43,24 @@ void bluetoothHandler(char instructionType)
         setPalettePosition(paletteIndex, paletteColor);
       }
       break;
+    case 'm': //audio Source
+      audioSource != audioSource;
     case 'p': //pattern
       patternNum = SerialBT.parseInt();
       break;
     case 'r': //reset
       resetColorIndex();
       break;
+    case 'C':
+      connectWiFi();
+      break;
+    case 'S': //SSIDSet
+      char *tempSsid;
+      int position = 0;
+      while (SerialBT.available())
+      {
+        tempSsid[position++] = SerialBT.read();
+      }
+      setSSID(tempSsid);
   }
 }
-

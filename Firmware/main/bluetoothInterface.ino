@@ -52,15 +52,51 @@ void bluetoothHandler(char instructionType)
       resetColorIndex();
       break;
     case 'C':
-      connectWiFi();
+      connectWifi();
       break;
     case 'S': //SSIDSet
-      char *tempSsid;
-      int position = 0;
-      while (SerialBT.available())
       {
-        tempSsid[position++] = SerialBT.read();
+        char tempSsid[32];
+        int position = 0;
+        while (SerialBT.available())
+        {
+          char temp = SerialBT.read();
+          if (temp != 10)
+          {
+            tempSsid[position++] = temp;
+          }
+          else
+          {
+            tempSsid[position] = '\0';
+            break;
+          }
+        }
+        Serial.print("TempSSID: ");
+        Serial.println(tempSsid);
+        setSSID(tempSsid);
+        break;
       }
-      setSSID(tempSsid);
+    case 'P': //PasswordSet
+      {
+        char tempPassword[32];
+        int position = 0;
+        while (SerialBT.available())
+        {
+          char temp = SerialBT.read();
+          if (temp != 10)
+          {
+            tempPassword[position++] = temp;
+          }
+          else
+          {
+            tempPassword[position] = '\0';
+            break;
+          }
+        }
+        Serial.print("bluetoothpass: ");
+        Serial.println(tempPassword);
+        setPassword(tempPassword);
+        break;
+      }
   }
 }

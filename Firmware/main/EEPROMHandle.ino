@@ -2,44 +2,53 @@
 
 #define SSID_ADDRESS 0
 #define PASSWORD_ADDRESS 32
-#define AUDIO_SOURCE_ADDRESS 33
-#define SSID_OKAY 34
-#define PASSWORD_OKAY 35
+#define AUDIO_SOURCE_ADDRESS 64
+#define SSID_OKAY 65
+#define SSID_SIZE 66
+#define PASSWORD_OKAY 67
+#define PASSWORD_SIZE 68
 
-void setSSID(char *tempSsid)
+void initializeEEPROM()
+{
+  EEPROM.begin(512);
+}
+
+void setSSID(String tempSsid)
 {
   Serial.println(tempSsid);
-  EEPROM.put(SSID_ADDRESS, tempSsid);
+  EEPROM.writeString(SSID_ADDRESS, tempSsid);
   EEPROM.put(SSID_OKAY, true);
+  EEPROM.commit();
 }
 
-char * getSSID()
+String getSSID()
 {
-  char *tempSsid;
-  return EEPROM.get(SSID_ADDRESS, tempSsid);
+  return EEPROM.readString(SSID_ADDRESS);
 }
 
-void setPassword(char *tempPassword)
+void setPassword(String tempPassword)
 {
-  EEPROM.put(PASSWORD_ADDRESS, tempPassword);
+  Serial.println(tempPassword);
+  EEPROM.writeString(PASSWORD_ADDRESS, tempPassword);
   EEPROM.put(PASSWORD_OKAY, true);
+  EEPROM.commit();
 }
 
-char * getPassword()
+String getPassword()
 {
-  char *tempPassword;
-  return EEPROM.get(PASSWORD_ADDRESS, tempPassword);
+  return EEPROM.readString(PASSWORD_ADDRESS);
 }
 
 void setAudioSource (bool tempAudioSource)
 {
   EEPROM.put(AUDIO_SOURCE_ADDRESS, tempAudioSource);
+  EEPROM.commit();
 }
 
 bool getAudioSource ()
 {
   bool tempAudioSource;
-  return EEPROM.get(AUDIO_SOURCE_ADDRESS, tempAudioSource); 
+  return EEPROM.get(AUDIO_SOURCE_ADDRESS, tempAudioSource);
 }
 
 bool getWiFiOkay()
@@ -48,6 +57,7 @@ bool getWiFiOkay()
   bool passwordOkay = false;
   EEPROM.get(SSID_OKAY, ssidOkay);
   EEPROM.get(PASSWORD_OKAY, passwordOkay);
+  EEPROM.commit();
   Serial.println(ssidOkay & passwordOkay);
   Serial.println(passwordOkay);
   return ssidOkay && passwordOkay;

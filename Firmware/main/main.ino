@@ -162,9 +162,10 @@ void setup()
   Serial.begin(115200);
   makeLedArray();
   LEDS.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS);
-  connectWiFi();
-  initArtnet();
   SerialBT.begin("CustomLitt"); //Bluetooth device name
+  initializeEEPROM();
+  connectWifi();
+  initArtnet();
   FastLED.setMaxPowerInVoltsAndMilliamps(5, 1500);
 }
 

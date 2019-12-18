@@ -1,19 +1,20 @@
+#include <ArtnetWifi.h>/**Artnet settings**/
 #include <WiFi.h>
 #include <WiFiUdp.h>
-#include <ArtnetWifi.h>/**Artnet settings**/
 
-WiFiUDP UdpSend;
 ArtnetWifi artnet;
+WiFiUDP UdpSend;
 
 int startUniverse = 0;
+int endUniverse = 0;
 int startSlot = 0;
 bool sendFrame = 1;
 int previousDataLength = 0;
 
 //Wifi settings
-char *ssid = "dummySSID";
-char *password = "dummypassword";
-IPAddress local_IP(10, 0, 0, 2);
+String ssid = "Black Panther";
+String password = "figureitoutdude";
+IPAddress local_IP(192, 168, 1, 4);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 0, 0);
 IPAddress primaryDNS(8, 8, 8, 8);   //optional
@@ -23,8 +24,8 @@ IPAddress secondaryDNS(8, 8, 4, 4);
 
 void initArtnet()
 {
-  artnet.begin();
   artnet.setArtDmxCallback(onDmxFrame);
+  artnet.begin();
 }
 
 void artRead ()
@@ -32,47 +33,40 @@ void artRead ()
   artnet.read();
 }
 
-boolean connectWiFi(void)
+bool connectWifi(void) //Sets our ESP32 device up as an access point
 {
-  bool state = getWiFiOkay();
-  int i = 0;
-  Serial.println(state);
-  if (state);
-  {
-    Serial.print("hey");
+  boolean state = true;
+  //WiFi.mode(WIFI_AP_STA);
+  //state = WiFi.softAP(ssid, password);
+  //Comment out the above two lines and uncomment the below line to connect to an existing network specified on lines 8 and 9
+  state = getWiFiOkay();
+  /*if (state)
+    {
     ssid = getSSID();
     password = getPassword();
-  }
-  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS))
-  {
-    Serial.println("STA Failed to configure");
-  }
-
-  WiFi.begin(ssid, password);
-  Serial.println("");
-  Serial.println("Connecting to WiFi");
-
-  // Wait for connection
-  Serial.print("Connecting");
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(0);
-    if (i > 250) {
-      state = false;
-      break;
-    }
-    i++;
-  }
+    }*/
+  Serial.print("SSID: ");
+  Serial.println(ssid);
+  Serial.print("Password: ");
+  Serial.println(password);
+  state = WiFi.begin(ssid.c_str(), password.c_str());
+  Serial.println(WiFi.localIP());
   return state;
 }
 
 void onDmxFrame(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* data)
 {
   sendFrame = 1;
-  // read universe and put into the right part of the display buffer
-  for (int i = 0; i < length / 3; i++)
+  //Read universe and put into the right part of the display buffer
+  //DMX data should be sent with the first LED in the string on channel 0 of Universe 0
+  for (int led = 0; led < length / 3; led++)
   {
-    int led = i + (universe - startUniverse) * (previousDataLength / 3);
-    leds[led] = CRGB(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]);
+    leds[led] = CRGB(data[led * 3], data[(led * 3) + 1], data[(led * 3) + 2]);
   }
   previousDataLength = length;
+  if (universe == endUniverse) //Display our data if we have received all of our universes, prevents incomplete frames when more universes are concerned.
+  {
+    FastLED.show();
+    UdpSend.flush();
+  }
 }

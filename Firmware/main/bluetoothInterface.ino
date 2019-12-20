@@ -57,45 +57,41 @@ void bluetoothHandler(char instructionType)
     case 'S': //SSIDSet
       {
         char tempSsid[32];
-        int position = 0;
+        int myPosition = 0;
         while (SerialBT.available())
         {
           char temp = SerialBT.read();
           if (temp != 10)
           {
-            tempSsid[position++] = temp;
+            tempSsid[myPosition++] = temp;
           }
           else
           {
-            tempSsid[position] = '\0';
+            tempSsid[myPosition] = '\0';
             break;
           }
         }
-        Serial.print("TempSSID: ");
-        Serial.println(tempSsid);
-        setSSID(tempSsid);
+        setSSID(tempSsid, myPosition);
         break;
       }
     case 'P': //PasswordSet
       {
         char tempPassword[32];
-        int position = 0;
+        int myPosition = 0;
         while (SerialBT.available())
         {
           char temp = SerialBT.read();
           if (temp != 10)
           {
-            tempPassword[position++] = temp;
+            tempPassword[myPosition++] = temp;
           }
           else
           {
-            tempPassword[position] = '\0';
+            tempPassword[myPosition] = '\0';
             break;
           }
         }
-        Serial.print("bluetoothpass: ");
-        Serial.println(tempPassword);
-        setPassword(tempPassword);
+        setPassword(tempPassword, myPosition);
         break;
       }
   }

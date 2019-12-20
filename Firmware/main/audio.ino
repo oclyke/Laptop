@@ -79,11 +79,11 @@ void computeFFT (bool mic, uint16_t samples = 512)
 
 uint8_t fftAvg()
 {
-  int average = 0;
-  for (uint8_t i = 0; i < 16; i++)
+  double average = 0;
+  for (uint8_t i = LOWEST_HZ_BIN; i < LOWEST_HZ_BIN + 4; i++)
   {
     average += vReal[i];
   }
-  average /= 16;
+  average /= 4;
   return average;
 }

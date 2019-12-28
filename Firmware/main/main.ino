@@ -1,9 +1,9 @@
 #include "arduinoFFT.h"
 #include <FastLED.h>
-#include "BluetoothSerial.h"
+#include "BLESerial.h"
 
 /**Serial Bluetooth**/
-BluetoothSerial SerialBT;
+BLESerial SerialBT;
 
 #define DATA_PIN 14
 

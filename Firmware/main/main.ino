@@ -1,3 +1,8 @@
+ /*
+Copyright (c) 2019 Andy England
+CustomLitt Laptop
+*/
+
 #include "arduinoFFT.h"
 #include <FastLED.h>
 #include "BLESerial.h"
@@ -224,3 +229,20 @@ void loop()
     long fullTimer = timerEnd - timerStart;
     Serial.println(fullTimer);*/
 }
+
+/*TODO
+Add speed control
+diagonal fade?
+add blending change option
+buffered left to right option that shifts things across display
+-add middle out
+flicker on off to the beat/flicker from one color to another
+beat detect and jump
+Add music jumping to simple left/right/top/bottom functions
+Add sparkle pattern w/ music reaction
+attach hue to strength of channel on fourier transform
+-add middle out 
+Hardware changes
+build bluetooth functions for all options
+add audio jack functionality to left and right on audio sensitive stuff  
+*/

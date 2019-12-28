@@ -1,3 +1,6 @@
+uint8_t frameSkip = 1;
+uint8_t frameDelay = 0;
+
 void mirrorFFT()
 {
   computeFFT(audioSource);
@@ -86,7 +89,8 @@ void rightToLeftFade()
       leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
     }
   }
-  singleColorIndex++;
+  singleColorIndex += frameSkip;//Speed Control
+  delay(frameDelay);//Delay
 }
 
 void leftToRightFade()
@@ -99,7 +103,8 @@ void leftToRightFade()
       leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
     }
   }
-  singleColorIndex++;
+  singleColorIndex += frameSkip;//Speed Control
+  delay(frameDelay);//Delay
 }
 
 void bottomToTopFade()
@@ -112,7 +117,8 @@ void bottomToTopFade()
       leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
     }
   }
-  singleColorIndex++;
+  singleColorIndex += frameSkip;//Speed Control
+  delay(frameDelay);//Delay
 }
 
 void topToBottomFade()
@@ -125,7 +131,8 @@ void topToBottomFade()
       leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
     }
   }
-  singleColorIndex++;
+  singleColorIndex += frameSkip;//Speed Control
+  delay(frameDelay);//Delay
 }
 
 void audioRamp()

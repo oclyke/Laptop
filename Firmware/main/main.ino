@@ -1,9 +1,9 @@
 #include "arduinoFFT.h"
 #include <FastLED.h>
-#include "BLESerial.h"
+#include "BluetoothSerial.h"
 
 /**Serial Bluetooth**/
-BLESerial SerialBT;
+BluetoothSerial SerialBT;
 
 #define DATA_PIN 14
 
@@ -163,6 +163,7 @@ void setup()
   makeLedArray();
   LEDS.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS);
   SerialBT.begin("CustomLitt"); //Bluetooth device name
+  initializeEEPROM();
   connectWifi();
   initArtnet();
   FastLED.setMaxPowerInVoltsAndMilliamps(5, 1500);
@@ -179,76 +180,47 @@ void loop()
   {
     case 0:
       mirrorFFT();
-      FastLED.show();
       break;
     case 1:
       centerFFT();
-      FastLED.show();
       break;
     case 2:
       gradientAudio();
-      FastLED.show();
       break;
     case 3:
       audioRamp();
-      FastLED.show();
       break;
     case 4:
       momentaryAudioRamp();
-      FastLED.show();
       break;
     case 5:
       gradient();
-      FastLED.show();
       break;
     case 6:
       rightToLeftFade();
-      FastLED.show();
       break;
     case 7:
       leftToRightFade();
-      FastLED.show();
       break;
     case 8:
       topToBottomFade();
-      FastLED.show();
       break;
     case 9:
       bottomToTopFade();
-      FastLED.show();
       break;
     case 10:
       colorSet(customColor);
-      FastLED.show();
       break;
     case 11:
       simpleFade();
-      FastLED.show();
       break;
     case 12:
       artRead();
       break;
   }
+  FastLED.show();
   /*Serial.print("ms: ");
     long timerEnd = millis();
     long fullTimer = timerEnd - timerStart;
     Serial.println(fullTimer);*/
 }
-
-/*TODO
-Add speed control
-diagonal fade?
-add blending change option
-buffered left to right option that shifts things across display
--add middle out
-flicker on off to the beat/flicker from one color to another
-beat detect and jump
-Add music jumping to simple left/right/top/bottom functions
-Add sparkle pattern w/ music reaction
-attach hue to strength of channel on fourier transform
--add middle out 
-
-Hardware changes
-
-*/
-

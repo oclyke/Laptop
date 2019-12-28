@@ -144,7 +144,6 @@ void momentaryAudioRamp()
     singleColorIndex = avg;
     colorSet(ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending));
   }
-  singleColorIndex = scale8(singleColorIndex, 253);
   fadeAll(230);
 }
 

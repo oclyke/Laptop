@@ -1,6 +1,6 @@
- /*
-Copyright (c) 2019 Andy England
-CustomLitt Laptop
+/*
+  Copyright (c) 2019 Andy England
+  CustomLitt Laptop
 */
 
 #include "arduinoFFT.h"
@@ -52,6 +52,11 @@ int preArray[Y_LEDS][X_LEDS] = {
 };
 
 uint8_t singleColorIndex = 0;
+uint8_t frameSkip = 1;
+uint8_t frameDelay = 0;
+CRGBPalette16 currentPalette = RainbowColors_p;
+TBlendType    currentBlending = LINEARBLEND;
+bool audioReaction = true;
 
 uint8_t colorIndex[Y_LEDS][X_LEDS] = {
   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -80,9 +85,6 @@ uint8_t BOTTOM = 0;
 uint8_t Y_CENTER = 0;
 
 CRGB leds[NUM_LEDS];
-
-uint8_t animationSpeed = 1;
-uint8_t myDelay = 5;
 
 CRGB customColor = CHSV(0, 255, 255);
 
@@ -169,13 +171,18 @@ void setup()
   LEDS.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS);
   SerialBT.begin("CustomLitt"); //Bluetooth device name
   initializeEEPROM();
-  connectWifi();
+  //connectWifi();
   initArtnet();
   FastLED.setMaxPowerInVoltsAndMilliamps(5, 1500);
 }
 
 void loop()
 {
+  Serial.print(analogRead(25));
+  Serial.print(',');
+  Serial.print(analogRead(26));
+  Serial.print(',');
+  Serial.println();
   //long timerStart = millis();
   if (SerialBT.available()) {
     char instructionType = SerialBT.read();
@@ -190,34 +197,34 @@ void loop()
       centerFFT();
       break;
     case 2:
-      gradientAudio();
+      diamond();
       break;
     case 3:
-      audioRamp();
-      break;
-    case 4:
-      momentaryAudioRamp();
-      break;
-    case 5:
       gradient();
       break;
+    case 4:
+      audioJump();
+      break;
+    case 5:
+      momentaryAudioRamp();
+      break;
     case 6:
-      rightToLeftFade();
+      sparkle();
       break;
     case 7:
-      leftToRightFade();
+      rightToLeftFade();
       break;
     case 8:
-      topToBottomFade();
+      leftToRightFade();
       break;
     case 9:
-      bottomToTopFade();
+      topToBottomFade();
       break;
     case 10:
-      colorSet(customColor);
+      bottomToTopFade();
       break;
     case 11:
-      simpleFade();
+      colorSet(customColor);
       break;
     case 12:
       artRead();
@@ -231,18 +238,19 @@ void loop()
 }
 
 /*TODO
-Add speed control
-diagonal fade?
-add blending change option
-buffered left to right option that shifts things across display
--add middle out
-flicker on off to the beat/flicker from one color to another
-beat detect and jump
-Add music jumping to simple left/right/top/bottom functions
-Add sparkle pattern w/ music reaction
-attach hue to strength of channel on fourier transform
--add middle out 
-Hardware changes
-build bluetooth functions for all options
-add audio jack functionality to left and right on audio sensitive stuff  
+  X Add speed control
+  diagonal fade?
+  X add blending change option
+  buffered left to right option that shifts things across display
+  -add middle out
+  X flicker on off to the beat/flicker from one color to another
+  X beat detect and jump
+  X Add music jumping to simple left/right/top/bottom functions
+  Add sparkle pattern w/ music reaction
+  attach hue to strength of channel on fourier transform
+  -add middle out
+  Hardware changes
+  build bluetooth functions for all options
+  add audio jack functionality to left and right on audio sensitive stuff
+  move everything into respective .cpp's and .h's
 */

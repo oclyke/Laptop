@@ -1,6 +1,3 @@
-uint8_t frameSkip = 1;
-uint8_t frameDelay = 0;
-
 void mirrorFFT()
 {
   computeFFT(audioSource);
@@ -47,7 +44,7 @@ void centerFFT()
   fadeAll(230);
 }
 
-void gradientAudio()
+void diamond()
 {
   computeFFT(audioSource);
   for (uint8_t x = LEFT; x <= RIGHT; x++)
@@ -55,28 +52,17 @@ void gradientAudio()
     uint8_t absX = abs(x - (X_LEDS / 2));
     for (uint8_t y = TOP; y <= BOTTOM; y++)
     {
-      colorIndex[y][x] += vReal[((absX + abs(y - (Y_LEDS / 2))) / 2) + LOWEST_HZ_BIN];
+      if (audioReaction)
+      {
+        colorIndex[y][x] += vReal[((absX + abs(y - (Y_LEDS / 2))) / 2) + LOWEST_HZ_BIN];
+      }
+      else
+      {
+        colorIndex[y][x] += frameSkip;
+      }
       leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorIndex[y][x], 255, currentBlending);
     }
   }
-}
-
-void gradient()
-{
-  for (uint8_t x = LEFT; x <= RIGHT; x++)
-  {
-    for (uint8_t y = TOP; y <= BOTTOM; y++)
-    {
-      colorIndex[y][x] += animationSpeed;
-      CRGB myColor = ColorFromPalette(currentPalette, colorIndex[y][x], 255, currentBlending);
-      leds[ledArray[y][x]] = myColor;
-    }
-  }
-}
-
-void simpleFade()
-{
-  colorSet(ColorFromPalette(currentPalette, singleColorIndex++, 255, currentBlending));
 }
 
 void rightToLeftFade()
@@ -89,7 +75,15 @@ void rightToLeftFade()
       leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
     }
   }
-  singleColorIndex += frameSkip;//Speed Control
+  if (audioReaction == true)
+  {
+    computeFFT(audioSource);
+    singleColorIndex += fftAvg() / 4;
+  }
+  else
+  {
+    singleColorIndex += frameSkip;
+  }
   delay(frameDelay);//Delay
 }
 
@@ -103,7 +97,15 @@ void leftToRightFade()
       leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
     }
   }
-  singleColorIndex += frameSkip;//Speed Control
+  if (audioReaction == true)
+  {
+    computeFFT(audioSource);
+    singleColorIndex += fftAvg() / 4;
+  }
+  else
+  {
+    singleColorIndex += frameSkip;
+  }
   delay(frameDelay);//Delay
 }
 
@@ -117,7 +119,15 @@ void bottomToTopFade()
       leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
     }
   }
-  singleColorIndex += frameSkip;//Speed Control
+  if (audioReaction == true)
+  {
+    computeFFT(audioSource);
+    singleColorIndex += fftAvg() / 4;
+  }
+  else
+  {
+    singleColorIndex += frameSkip;
+  }
   delay(frameDelay);//Delay
 }
 
@@ -131,14 +141,29 @@ void topToBottomFade()
       leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
     }
   }
-  singleColorIndex += frameSkip;//Speed Control
+  if (audioReaction == true)
+  {
+    computeFFT(audioSource);
+    singleColorIndex += fftAvg() / 4;
+  }
+  else
+  {
+    singleColorIndex += frameSkip;
+  }
   delay(frameDelay);//Delay
 }
 
-void audioRamp()
+void gradient()
 {
   computeFFT(audioSource);
-  singleColorIndex += vReal[LOWEST_HZ_BIN];
+  if (audioReaction == true)
+  {
+    singleColorIndex += fftAvg() / 4;
+  }
+  else
+  {
+    singleColorIndex += frameSkip;
+  }
   colorSet(ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending));
 }
 
@@ -149,9 +174,52 @@ void momentaryAudioRamp()
   if (singleColorIndex < avg)
   {
     singleColorIndex = avg;
-    colorSet(ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending));
   }
-  fadeAll(230);
+  colorSet(ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending));
+  singleColorIndex = (singleColorIndex * 235) / 256;
+}
+
+void audioJump()
+{
+  computeFFT(audioSource);
+  if (fftAvg() > 200)
+  {
+    singleColorIndex += 16;
+    colorSet(ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending));
+    FastLED.show();
+    delay(75);
+  }
+  colorSet(ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending));
+}
+
+void sparkle()
+{
+  int randomMax;
+  uint8_t randomVal;
+  if (audioReaction == true)
+  {
+    computeFFT(audioSource);
+    randomMax = 255 - fftAvg();//vReal[LOWEST_HZ_BIN];
+    if (randomMax <= 2)
+    {
+      randomMax = 2;
+    }
+    //randomMax /= 4;
+  }
+  else
+  {
+    randomMax = 20;
+  }
+  for (int led = 0; led < NUM_LEDS; led++)
+  {
+    randomVal = random(randomMax);
+    if (randomVal == 1)
+    {
+      leds[led] = ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending);
+    }
+  }
+  singleColorIndex++;
+  fadeAll(196);
 }
 
 void colorSet(CRGB color)

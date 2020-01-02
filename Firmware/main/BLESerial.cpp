@@ -69,7 +69,8 @@ bool BLESerial::begin(const char* localName="UART Service"){
 										);
   pRxCharacteristic->setCallbacks(new NUSCallbacks(this));
 
-  // Start the service
+  // Start the service(s)
+  pCustomLittService->start();
   pService->start();
 
   // Start advertising

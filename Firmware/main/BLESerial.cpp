@@ -5,6 +5,9 @@ Header: BLESerial.h
 
 #include "BLESerial.h"
 
+#define SERVICE_UUID_CUSTOMLITT   "9F170001-899F-4F35-AD8A-85DF24B12007"
+#define CHARACTERISTIC_UUID_CL_ID "9F170002-899F-4F35-AD8A-85DF24B12007"
+
 #define SERVICE_UUID           "6E400001-B5A3-F393-E0A9-E50E24DCCA9E" // UART service UUID
 #define CHARACTERISTIC_UUID_RX "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
 #define CHARACTERISTIC_UUID_TX "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
@@ -45,9 +48,15 @@ bool BLESerial::begin(const char* localName="UART Service"){
   pServer->setCallbacks(new BLESerialServerCallbacks());
 
   // Create the BLE Service
+  pCustomLittService = pServer->createService(SERVICE_UUID_CUSTOMLITT);
   pService = pServer->createService(SERVICE_UUID);
 
   // Create a BLE Characteristic
+  pCustomLittIdCharacteristic = pCustomLittService->createCharacteristic(
+                    CHARACTERISTIC_UUID_CL_ID,
+                    BLECharacteristic::PROPERTY_READ
+                  );
+                  
   pTxCharacteristic = pService->createCharacteristic(
 										CHARACTERISTIC_UUID_TX,
 										BLECharacteristic::PROPERTY_NOTIFY
@@ -64,6 +73,7 @@ bool BLESerial::begin(const char* localName="UART Service"){
   pService->start();
 
   // Start advertising
+  pServer->getAdvertising()->addServiceUUID(SERVICE_UUID_CUSTOMLITT);
   pServer->getAdvertising()->start();
   return true;
 }

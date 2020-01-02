@@ -24,8 +24,12 @@ IPAddress secondaryDNS(8, 8, 4, 4);
 
 void initArtnet()
 {
-  artnet.setArtDmxCallback(onDmxFrame);
-  artnet.begin();
+  bool connectionState = connectWifi();
+  if (connectionState == true)
+  {
+    artnet.setArtDmxCallback(onDmxFrame);
+    artnet.begin();
+  }
 }
 
 void artRead ()
@@ -35,11 +39,10 @@ void artRead ()
 
 bool connectWifi(void) //Sets our ESP32 device up as an access point
 {
-  boolean state = true;
+  boolean state = false;
   //WiFi.mode(WIFI_AP_STA);
   //state = WiFi.softAP(ssid, password);
   //Comment out the above two lines and uncomment the below line to connect to an existing network specified on lines 8 and 9
-  state = getWiFiOkay();
   /*if (state)
     {
     ssid = getSSID();
@@ -51,6 +54,7 @@ bool connectWifi(void) //Sets our ESP32 device up as an access point
   Serial.println(password);
   state = WiFi.begin(ssid.c_str(), password.c_str());
   Serial.println(WiFi.localIP());
+  state = getWiFiOkay();
   return state;
 }
 

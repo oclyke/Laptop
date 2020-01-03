@@ -81,6 +81,11 @@ void computeFFT (bool source, uint16_t samples = 128)
   }
 }
 
+uint8_t strengthMajorPeak()
+{
+  
+}
+
 uint8_t fftAvg()
 {
   int average = 0;

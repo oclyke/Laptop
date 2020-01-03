@@ -194,33 +194,39 @@ void loop()
       diamond();
       break;
     case 3:
-      gradient();
+      audioBuffer();
       break;
     case 4:
-      audioJump();
+      centerAudioBuffer();
       break;
     case 5:
-      momentaryAudioRamp();
+      gradient();
       break;
     case 6:
-      sparkle();
+      audioJump();
       break;
     case 7:
-      rightToLeftFade();
+      momentaryAudioRamp();
       break;
     case 8:
-      leftToRightFade();
+      sparkle();
       break;
     case 9:
-      topToBottomFade();
+      rightToLeftFade();
       break;
     case 10:
-      bottomToTopFade();
+      leftToRightFade();
       break;
     case 11:
-      colorSet(customColor);
+      topToBottomFade();
       break;
     case 12:
+      bottomToTopFade();
+      break;
+    case 13:
+      colorSet(customColor);
+      break;
+    case 14:
       artRead();
       break;
   }

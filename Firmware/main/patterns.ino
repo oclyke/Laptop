@@ -1,3 +1,5 @@
+uint8_t colorBuffer[X_LEDS][3];
+
 void mirrorFFT()
 {
   uint8_t fadeValue;
@@ -131,6 +133,57 @@ void diamond()
       leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorIndex[y][x], 255, currentBlending);
     }
   }
+}
+
+void audioBuffer()
+{
+  computeFFT(audioSource);
+  uint8_t temp = vReal[LOWEST_HZ_BIN];
+  colorBuffer[0][0] = temp;
+  colorBuffer[0][1] = round(map(temp, 0, 255, TOP, BOTTOM) / 2.0);
+  for (int x = LEFT; x <= RIGHT; x++)
+  {
+    for (int y = Y_CENTER; y >= Y_CENTER - colorBuffer[x][1]; y--)
+    {
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[x][0], 255, currentBlending);
+    }
+    for (int y = Y_CENTER; y <= Y_CENTER + colorBuffer[x][1]; y++)
+    {
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[x][0], 255, currentBlending);
+    }
+  }
+  for (int bufferPosition = RIGHT; bufferPosition >= LEFT; bufferPosition--)
+  {
+    colorBuffer[bufferPosition][0] = colorBuffer[bufferPosition - 1][0];
+    colorBuffer[bufferPosition][1] = colorBuffer[bufferPosition - 1][1];
+  }
+  fadeAll(127);
+}
+
+void centerAudioBuffer()
+{
+  computeFFT(audioSource);
+  uint8_t temp = vReal[LOWEST_HZ_BIN];
+  colorBuffer[0][0] = temp;
+  colorBuffer[0][1] = round(map(temp, 0, 255, TOP, BOTTOM) / 2.0);
+  for (int x = LEFT; x <= RIGHT; x++)
+  {
+    uint8_t colorPosition = abs(x - X_CENTER);//rename this variable
+    for (int y = Y_CENTER; y >= Y_CENTER - colorBuffer[colorPosition][1]; y--)
+    {
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], 255, currentBlending);
+    }
+    for (int y = Y_CENTER; y <= Y_CENTER + colorBuffer[colorPosition][1]; y++)
+    {
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], 255, currentBlending);
+    }
+  }
+  for (int bufferPosition = RIGHT; bufferPosition >= LEFT; bufferPosition--)
+  {
+    colorBuffer[bufferPosition][0] = colorBuffer[bufferPosition - 1][0];
+    colorBuffer[bufferPosition][1] = colorBuffer[bufferPosition - 1][1];
+  }
+  fadeAll(127);
 }
 
 void rightToLeftFade()

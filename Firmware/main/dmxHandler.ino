@@ -1,3 +1,8 @@
+/*
+  Copyright (c) 2019 Andy England
+  CustomLitt Laptop
+*/
+
 #include <ArtnetWifi.h>/**Artnet settings**/
 #include <WiFi.h>
 #include <WiFiUdp.h>

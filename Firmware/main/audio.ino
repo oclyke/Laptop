@@ -1,3 +1,7 @@
+/*
+  Copyright (c) 2019 Andy England
+  CustomLitt Laptop
+*/
 #include <driver/adc.h>
 arduinoFFT FFT = arduinoFFT();
 

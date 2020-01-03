@@ -1,3 +1,8 @@
+/*
+  Copyright (c) 2019 Andy England
+  CustomLitt Laptop
+*/
+
 /*Note that all functions are case sensitive*/
 
 /* Function

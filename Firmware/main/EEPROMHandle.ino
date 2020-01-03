@@ -1,3 +1,7 @@
+/*
+  Copyright (c) 2019 Andy England
+  CustomLitt Laptop
+*/
 #include <EEPROM.h>
 
 #define SSID_ADDRESS 0
@@ -62,4 +66,3 @@ bool getWiFiOkay()
   Serial.println(passwordOkay);
   return ssidOkay && passwordOkay;
 }
-

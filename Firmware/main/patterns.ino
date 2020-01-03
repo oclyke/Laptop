@@ -1,3 +1,7 @@
+/*
+  Copyright (c) 2019 Andy England
+  CustomLitt Laptop
+*/
 uint8_t colorBuffer[X_LEDS][3];
 
 void mirrorFFT()

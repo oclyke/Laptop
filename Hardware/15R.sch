@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.3.1">
+<eagle version="9.1.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -6346,25 +6346,11 @@ Gain=1+trimpot/thruhole</text>
 <label x="137.16" y="99.06" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
-<net name="32" class="0">
-<segment>
-<pinref part="U2" gate="G$1" pin="XTAL_P/IO32"/>
-<wire x1="134.62" y1="86.36" x2="137.16" y2="86.36" width="0.1524" layer="91"/>
-<label x="137.16" y="86.36" size="1.27" layer="95" xref="yes"/>
-</segment>
-</net>
 <net name="15" class="0">
 <segment>
 <pinref part="U2" gate="G$1" pin="CS0_H/IO15"/>
 <wire x1="134.62" y1="116.84" x2="137.16" y2="116.84" width="0.1524" layer="91"/>
 <label x="137.16" y="116.84" size="1.27" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="33" class="0">
-<segment>
-<pinref part="U2" gate="G$1" pin="XTAL_N/IO33"/>
-<wire x1="134.62" y1="83.82" x2="137.16" y2="83.82" width="0.1524" layer="91"/>
-<label x="137.16" y="83.82" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="27" class="0">
@@ -6556,9 +6542,9 @@ Gain=1+trimpot/thruhole</text>
 <label x="215.9" y="160.02" size="1.27" layer="95" font="vector" xref="yes"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="IO26"/>
-<wire x1="134.62" y1="91.44" x2="137.16" y2="91.44" width="0.1524" layer="91" style="longdash"/>
-<label x="137.16" y="91.44" size="1.27" layer="95" font="vector" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="XTAL_N/IO33"/>
+<wire x1="134.62" y1="83.82" x2="137.16" y2="83.82" width="0.1524" layer="91"/>
+<label x="137.16" y="83.82" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="TIP" class="0">
@@ -6574,9 +6560,9 @@ Gain=1+trimpot/thruhole</text>
 <wire x1="226.06" y1="154.94" x2="228.6" y2="154.94" width="0.1524" layer="91" style="longdash"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="IO25"/>
-<wire x1="134.62" y1="93.98" x2="137.16" y2="93.98" width="0.1524" layer="91" style="longdash"/>
-<label x="137.16" y="93.98" size="1.27" layer="95" font="vector" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="XTAL_P/IO32"/>
+<wire x1="134.62" y1="86.36" x2="137.16" y2="86.36" width="0.1524" layer="91"/>
+<label x="137.16" y="86.36" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="DIO0" class="0">

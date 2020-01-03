@@ -1,10 +1,34 @@
 void mirrorFFT()
 {
+  uint8_t fadeValue;
   computeFFT(audioSource);
-  for (uint8_t x = 0; x < X_LEDS; x++)
+  for (uint8_t x = LEFT; x < RIGHT; x++)
   {
-    uint8_t xValue = vReal[abs(x - (X_LEDS / 2)) + LOWEST_HZ_BIN];
-    uint8_t yValue = map(xValue, 0, 255, BOTTOM, TOP);
+    uint8_t xValue;
+    uint8_t yValue;
+    switch (audioSource)
+    {
+      case MIC:
+        fadeValue = 245;
+        xValue = vReal[abs(x - X_CENTER) + LOWEST_HZ_BIN];
+        break;
+      case JACK:
+        fadeValue = 235;
+        if (x < X_CENTER)
+        {
+          xValue = vReal[(X_CENTER - x) + LOWEST_HZ_BIN];
+        }
+        else if (x == X_CENTER)
+        {
+          xValue = (vReal[LOWEST_HZ_BIN] + vReal1[LOWEST_HZ_BIN]) / 2;
+        }
+        else
+        {
+          xValue = vReal1[(x - X_CENTER) + LOWEST_HZ_BIN];
+        }
+        break;
+    }
+    yValue = map(xValue, 0, 255, BOTTOM, TOP);
     for (int y = BOTTOM; y >= yValue; y--)
     {
       CRGB myColor = ColorFromPalette(currentPalette, xValue, xValue, currentBlending);
@@ -14,16 +38,40 @@ void mirrorFFT()
       }
     }
   }
-  fadeAll(230);
+  fadeAll(fadeValue);
 }
 
 void centerFFT()
 {
+  uint8_t fadeValue;
   computeFFT(audioSource);
   for (uint8_t x = LEFT; x <= RIGHT; x++)
   {
-    uint8_t xValue = vReal[abs(x - X_CENTER) + LOWEST_HZ_BIN];
-    uint8_t yValue = round(map(xValue, 0, 255, TOP, BOTTOM) / 2.0);
+    uint8_t xValue;
+    uint8_t yValue;
+    switch (audioSource)
+    {
+      case MIC:
+        xValue = vReal[abs(x - X_CENTER) + LOWEST_HZ_BIN];
+        fadeValue = 245;
+        break;
+      case JACK:
+        fadeValue = 235;
+        if (x < X_CENTER)
+        {
+          xValue = vReal[(X_CENTER - x) + LOWEST_HZ_BIN];
+        }
+        else if (x == X_CENTER)
+        {
+          xValue = (vReal[LOWEST_HZ_BIN] + vReal1[LOWEST_HZ_BIN]) / 2;
+        }
+        else
+        {
+          xValue = vReal1[(x - X_CENTER) + LOWEST_HZ_BIN];
+        }
+        break;
+    }
+    yValue = round(map(xValue, 0, 255, TOP, BOTTOM) / 2.0);
     for (int y = Y_CENTER; y >= Y_CENTER - yValue; y--)
     {
       CRGB myColor = ColorFromPalette(currentPalette, xValue, xValue, currentBlending);
@@ -41,7 +89,7 @@ void centerFFT()
       }
     }
   }
-  fadeAll(230);
+  fadeAll(fadeValue);
 }
 
 void diamond()
@@ -49,12 +97,32 @@ void diamond()
   computeFFT(audioSource);
   for (uint8_t x = LEFT; x <= RIGHT; x++)
   {
-    uint8_t absX = abs(x - (X_LEDS / 2));
+    uint8_t absX = abs(x - X_CENTER);
+    switch (audioSource)
+    {
+      case MIC:
+        memcpy(vDummy, vReal, sizeof(vReal));
+        break;
+      case JACK:
+        if (x < X_CENTER)
+        {
+          memcpy(vDummy, vReal, sizeof(vReal));
+        }
+        else if (x == X_CENTER)
+        {
+          vDummy[LOWEST_HZ_BIN] = (vReal1[LOWEST_HZ_BIN] + vReal[LOWEST_HZ_BIN]) / 2;
+        }
+        else
+        {
+          memcpy(vDummy, vReal1, sizeof(vReal1));
+        }
+        break;
+    }
     for (uint8_t y = TOP; y <= BOTTOM; y++)
     {
       if (audioReaction)
       {
-        colorIndex[y][x] += vReal[((absX + abs(y - (Y_LEDS / 2))) / 2) + LOWEST_HZ_BIN];
+        colorIndex[y][x] += vDummy[((absX + abs(y - (Y_LEDS / 2))) / 2) + LOWEST_HZ_BIN];
       }
       else
       {
@@ -199,10 +267,10 @@ void sparkle()
   if (audioReaction == true)
   {
     computeFFT(audioSource);
-    randomMax = 255 - fftAvg();//vReal[LOWEST_HZ_BIN];
-    if (randomMax <= 2)
+    randomMax = 255 - (fftAvg() * 2);//vReal[LOWEST_HZ_BIN];
+    if (randomMax <= 1)
     {
-      randomMax = 2;
+      randomMax = 1;
     }
     //randomMax /= 4;
   }

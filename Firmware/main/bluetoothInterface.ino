@@ -112,10 +112,12 @@ void bluetoothHandler(char instructionType)
       if (audioSource == MIC)
       {
         audioSource = JACK;
+        resetColorIndex();
       }
       else
       {
         audioSource = MIC;
+        resetColorIndex();
       }
       break;
 

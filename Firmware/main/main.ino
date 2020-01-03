@@ -177,11 +177,6 @@ void setup()
 
 void loop()
 {
-  Serial.print(analogRead(25));
-  Serial.print(',');
-  Serial.print(analogRead(26));
-  Serial.print(',');
-  Serial.println();
   //long timerStart = millis();
   if (SerialBT.available()) {
     char instructionType = SerialBT.read();
@@ -237,19 +232,18 @@ void loop()
 }
 
 /*TODO
-  X Add speed control
-  diagonal fade?
-  X add blending change option
+  Add sparkle pattern w/ music reaction
   buffered left to right option that shifts things across display
   -add middle out
+  diagonal fade?
+  attach hue to strength of channel on fourier transform
+  -add middle out
+  move everything into respective .cpp's and .h's
+  Hardware changes
+  X Add speed control
+  X add blending change option
   X flicker on off to the beat/flicker from one color to another
   X beat detect and jump
   X Add music jumping to simple left/right/top/bottom functions
-  Add sparkle pattern w/ music reaction
-  attach hue to strength of channel on fourier transform
-  -add middle out
-  Hardware changes
-  build bluetooth functions for all options
-  add audio jack functionality to left and right on audio sensitive stuff
-  move everything into respective .cpp's and .h's
+  X add audio jack functionality to left and right on audio sensitive stuff
 */

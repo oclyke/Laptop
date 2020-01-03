@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.3.1">
+<eagle version="9.1.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -7228,14 +7228,8 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <signal name="SCL">
 <contactref element="U2" pad="36"/>
 </signal>
-<signal name="32">
-<contactref element="U2" pad="8"/>
-</signal>
 <signal name="15">
 <contactref element="U2" pad="23"/>
-</signal>
-<signal name="33">
-<contactref element="U2" pad="9"/>
 </signal>
 <signal name="27">
 <contactref element="U2" pad="12"/>
@@ -7381,23 +7375,21 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <contactref element="C2" pad="2"/>
 <contactref element="R7" pad="1"/>
 <contactref element="R6" pad="2"/>
-<contactref element="U2" pad="11"/>
 <wire x1="8.61" y1="31.63" x2="8.61" y2="29.725" width="0.2032" layer="1"/>
 <wire x1="8.61" y1="27.82" x2="8.61" y2="29.725" width="0.2032" layer="1"/>
 <wire x1="28.035" y1="17.145" x2="17.36" y2="27.82" width="0.2032" layer="1"/>
 <wire x1="8.61" y1="27.82" x2="17.36" y2="27.82" width="0.2032" layer="1"/>
 <wire x1="44.196" y1="17.145" x2="44.53" y2="17.479" width="0.2032" layer="1"/>
-<wire x1="44.53" y1="17.479" x2="44.53" y2="18.398" width="0.2032" layer="1"/>
 <wire x1="28.035" y1="17.145" x2="44.196" y2="17.145" width="0.2032" layer="1"/>
+<contactref element="U2" pad="9"/>
+<wire x1="44.53" y1="17.479" x2="47.07" y2="18.398" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="TIP">
 <contactref element="R5" pad="2"/>
 <contactref element="R12" pad="2"/>
 <contactref element="C3" pad="1"/>
-<contactref element="U2" pad="10"/>
 <wire x1="8.61" y1="37.345" x2="8.61" y2="35.44" width="0.2032" layer="1"/>
 <wire x1="8.61" y1="33.535" x2="8.61" y2="35.44" width="0.2032" layer="1"/>
-<wire x1="45.8" y1="18.398" x2="45.8" y2="19.732" width="0.2032" layer="1"/>
 <wire x1="45.212" y1="20.32" x2="45.8" y2="19.732" width="0.2032" layer="1"/>
 <wire x1="45.212" y1="20.32" x2="43.18" y2="20.32" width="0.2032" layer="1"/>
 <via x="43.18" y="20.32" extent="1-16" drill="0.381"/>
@@ -7406,6 +7398,8 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <wire x1="40.64" y1="20.32" x2="33.14" y2="20.32" width="0.2032" layer="1"/>
 <wire x1="33.14" y1="20.32" x2="19.925" y2="33.535" width="0.2032" layer="1"/>
 <wire x1="19.925" y1="33.535" x2="8.61" y2="33.535" width="0.2032" layer="1"/>
+<contactref element="U2" pad="8"/>
+<wire x1="45.8" y1="19.732" x2="48.34" y2="18.398" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="DIO0">
 <contactref element="U2" pad="13"/>

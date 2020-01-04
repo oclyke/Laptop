@@ -139,6 +139,47 @@ void diamond()
   }
 }
 
+void diagonal()
+{
+  computeFFT(audioSource);
+  for (uint8_t x = LEFT; x <= RIGHT; x++)
+  {
+    uint8_t absX = abs(x - X_CENTER);
+    switch (audioSource)
+    {
+      case MIC:
+        memcpy(vDummy, vReal, sizeof(vReal));
+        break;
+      case JACK:
+        if (x < X_CENTER)
+        {
+          memcpy(vDummy, vReal, sizeof(vReal));
+        }
+        else if (x == X_CENTER)
+        {
+          vDummy[LOWEST_HZ_BIN] = (vReal1[LOWEST_HZ_BIN] + vReal[LOWEST_HZ_BIN]) / 2;
+        }
+        else
+        {
+          memcpy(vDummy, vReal1, sizeof(vReal1));
+        }
+        break;
+    }
+    for (uint8_t y = TOP; y <= BOTTOM; y++)
+    {
+      if (audioReaction)
+      {
+        colorIndex[y][x] += vDummy[((absX + abs(y - (Y_LEDS / 2))) / 2) + LOWEST_HZ_BIN];
+      }
+      else
+      {
+        colorIndex[y][x] += frameSkip;
+      }
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorIndex[y][x], 255, currentBlending);
+    }
+  }
+}
+
 void audioBuffer()
 {
   computeFFT(audioSource);

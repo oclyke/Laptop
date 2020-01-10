@@ -19,8 +19,15 @@ void bluetoothHandler(char instructionType)
       a0-a100
     */
     case 'a': //audio scaling
-      audioScale = SerialBT.parseFloat();
-      break;
+      {
+        audioScale = SerialBT.parseFloat();
+        char saveSetting = SerialBT.read();
+        if (saveSetting == 'e')
+        {
+          setFloatCharacteristic(AUDIO_SCALE, audioScale);
+        }
+        break;
+      }
 
     /*
       Brightness
@@ -29,8 +36,9 @@ void bluetoothHandler(char instructionType)
     */
     case 'b': //brightness
       {
-        uint8_t tempBrightness = SerialBT.parseInt();
-        FastLED.setBrightness(tempBrightness);
+        brightness = SerialBT.parseInt();
+        FastLED.setBrightness(brightness);
+        setCharacteristic(BRIGHTNESS, brightness);
       }
       break;
 
@@ -44,6 +52,7 @@ void bluetoothHandler(char instructionType)
         customColor.red = SerialBT.parseInt();
         customColor.green = SerialBT.parseInt();
         customColor.blue = SerialBT.parseInt();
+        setColor(COLOR, customColor);
       }
       break;
 
@@ -104,6 +113,7 @@ void bluetoothHandler(char instructionType)
         uint8_t green = SerialBT.parseInt();
         uint8_t blue = SerialBT.parseInt();
         CRGB paletteColor = CRGB(red, green, blue);
+        setColor(GRADIENT + (paletteIndex * 3), paletteColor);
         setPalettePosition(paletteIndex, paletteColor);
       }
       break;
@@ -124,6 +134,7 @@ void bluetoothHandler(char instructionType)
         audioSource = MIC;
         resetColorIndex();
       }
+      setCharacteristic(AUDIO_SOURCE, audioSource);
       break;
 
     /*
@@ -133,6 +144,7 @@ void bluetoothHandler(char instructionType)
     */
     case 'p': //pattern
       patternNum = SerialBT.parseInt();
+      setCharacteristic(PATTERN, patternNum);
       break;
 
     /*
@@ -158,6 +170,7 @@ void bluetoothHandler(char instructionType)
       {
         audioReaction = true;
       }
+      setCharacteristic(AUDIO_REACTION, audioReaction);
       break;
     /*
       Change gradient blending between a linearblend and no blending
@@ -172,6 +185,7 @@ void bluetoothHandler(char instructionType)
       {
         currentBlending = NOBLEND;
       }
+      setCharacteristic(BLENDING, currentBlending);
       break;
 
     /*
@@ -180,7 +194,7 @@ void bluetoothHandler(char instructionType)
       C
     */
     case 'C':
-      connectWifi();
+      initArtnet();
       break;
 
     /*
@@ -195,18 +209,8 @@ void bluetoothHandler(char instructionType)
         while (SerialBT.available())
         {
           char temp = SerialBT.read();
-          if (temp != 10)
-          {
-            tempSsid[position++] = temp;
-          }
-          else
-          {
-            tempSsid[position] = '\0';
-            break;
-          }
+          tempSsid[position++] = temp;
         }
-        Serial.print("TempSSID: ");
-        Serial.println(tempSsid);
         setSSID(tempSsid);
         break;
 
@@ -223,18 +227,8 @@ void bluetoothHandler(char instructionType)
         while (SerialBT.available())
         {
           char temp = SerialBT.read();
-          if (temp != 10)
-          {
-            tempPassword[position++] = temp;
-          }
-          else
-          {
-            tempPassword[position] = '\0';
-            break;
-          }
+          tempPassword[position++] = temp;
         }
-        Serial.print("bluetoothpass: ");
-        Serial.println(tempPassword);
         setPassword(tempPassword);
         break;
       }

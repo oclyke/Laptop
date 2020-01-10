@@ -17,8 +17,8 @@ bool sendFrame = 1;
 int previousDataLength = 0;
 
 //Wifi settings
-String ssid = "Black Panther";
-String password = "figureitoutdude";
+String ssid = "dummy";
+String password = "dummy";
 IPAddress local_IP(192, 168, 1, 4);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 0, 0);
@@ -53,11 +53,14 @@ bool connectWifi(void) //Sets our ESP32 device up as an access point
     ssid = getSSID();
     password = getPassword();
     }*/
+
+  ssid = getSSID();
+  password = getPassword();
   Serial.print("SSID: ");
   Serial.println(ssid);
   Serial.print("Password: ");
   Serial.println(password);
-  state = WiFi.begin(ssid.c_str(), password.c_str());
+  state = WiFi.begin(ssid.c_str(), "figureitoutdude");
   Serial.println(WiFi.localIP());
   state = getWiFiOkay();
   return state;
@@ -69,7 +72,7 @@ void onDmxFrame(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* d
   int ledOffset = universe * 170;
   for (int led = ledOffset; led < ledOffset + (length / 3); led++)
   {
-    {    
+    {
       int offset = ((led - ledOffset) * 3) + startSlot;
       leds[led] = CRGB(data[offset], data[offset + 1], data[offset + 2]);
     }

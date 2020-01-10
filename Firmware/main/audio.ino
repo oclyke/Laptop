@@ -5,20 +5,12 @@
 #include <driver/adc.h>
 arduinoFFT FFT = arduinoFFT();
 
-#define MIC true
-#define JACK false
-
-uint8_t avgLowEnd = 3;
-uint8_t avgHighEnd = 8;
-
-bool audioSource = MIC;
 
 #define MIC_PIN 34
 #define TIP_PIN 32
 #define RING_PIN 33
 #define LOWEST_HZ_BIN 3
 
-float audioScale = 5.0;
 /*
   These are the input and output vectors
   Input vectors receive computed results from FFT
@@ -51,10 +43,11 @@ void computeFFT (bool source, uint16_t samples = 128)
     FFT.Windowing(vReal, samples, FFT_WIN_TYP_HAMMING, FFT_FORWARD); /* Weigh data */
     FFT.Compute(vReal, vImag, samples, FFT_FORWARD); /* Compute FFT */
     FFT.ComplexToMagnitude(vReal, vImag, samples); /* Compute magnitudes */
-    for (uint16_t i = 0; i < samples; i++)
+    for (uint16_t i = 0; i < 20; i++)
     {
+      
       vReal[i] *= i;
-      vReal[i] /= audioScale;
+      vReal[i] /= pow(10.0, 1 - audioScale);
       constrain(vReal[i], 0, 255);
     }
   }

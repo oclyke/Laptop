@@ -10,6 +10,16 @@
 /**Serial Bluetooth**/
 BLESerial SerialBT;
 
+uint8_t brightness = 255;
+
+#define MIC true
+#define JACK false
+
+uint8_t avgLowEnd = 3;
+uint8_t avgHighEnd = 8;
+
+bool audioSource = MIC;
+float audioScale = 0.5;
 #define DATA_PIN 14
 
 uint8_t patternNum = 0;
@@ -171,6 +181,7 @@ void setup()
   LEDS.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS);
   SerialBT.begin("CustomLitt"); //Bluetooth device name
   initializeEEPROM();
+  FastLED.setBrightness(brightness);
   initArtnet();
   FastLED.setMaxPowerInVoltsAndMilliamps(5, 1500);
 }
@@ -238,14 +249,18 @@ void loop()
 }
 
 /*TODO
+  store color in eeprom
+  add device name as a setting
+  add setting sender to send settings to Owen
   Add sparkle pattern w/ music reaction
-  buffered left to right option that shifts things across display
-  -add middle out
   diagonal fade?
   attach hue to strength of channel on fourier transform
   -add middle out
   move everything into respective .cpp's and .h's
   Hardware changes
+  X store current state in eeprom
+  X buffered left to right option that shifts things across display
+  X -add middle out
   X Add speed control
   X add blending change option
   X flicker on off to the beat/flicker from one color to another

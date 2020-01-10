@@ -91,6 +91,10 @@ private:
   String local_name;
 
   BLEServer *pServer = NULL;
+  
+  BLEService *pCustomLittService = NULL;
+  BLECharacteristic * pCustomLittIdCharacteristic = NULL;
+  
   BLEService *pService = NULL;
   BLECharacteristic * pTxCharacteristic = NULL;
   BLECharacteristic * pRxCharacteristic = NULL;

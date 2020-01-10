@@ -66,13 +66,14 @@ bool connectWifi(void) //Sets our ESP32 device up as an access point
 void onDmxFrame(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* data)
 {
   sendFrame = 1;
-  //Read universe and put into the right part of the display buffer
-  //DMX data should be sent with the first LED in the string on channel 0 of Universe 0
-  for (int led = 0; led < length / 3; led++)
+  int ledOffset = universe * 170;
+  for (int led = ledOffset; led < ledOffset + (length / 3); led++)
   {
-    leds[led] = CRGB(data[led * 3], data[(led * 3) + 1], data[(led * 3) + 2]);
+    {    
+      int offset = ((led - ledOffset) * 3) + startSlot;
+      leds[led] = CRGB(data[offset], data[offset + 1], data[offset + 2]);
+    }
   }
-  previousDataLength = length;
   if (universe == endUniverse) //Display our data if we have received all of our universes, prevents incomplete frames when more universes are concerned.
   {
     FastLED.show();

@@ -99,6 +99,5 @@ uint8_t fftAvg()
   }
   average /= (avgHighEnd - avgLowEnd);
   constrain(average, 0, 255);
-  Serial.println(average);
   return average;
 }

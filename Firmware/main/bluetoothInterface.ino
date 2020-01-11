@@ -154,8 +154,18 @@ void bluetoothHandler(char instructionType)
     */
     case 'r': //reset
       resetColorIndex();
-      break;
+      break;  
 
+    /*
+      Sends current settings to the app
+      s
+      s
+    */
+    case 's':
+      SerialBT.print('p');
+      SerialBT.println(patternNum);
+      break;
+    
     /*
       Changes whether or not the pattern is audio reactive
       A

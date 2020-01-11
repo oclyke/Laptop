@@ -249,6 +249,7 @@ void loop()
 }
 
 /*TODO
+  add setting to store multiple preset patterns/switch between them
   store color in eeprom
   add device name as a setting
   add setting sender to send settings to Owen

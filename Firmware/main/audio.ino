@@ -31,7 +31,7 @@ double vDummy[MAX_SAMPLES];
    @param bool mic - true if we are reading the mic, false if reading the 3.5mm jack
    @param uint16_t sample - number of samples taken to compute FFT, must be a power of 2
 */
-void computeFFT (bool source, uint16_t samples = 128)
+void computeFFT (bool source, uint16_t samples = 256)
 {
   if (source == MIC)
   {
@@ -47,7 +47,7 @@ void computeFFT (bool source, uint16_t samples = 128)
     {
       
       vReal[i] *= i;
-      vReal[i] /= pow(10.0, 1 - audioScale);
+      vReal[i] /= 100 * (1.0001 - audioScale);//pow(10.0, 1 - audioScale);
       constrain(vReal[i], 0, 255);
     }
   }
@@ -92,5 +92,6 @@ uint8_t fftAvg()
   }
   average /= (avgHighEnd - avgLowEnd);
   constrain(average, 0, 255);
+  Serial.println(average);
   return average;
 }

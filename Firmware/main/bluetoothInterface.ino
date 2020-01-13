@@ -154,7 +154,7 @@ void bluetoothHandler(char instructionType)
     */
     case 'r': //reset
       resetColorIndex();
-      break;  
+      break;
 
     /*
       Sends current settings to the app
@@ -162,10 +162,57 @@ void bluetoothHandler(char instructionType)
       s
     */
     case 's':
+      SerialBT.print('a');
+      SerialBT.println(audioScale);
+      delay(5);
+      SerialBT.print('b');
+      SerialBT.println(brightness);
+      delay(5);
+      SerialBT.print("c");
+      SerialBT.print(customColor.red);
+      SerialBT.print(" ");
+      SerialBT.print(customColor.green);
+      SerialBT.print(" ");
+      SerialBT.println(customColor.blue);
+      delay(5);
+      SerialBT.print("ds");
+      SerialBT.println(frameSkip);
+      delay(5);
+      SerialBT.print("dd");
+      SerialBT.println(frameDelay);
+      delay(5);
+      SerialBT.print("fl");
+      SerialBT.println(avgLowEnd);
+      delay(5);
+      SerialBT.print("fh");
+      SerialBT.println(avgHighEnd);
+      delay(5);
+      for (uint8_t index = 0; index < 16; index++)
+      {
+        SerialBT.print("g");
+        SerialBT.print(index);
+        SerialBT.print(" ");
+        SerialBT.print(currentPalette[index].red);
+        SerialBT.print(" ");
+        SerialBT.print(currentPalette[index].green);
+        SerialBT.print(" ");
+        SerialBT.println(currentPalette[index].blue);
+        delay(5);
+      }
+      SerialBT.print('m');
+      SerialBT.println(audioSource);
+      delay(5);
       SerialBT.print('p');
       SerialBT.println(patternNum);
+      delay(5);
+      SerialBT.print('A');
+      SerialBT.println(audioReaction);
+      delay(5);
+      SerialBT.print('B');
+      SerialBT.println(currentBlending);
+      SerialBT.println("FINISH");
       break;
-    
+
     /*
       Changes whether or not the pattern is audio reactive
       A

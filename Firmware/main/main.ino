@@ -205,39 +205,51 @@ void loop()
       diamond();
       break;
     case 3:
-      audioBuffer();
+      diagonal(0);
       break;
     case 4:
-      centerAudioBuffer();
+      diagonal(1);
       break;
     case 5:
-      gradient();
+      diagonal(2);
       break;
     case 6:
-      audioJump();
+      diagonal(3);
       break;
     case 7:
-      momentaryAudioRamp();
+      audioBuffer();
       break;
     case 8:
-      sparkle();
+      centerAudioBuffer();
       break;
     case 9:
-      rightToLeftFade();
+      gradient();
       break;
     case 10:
-      leftToRightFade();
+      audioJump();
       break;
     case 11:
-      topToBottomFade();
+      momentaryAudioRamp();
       break;
     case 12:
-      bottomToTopFade();
+      sparkle();
       break;
     case 13:
-      colorSet(customColor);
+      rightToLeftFade();
       break;
     case 14:
+      leftToRightFade();
+      break;
+    case 15:
+      topToBottomFade();
+      break;
+    case 16:
+      bottomToTopFade();
+      break;
+    case 17:
+      colorSet(customColor);
+      break;
+    case 18:
       artRead();
       break;
   }
@@ -250,15 +262,12 @@ void loop()
 
 /*TODO
   add setting to store multiple preset patterns/switch between them
-  store color in eeprom
   add device name as a setting
-  add setting sender to send settings to Owen
-  Add sparkle pattern w/ music reaction
-  diagonal fade?
-  attach hue to strength of channel on fourier transform
-  -add middle out
-  move everything into respective .cpp's and .h's
   Hardware changes
+  X Add sparkle pattern w/ music reaction    
+  X add setting sender to send settings to Owen
+  X diagonal fade?
+  X store color in eeprom
   X store current state in eeprom
   X buffered left to right option that shifts things across display
   X -add middle out

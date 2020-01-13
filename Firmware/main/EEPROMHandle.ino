@@ -7,24 +7,67 @@
 //Wildly inefficient use of EEPROM, for the love of god pare this down when you have time
 #define SSID_ADDRESS 0
 #define PASSWORD_ADDRESS 32
-#define AUDIO_SOURCE_ADDRESS 64
-#define SSID_OKAY 65
-#define SSID_SIZE 66
-#define PASSWORD_OKAY 67
-#define PASSWORD_SIZE 68
-#define AUDIO_SCALE 69
-#define BRIGHTNESS 73
-#define COLOR 74 //74,75,76
-#define FRAME_SKIP 77
-#define FRAME_DELAY 78
-#define LOW_FREQUENCY 79
-#define HIGH_FREQUENCY 80
-#define GRADIENT 81 //81-95
-#define AUDIO_SOURCE 96
-#define PATTERN 97
-#define AUDIO_REACTION 98
-#define BLENDING 99
-#define EEPROM_OKAY 100
+#define DEVICE_NAME_ADDRESS 64
+#define AUDIO_SOURCE_ADDRESS 96
+#define SSID_OKAY 97
+#define SSID_SIZE 98
+#define PASSWORD_OKAY 99
+#define PASSWORD_SIZE 100
+#define AUDIO_SCALE 101
+#define BRIGHTNESS 102
+#define COLOR 103 //103, 104, 105
+#define FRAME_SKIP 106
+#define FRAME_DELAY 107
+#define LOW_FREQUENCY 108
+#define HIGH_FREQUENCY 109
+#define GRADIENT 110//81-129 110-158
+#define AUDIO_SOURCE 159
+#define PATTERN 160
+#define AUDIO_REACTION 161
+#define BLENDING 162
+#define EEPROM_OKAY 163
+
+#define AUDIO_SCALE_PS1 201
+#define BRIGHTNESS_PS1 202
+#define COLOR_PS1 203 //103, 104, 105
+#define FRAME_SKIP_PS1 206
+#define FRAME_DELAY_PS1 207
+#define LOW_FREQUENCY_PS1 208
+#define HIGH_FREQUENCY_PS1 209
+#define GRADIENT_PS1 210//81-129 110-158
+#define AUDIO_SOURCE_PS1 259
+#define PATTERN_PS1 260
+#define AUDIO_REACTION_PS1 261
+#define BLENDING_PS1 262
+#define EEPROM_OKAY_PS1 263
+
+#define AUDIO_SCALE_PS2 301
+#define BRIGHTNESS_PS2 302
+#define COLOR_PS2 303 //103, 104, 105
+#define FRAME_SKIP_PS2 306
+#define FRAME_DELAY_PS2 307
+#define LOW_FREQUENCY_PS2 308
+#define HIGH_FREQUENCY_PS2 309
+#define GRADIENT_PS2 310//81-129 110-158
+#define AUDIO_SOURCE_PS2 359
+#define PATTERN_PS2 360
+#define AUDIO_REACTION_PS2 361
+#define BLENDING_PS2 362
+#define EEPROM_OKAY_PS2 363
+
+#define AUDIO_SCALE_PS3 401
+#define BRIGHTNESS_PS3 402
+#define COLOR_PS3 403 //103, 104, 105
+#define FRAME_SKIP_PS3 406
+#define FRAME_DELAY_PS3 407
+#define LOW_FREQUENCY_PS3 408
+#define HIGH_FREQUENCY_PS3 409
+#define GRADIENT_PS3 410//81-129 110-158
+#define AUDIO_SOURCE_PS3 459
+#define PATTERN_PS3 460
+#define AUDIO_REACTION_PS3 461
+#define BLENDING_PS3 462
+#define EEPROM_OKAY_PS3 463
 
 void initializeEEPROM()
 {
@@ -43,7 +86,13 @@ void initializeEEPROM()
     EEPROM.get(PATTERN, patternNum);
     EEPROM.get(AUDIO_REACTION, audioReaction);
     EEPROM.get(BLENDING, currentBlending);
-    Serial.print("got");
+    for (uint8_t address = 0; address < 48; address += 3)
+    {
+      EEPROM.get(GRADIENT + address, currentPalette[address].red);
+      EEPROM.get(GRADIENT + address + 1, currentPalette[address].green);
+      EEPROM.get(GRADIENT + address + 2, currentPalette[address].blue);
+    }
+    Serial.println("got");
   }
   else
   {
@@ -58,7 +107,13 @@ void initializeEEPROM()
     EEPROM.put(AUDIO_REACTION, audioReaction);
     EEPROM.put(BLENDING, currentBlending);
     EEPROM.put(EEPROM_OKAY, 69);
-    Serial.print("set");
+    for (uint8_t address = 0; address < 48; address += 3)
+    {
+      EEPROM.put(GRADIENT + address, currentPalette[address].red);
+      EEPROM.put(GRADIENT + address + 1, currentPalette[address].green);
+      EEPROM.put(GRADIENT + address + 2, currentPalette[address].blue);
+    }
+    Serial.println("set");
   }
 }
 

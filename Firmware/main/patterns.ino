@@ -139,50 +139,52 @@ void diamond()
   }
 }
 
-void diagonal()
+void diagonal(uint8_t corner)
 {
   computeFFT(audioSource);
+  uint8_t xVal;
+  uint8_t yVal;
+  switch (corner)
+  {
+    case 0: //Topleft origin
+      xVal = 0;
+      yVal = 0;
+      break;
+    case 1:
+      xVal = WIDTH;
+      yVal = 0;
+      break;
+    case 2:
+      xVal = WIDTH;
+      yVal = HEIGHT;
+      break;
+    case 3:
+      xVal = 0;
+      yVal = HEIGHT;
+  }
   for (uint8_t x = LEFT; x <= RIGHT; x++)
   {
-    uint8_t absX = abs(x - X_CENTER);
-    switch (audioSource)
-    {
-      case MIC:
-        memcpy(vDummy, vReal, sizeof(vReal));
-        break;
-      case JACK:
-        if (x < X_CENTER)
-        {
-          memcpy(vDummy, vReal, sizeof(vReal));
-        }
-        else if (x == X_CENTER)
-        {
-          vDummy[LOWEST_HZ_BIN] = (vReal1[LOWEST_HZ_BIN] + vReal[LOWEST_HZ_BIN]) / 2;
-        }
-        else
-        {
-          memcpy(vDummy, vReal1, sizeof(vReal1));
-        }
-        break;
-    }
+    uint8_t absX = abs(x - xVal);
     for (uint8_t y = TOP; y <= BOTTOM; y++)
     {
+      uint8_t absY = abs(y - yVal);
       if (audioReaction)
       {
-        colorIndex[y][x] += vDummy[((absX + abs(y - (Y_LEDS / 2))) / 2) + LOWEST_HZ_BIN];
+        colorIndex[y][x] += vReal[((absX + absY) / 2) + LOWEST_HZ_BIN];
       }
       else
       {
-        colorIndex[y][x] += frameSkip;
+        colorIndex[y][x] = singleColorIndex + ((absX + absY) / 2);
       }
       leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorIndex[y][x], 255, currentBlending);
     }
   }
+  singleColorIndex++;
 }
 
 void audioBuffer()
 {
-  computeFFT(audioSource);
+  computeFFT(audioSource, 128);
   uint8_t temp = vReal[LOWEST_HZ_BIN];
   colorBuffer[0][0] = temp;
   colorBuffer[0][1] = round(map(temp, 0, 255, TOP, BOTTOM) / 2.0);
@@ -190,11 +192,11 @@ void audioBuffer()
   {
     for (int y = Y_CENTER; y >= Y_CENTER - colorBuffer[x][1]; y--)
     {
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[x][0], 255, currentBlending);
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[x][0], colorBuffer[x][0], currentBlending);
     }
     for (int y = Y_CENTER; y <= Y_CENTER + colorBuffer[x][1]; y++)
     {
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[x][0], 255, currentBlending);
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[x][0], colorBuffer[x][0], currentBlending);
     }
   }
   for (int bufferPosition = RIGHT; bufferPosition >= LEFT; bufferPosition--)
@@ -216,11 +218,11 @@ void centerAudioBuffer()
     uint8_t colorPosition = abs(x - X_CENTER);//rename this variable
     for (int y = Y_CENTER; y >= Y_CENTER - colorBuffer[colorPosition][1]; y--)
     {
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], 255, currentBlending);
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], colorBuffer[colorPosition][0], currentBlending);
     }
     for (int y = Y_CENTER; y <= Y_CENTER + colorBuffer[colorPosition][1]; y++)
     {
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], 255, currentBlending);
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], colorBuffer[colorPosition][0], currentBlending);
     }
   }
   for (int bufferPosition = RIGHT; bufferPosition >= LEFT; bufferPosition--)
@@ -361,14 +363,14 @@ void audioJump()
 void sparkle()
 {
   int randomMax;
-  uint8_t randomVal;
+  int randomVal;
   if (audioReaction == true)
   {
     computeFFT(audioSource);
     randomMax = 255 - (fftAvg() * 2);//vReal[LOWEST_HZ_BIN];
-    if (randomMax <= 1)
+    if (randomMax <= 48)
     {
-      randomMax = 1;
+      randomMax = 5;
     }
     //randomMax /= 4;
   }
@@ -379,7 +381,7 @@ void sparkle()
   for (int led = 0; led < NUM_LEDS; led++)
   {
     randomVal = random(randomMax);
-    if (randomVal == 1)
+    if (randomVal == 0)
     {
       leds[led] = ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending);
     }

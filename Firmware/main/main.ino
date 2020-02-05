@@ -27,6 +27,8 @@ uint8_t patternNum = 0;
 #define X_LEDS 21
 #define Y_LEDS 13
 
+String deviceName = "dummy";
+
 #define MISSING0 3
 #define MISSING1 0
 #define MISSING2 0
@@ -261,7 +263,6 @@ void loop()
 }
 
 /*TODO
-  add setting to store multiple preset patterns/switch between them
   add device name as a setting
   Hardware changes
   X Add sparkle pattern w/ music reaction    

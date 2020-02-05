@@ -27,55 +27,14 @@
 #define BLENDING 162
 #define EEPROM_OKAY 163
 
-#define AUDIO_SCALE_PS1 201
-#define BRIGHTNESS_PS1 202
-#define COLOR_PS1 203 //103, 104, 105
-#define FRAME_SKIP_PS1 206
-#define FRAME_DELAY_PS1 207
-#define LOW_FREQUENCY_PS1 208
-#define HIGH_FREQUENCY_PS1 209
-#define GRADIENT_PS1 210//81-129 110-158
-#define AUDIO_SOURCE_PS1 259
-#define PATTERN_PS1 260
-#define AUDIO_REACTION_PS1 261
-#define BLENDING_PS1 262
-#define EEPROM_OKAY_PS1 263
-
-#define AUDIO_SCALE_PS2 301
-#define BRIGHTNESS_PS2 302
-#define COLOR_PS2 303 //103, 104, 105
-#define FRAME_SKIP_PS2 306
-#define FRAME_DELAY_PS2 307
-#define LOW_FREQUENCY_PS2 308
-#define HIGH_FREQUENCY_PS2 309
-#define GRADIENT_PS2 310//81-129 110-158
-#define AUDIO_SOURCE_PS2 359
-#define PATTERN_PS2 360
-#define AUDIO_REACTION_PS2 361
-#define BLENDING_PS2 362
-#define EEPROM_OKAY_PS2 363
-
-#define AUDIO_SCALE_PS3 401
-#define BRIGHTNESS_PS3 402
-#define COLOR_PS3 403 //103, 104, 105
-#define FRAME_SKIP_PS3 406
-#define FRAME_DELAY_PS3 407
-#define LOW_FREQUENCY_PS3 408
-#define HIGH_FREQUENCY_PS3 409
-#define GRADIENT_PS3 410//81-129 110-158
-#define AUDIO_SOURCE_PS3 459
-#define PATTERN_PS3 460
-#define AUDIO_REACTION_PS3 461
-#define BLENDING_PS3 462
-#define EEPROM_OKAY_PS3 463
-
 void initializeEEPROM()
 {
   EEPROM.begin(512);
   uint8_t eepromOkay;
   EEPROM.get(EEPROM_OKAY, eepromOkay);
-  if (eepromOkay == 69)
+  if (eepromOkay == 70)
   {
+    EEPROM.get(DEVICE_NAME_ADDRESS, deviceName);
     EEPROM.get(AUDIO_SCALE, audioScale);
     EEPROM.get(BRIGHTNESS, brightness);
     EEPROM.get(FRAME_SKIP, frameSkip);
@@ -96,6 +55,7 @@ void initializeEEPROM()
   }
   else
   {
+    EEPROM.put(DEVICE_NAME_ADDRESS, "Custom Litt Laptop");
     EEPROM.put(AUDIO_SCALE, audioScale);
     EEPROM.put(BRIGHTNESS, brightness);
     EEPROM.put(FRAME_SKIP, frameSkip);
@@ -161,6 +121,18 @@ CRGB getColor(uint8_t address)
     tempColor[colorToWrite] = temp;
   }
   return tempColor;
+}
+
+void setName(String tempName)
+{
+  Serial.println(tempName);
+  EEPROM.writeString(DEVICE_NAME_ADDRESS, tempName);
+  EEPROM.commit();
+}
+
+String getName()
+{
+  return EEPROM.readString(DEVICE_NAME_ADDRESS);
 }
 
 void setSSID(String tempSsid)

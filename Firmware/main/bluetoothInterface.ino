@@ -120,22 +120,25 @@ void bluetoothHandler(char instructionType)
 
     /*
       Change audio source between microphone and audio jack
-      m (switches audio source)
+      mm (switches audio source to microphone) mj switches to audio jack
       m
     */
     case 'm': //audio Source
-      if (audioSource == MIC)
       {
-        audioSource = JACK;
+        char tempSource = SerialBT.read();
+        switch (tempSource)
+        {
+          case 'm':
+            audioSource = MIC;
+            break;
+          case 'j':
+            audioSource = JACK;
+            break;
+        }
         resetColorIndex();
+        setCharacteristic(AUDIO_SOURCE, audioSource);
+        break;
       }
-      else
-      {
-        audioSource = MIC;
-        resetColorIndex();
-      }
-      setCharacteristic(AUDIO_SOURCE, audioSource);
-      break;
 
     /*
       Change pattern utilized
@@ -162,6 +165,9 @@ void bluetoothHandler(char instructionType)
       s
     */
     case 's':
+      SerialBT.print('D');
+      SerialBT.println(deviceName);
+      delay(5);
       SerialBT.print('a');
       SerialBT.println(audioScale);
       delay(5);
@@ -210,6 +216,7 @@ void bluetoothHandler(char instructionType)
       delay(5);
       SerialBT.print('B');
       SerialBT.println(currentBlending);
+      delay(5);
       SerialBT.println("FINISH");
       break;
 
@@ -219,29 +226,19 @@ void bluetoothHandler(char instructionType)
       A
     */
     case 'A':
-      if (audioReaction == true)
       {
-        audioReaction = false;
+        audioReaction = SerialBT.parseInt();
+        setCharacteristic(AUDIO_REACTION, audioReaction);
+        break;
       }
-      else
-      {
-        audioReaction = true;
-      }
-      setCharacteristic(AUDIO_REACTION, audioReaction);
-      break;
+
     /*
       Change gradient blending between a linearblend and no blending
-      B
+      B0 (no blending) B1 (blending)
       B
     */
     case 'B':
-      if (currentBlending == NOBLEND)      {
-        currentBlending = LINEARBLEND;
-      }
-      else
-      {
-        currentBlending = NOBLEND;
-      }
+      currentBlending = (TBlendType)SerialBT.parseInt();
       setCharacteristic(BLENDING, currentBlending);
       break;
 
@@ -253,6 +250,24 @@ void bluetoothHandler(char instructionType)
     case 'C':
       initArtnet();
       break;
+
+    /*
+       Change the name of the Device
+       DNew Device Name
+    */
+    case 'D':
+      {
+        char tempName[32];
+        int position = 0;
+        while (SerialBT.available())
+        {
+          char temp = SerialBT.read();
+          tempName[position++] = temp;
+        }
+        deviceName = tempName;
+        EEPROM.put(DEVICE_NAME_ADDRESS, deviceName);
+        break;
+      }
 
     /*
       Change the SSID to connect to for ArtNet (still needs backend work for eeprom storage issue)

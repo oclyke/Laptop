@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.3.1">
+<eagle version="9.5.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -381,13 +381,13 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="-1.6" y1="-0.7" x2="-1.6" y2="0.7" width="0.0508" layer="39"/>
 <wire x1="-0.356" y1="0.432" x2="0.356" y2="0.432" width="0.1016" layer="51"/>
 <wire x1="-0.356" y1="-0.419" x2="0.356" y2="-0.419" width="0.1016" layer="51"/>
+<rectangle x1="-0.8382" y1="-0.4699" x2="-0.3381" y2="0.4801" layer="51"/>
+<rectangle x1="0.3302" y1="-0.4699" x2="0.8303" y2="0.4801" layer="51"/>
+<rectangle x1="-0.1999" y1="-0.3" x2="0.1999" y2="0.3" layer="35"/>
 <smd name="1" x="-0.85" y="0" dx="1.1" dy="1" layer="1"/>
 <smd name="2" x="0.85" y="0" dx="1.1" dy="1" layer="1"/>
 <text x="0" y="0.762" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
 <text x="0" y="-0.762" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
-<rectangle x1="-0.8382" y1="-0.4699" x2="-0.3381" y2="0.4801" layer="51"/>
-<rectangle x1="0.3302" y1="-0.4699" x2="0.8303" y2="0.4801" layer="51"/>
-<rectangle x1="-0.1999" y1="-0.3" x2="0.1999" y2="0.3" layer="35"/>
 </package>
 <package name="AXIAL-0.3">
 <description>&lt;h3&gt;AXIAL-0.3&lt;/h3&gt;
@@ -404,18 +404,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pad name="P$2" x="3.81" y="0" drill="0.9" diameter="1.8796"/>
 <text x="0" y="1.016" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;Name</text>
 <text x="0" y="-1.016" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;Value</text>
-</package>
-<package name="AXIAL-0.1">
-<description>&lt;h3&gt;AXIAL-0.1&lt;/h3&gt;
-&lt;p&gt;Commonly used for 1/4W through-hole resistors. 0.1" pitch between holes.&lt;/p&gt;</description>
-<wire x1="0" y1="-0.762" x2="0" y2="0" width="0.2032" layer="21"/>
-<wire x1="0" y1="0" x2="0" y2="0.762" width="0.2032" layer="21"/>
-<wire x1="0.254" y1="0" x2="0" y2="0" width="0.2032" layer="21"/>
-<wire x1="0" y1="0" x2="-0.254" y2="0" width="0.2032" layer="21"/>
-<pad name="P$1" x="-1.27" y="0" drill="0.9" diameter="1.8796"/>
-<pad name="P$2" x="1.27" y="0" drill="0.9" diameter="1.8796"/>
-<text x="0" y="1.143" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;Name</text>
-<text x="0" y="-1.143" size="0.6096" layer="21" font="vector" ratio="20" align="top-center">&gt;Value</text>
 </package>
 <package name="AXIAL-0.1-KIT">
 <description>&lt;h3&gt;AXIAL-0.1-KIT&lt;/h3&gt;
@@ -528,6 +516,18 @@ It has a reduced top mask to make it harder to install upside-down.</description
 <circle x="3.81" y="0" radius="0.523634375" width="0" layer="29"/>
 <circle x="-3.81" y="0" radius="1.02390625" width="0" layer="30"/>
 <circle x="3.81" y="0" radius="1.04726875" width="0" layer="30"/>
+</package>
+<package name="AXIAL-0.1">
+<description>&lt;h3&gt;AXIAL-0.1&lt;/h3&gt;
+&lt;p&gt;Commonly used for 1/4W through-hole resistors. 0.1" pitch between holes.&lt;/p&gt;</description>
+<wire x1="0" y1="-0.762" x2="0" y2="0" width="0.2032" layer="21"/>
+<wire x1="0" y1="0" x2="0" y2="0.762" width="0.2032" layer="21"/>
+<wire x1="0.254" y1="0" x2="0" y2="0" width="0.2032" layer="21"/>
+<wire x1="0" y1="0" x2="-0.254" y2="0" width="0.2032" layer="21"/>
+<pad name="P$1" x="-1.27" y="0" drill="0.9" diameter="1.8796"/>
+<pad name="P$2" x="1.27" y="0" drill="0.9" diameter="1.8796"/>
+<text x="0" y="1.143" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;Name</text>
+<text x="0" y="-1.143" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;Value</text>
 </package>
 </packages>
 <symbols>
@@ -732,6 +732,51 @@ It has a reduced top mask to make it harder to install upside-down.</description
 <technology name="">
 <attribute name="PROD_ID" value="RES-14241" constant="no"/>
 <attribute name="VALUE" value="10k" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="2.2KOHM" prefix="R">
+<description>&lt;h3&gt;2.2kΩ resistor&lt;/h3&gt;
+&lt;p&gt;A resistor is a passive two-terminal electrical component that implements electrical resistance as a circuit element. Resistors act to reduce current flow, and, at the same time, act to lower voltage levels within circuits. - Wikipedia&lt;/p&gt;</description>
+<gates>
+<gate name="G$1" symbol="RESISTOR" x="0" y="0"/>
+</gates>
+<devices>
+<device name="-0603-1/10W-1%" package="0603">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-08272"/>
+<attribute name="VALUE" value="2.2k"/>
+</technology>
+</technologies>
+</device>
+<device name="-0402-1/16W-1%" package="0402">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-14341" constant="no"/>
+<attribute name="VALUE" value="2.2K" constant="no"/>
+</technology>
+</technologies>
+</device>
+<device name="-0402T-1/16W-1%" package="0402-TIGHT">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-14341" constant="no"/>
+<attribute name="VALUE" value="2.2k" constant="no"/>
 </technology>
 </technologies>
 </device>
@@ -1016,6 +1061,18 @@ It has a reduced top mask to make it harder to install upside-down.</description
 </technology>
 </technologies>
 </device>
+<device name="-0402T-1/16W-1%" package="0402-TIGHT">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-13495" constant="no"/>
+<attribute name="VALUE" value="100k" constant="no"/>
+</technology>
+</technologies>
+</device>
 </devices>
 </deviceset>
 <deviceset name="5.1KOHM" prefix="R" uservalue="yes">
@@ -1113,18 +1170,6 @@ It has a reduced top mask to make it harder to install upside-down.</description
 <technology name="">
 <attribute name="PROD_ID" value="RES-12181" constant="no"/>
 <attribute name="VALUE" value="100" constant="no"/>
-</technology>
-</technologies>
-</device>
-<device name="-0603-1/4W-5%" package="0603">
-<connects>
-<connect gate="G$1" pin="1" pad="1"/>
-<connect gate="G$1" pin="2" pad="2"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="PROD_ID" value="RES-12438"/>
-<attribute name="VALUE" value="100"/>
 </technology>
 </technologies>
 </device>
@@ -4366,7 +4411,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="R10" library="SparkFun-Resistors" deviceset="10KOHM" device="-0603-1/10W-1%" value="10k"/>
 <part name="C6" library="SparkFun-Capacitors" deviceset="1.0UF" device="-0603-16V-10%" value="1.0uF"/>
 <part name="GND13" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
-<part name="R13" library="SparkFun-Resistors" deviceset="1KOHM" device="-HORIZ-1/4W-5%" value="1k"/>
+<part name="R13" library="SparkFun-Resistors" deviceset="2.2KOHM" device="-0603-1/10W-1%" value="2.2k"/>
 <part name="C9" library="SparkFun-Capacitors" deviceset="0.1UF" device="-0603-25V-5%" value="0.1uF"/>
 <part name="R11" library="SparkFun-Resistors" deviceset="100KOHM" device="-0603-1/10W-1%" value="100k"/>
 <part name="SUPPLY12" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
@@ -5420,7 +5465,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="GND277" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
 <part name="JP261" library="SparkFun-Jumpers" deviceset="JUMPER-SMT_2_NO" device="_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK"/>
 <part name="JP262" library="SparkFun-Jumpers" deviceset="JUMPER-SMT_2_NO" device="_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK"/>
-<part name="R16" library="SparkFun-Resistors" deviceset="100OHM" device="-0603-1/4W-5%" value="100"/>
+<part name="R16" library="SparkFun-Resistors" deviceset="100OHM" device="-0603-1/10W-1%" value="100"/>
 <part name="H1" library="SparkFun-Hardware" deviceset="STAND-OFF" device=""/>
 <part name="H2" library="SparkFun-Hardware" deviceset="STAND-OFF" device=""/>
 <part name="H5" library="SparkFun-Hardware" deviceset="STAND-OFF" device=""/>

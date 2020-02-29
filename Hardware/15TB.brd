@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="7.5" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.05" altunitdist="mm" altunit="mm"/>
+<grid distance="7.5" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.5" altunitdist="mm" altunit="mm"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -161,18 +161,18 @@
 </layers>
 <board>
 <plain>
-<wire x1="350.5" y1="0" x2="350.5" y2="23" width="0.2032" layer="20"/>
-<wire x1="350.5" y1="23" x2="360.5" y2="23" width="0.2032" layer="20"/>
-<wire x1="360.5" y1="23" x2="360.5" y2="53" width="0.2032" layer="20"/>
-<wire x1="360.5" y1="53" x2="350.5" y2="53" width="0.2032" layer="20"/>
-<wire x1="350.5" y1="53" x2="350.5" y2="217.5" width="0.2032" layer="20"/>
-<wire x1="350.5" y1="217.5" x2="0" y2="217.5" width="0.2032" layer="20"/>
-<wire x1="0" y1="217.5" x2="0" y2="0" width="0.2032" layer="20"/>
+<wire x1="341.61" y1="0" x2="341.61" y2="23" width="0.2032" layer="20"/>
+<wire x1="341.61" y1="23" x2="351.61" y2="23" width="0.2032" layer="20"/>
+<wire x1="351.61" y1="23" x2="351.61" y2="53" width="0.2032" layer="20"/>
+<wire x1="351.61" y1="53" x2="341.61" y2="53" width="0.2032" layer="20"/>
+<wire x1="341.61" y1="53" x2="341.61" y2="211.91" width="0.2032" layer="20"/>
+<wire x1="341.61" y1="211.91" x2="0" y2="211.91" width="0.2032" layer="20"/>
+<wire x1="0" y1="211.91" x2="0" y2="0" width="0.2032" layer="20"/>
 <wire x1="0" y1="0" x2="50.063" y2="0" width="0.2032" layer="20"/>
 <wire x1="50.063" y1="0" x2="50.063" y2="19.32" width="0.2032" layer="20"/>
 <wire x1="50.063" y1="19.32" x2="56.032" y2="19.32" width="0.2032" layer="20"/>
 <wire x1="56.032" y1="19.32" x2="56.032" y2="0" width="0.2032" layer="20"/>
-<wire x1="56.032" y1="0" x2="350.5" y2="0" width="0.2032" layer="20"/>
+<wire x1="56.032" y1="0" x2="341.61" y2="0" width="0.2032" layer="20"/>
 <text x="359.869" y="48.713" size="1.27" layer="16" font="vector" ratio="15" rot="SMR270">v11</text>
 <text x="359.055" y="38.991" size="1.27" layer="21" font="vector" ratio="15" rot="R270">15R</text>
 <text x="26.06" y="8.89" size="1.016" layer="21" font="vector" ratio="15" align="center">RST</text>
@@ -4938,13 +4938,13 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <attribute name="NAME" x="193" y="9.532" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="193" y="5.468" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="H5" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="343" y="210" smashed="yes">
-<attribute name="NAME" x="343" y="212.032" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="VALUE" x="343" y="207.968" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
+<element name="H5" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="335.5" y="202.5" smashed="yes">
+<attribute name="NAME" x="335.5" y="204.532" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="VALUE" x="335.5" y="200.468" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="H6" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="7.5" y="210" smashed="yes">
-<attribute name="NAME" x="7.5" y="212.032" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="VALUE" x="7.5" y="207.968" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
+<element name="H6" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="7.5" y="204.41" smashed="yes">
+<attribute name="NAME" x="7.5" y="206.442" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="VALUE" x="7.5" y="202.378" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
 <element name="C7" library="SparkFun-Capacitors" package="0603" value="1.0uF" x="3.75" y="16.5" smashed="yes" rot="R270">
 <attribute name="NAME" x="4.512" y="16.5" size="0.6096" layer="25" font="vector" ratio="20" rot="R270" align="bottom-center"/>
@@ -5597,13 +5597,13 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <contactref element="R4" pad="1"/>
 <polygon width="0.2032" layer="1">
 <vertex x="0" y="0"/>
-<vertex x="0" y="217.5"/>
-<vertex x="350.5" y="217.5"/>
-<vertex x="350.5" y="53"/>
-<vertex x="360.5" y="53"/>
-<vertex x="360.5" y="23"/>
-<vertex x="350.5" y="23"/>
-<vertex x="350.5" y="0"/>
+<vertex x="0" y="211.91"/>
+<vertex x="341.61" y="211.91"/>
+<vertex x="341.61" y="53"/>
+<vertex x="351.61" y="53"/>
+<vertex x="351.61" y="23"/>
+<vertex x="341.61" y="23"/>
+<vertex x="341.61" y="0"/>
 </polygon>
 <wire x1="12.58" y1="7.1" x2="13.88" y2="7.1" width="0.3048" layer="1"/>
 <wire x1="13.88" y1="7.1" x2="14.63" y2="6.35" width="0.3048" layer="1"/>
@@ -6257,13 +6257,13 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <contactref element="D260" pad="1"/>
 <contactref element="D261" pad="1"/>
 <polygon width="0.2032" layer="16">
-<vertex x="350.5" y="0"/>
-<vertex x="350.5" y="23"/>
-<vertex x="360.5" y="23"/>
-<vertex x="360.5" y="53"/>
-<vertex x="350.5" y="53"/>
-<vertex x="350.5" y="217.5"/>
-<vertex x="0" y="217.5"/>
+<vertex x="341.61" y="0"/>
+<vertex x="341.61" y="23"/>
+<vertex x="351.61" y="23"/>
+<vertex x="351.61" y="53"/>
+<vertex x="341.61" y="53"/>
+<vertex x="341.61" y="211.91"/>
+<vertex x="0" y="211.91"/>
 <vertex x="0" y="23.5"/>
 <vertex x="56.5" y="23.5"/>
 <vertex x="56.5" y="0"/>

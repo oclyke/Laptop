@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.0196850394" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.05" altunitdist="mm" altunit="mm"/>
+<grid distance="1" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.05" altunitdist="mm" altunit="mm"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="yes"/>
@@ -54,7 +54,7 @@
 <layer number="44" name="Drills" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="46" name="Milling" color="3" fill="1" visible="yes" active="yes"/>
-<layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
@@ -161,11 +161,11 @@
 </layers>
 <board>
 <plain>
-<wire x1="316.5" y1="0" x2="316.5" y2="23" width="0.2032" layer="20"/>
-<wire x1="316.5" y1="23" x2="326.5" y2="23" width="0.2032" layer="20"/>
-<wire x1="326.5" y1="23" x2="326.5" y2="53" width="0.2032" layer="20"/>
-<wire x1="326.5" y1="53" x2="316.5" y2="53" width="0.2032" layer="20"/>
-<wire x1="316.5" y1="53" x2="316.5" y2="197.75" width="0.2032" layer="20"/>
+<wire x1="316.5" y1="0" x2="316.5" y2="17" width="0.2032" layer="20"/>
+<wire x1="316.5" y1="17" x2="326.5" y2="17" width="0.2032" layer="20"/>
+<wire x1="326.5" y1="17" x2="326.5" y2="47" width="0.2032" layer="20"/>
+<wire x1="326.5" y1="47" x2="316.5" y2="47" width="0.2032" layer="20"/>
+<wire x1="316.5" y1="47" x2="316.5" y2="197.75" width="0.2032" layer="20"/>
 <wire x1="316.5" y1="197.75" x2="0" y2="197.75" width="0.2032" layer="20"/>
 <wire x1="0" y1="197.75" x2="0" y2="0" width="0.2032" layer="20"/>
 <wire x1="0" y1="0" x2="53.563" y2="0" width="0.2032" layer="20"/>
@@ -173,10 +173,13 @@
 <wire x1="53.563" y1="19.32" x2="59.532" y2="19.32" width="0.2032" layer="20"/>
 <wire x1="59.532" y1="19.32" x2="59.532" y2="0" width="0.2032" layer="20"/>
 <wire x1="59.532" y1="0" x2="316.5" y2="0" width="0.2032" layer="20"/>
-<text x="325.619" y="48.713" size="1.27" layer="16" font="vector" ratio="15" rot="SMR270">v11</text>
+<text x="325.619" y="42.713" size="1.27" layer="16" font="vector" ratio="15" rot="SMR270">v11</text>
 <text x="30.399" y="12.568" size="1.27" layer="21" font="vector" ratio="15" rot="R180">5V</text>
-<text x="325.055" y="37.741" size="1.27" layer="21" font="vector" ratio="15" rot="R270">13R</text>
+<text x="325.055" y="33.741" size="1.27" layer="21" font="vector" ratio="15" rot="R270">13NR</text>
 <text x="29.56" y="8.89" size="1.016" layer="21" font="vector" ratio="15" align="center">RST</text>
+<dimension x1="316.5" y1="17" x2="316.5" y2="0" x3="337.5" y3="8.5" textsize="1.778" layer="47"/>
+<dimension x1="326.5" y1="17" x2="326.5" y2="47" x3="334" y3="32" textsize="1.778" layer="47"/>
+<dimension x1="326.5" y1="17" x2="316.5" y2="17" x3="321.5" y3="-7" textsize="1.778" layer="47"/>
 </plain>
 <libraries>
 <library name="SparkFun-Capacitors">
@@ -2523,26 +2526,26 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <attribute name="NAME" x="7.5" y="10.802" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="7.5" y="5.468" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="J2" library="SparkFun-Connectors" package="USB-C-16P" value="USB Female Type C Connector" x="319.015" y="47.443" smashed="yes" rot="R90">
-<attribute name="NAME" x="321.555" y="47.443" size="0.762" layer="25" rot="R90" align="center"/>
-<attribute name="PROD_ID" value="CONN-14122" x="319.015" y="47.443" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="VALUE" x="322.825" y="47.443" size="0.762" layer="27" rot="R90" align="center"/>
+<element name="J2" library="SparkFun-Connectors" package="USB-C-16P" value="USB Female Type C Connector" x="319.015" y="41.443" smashed="yes" rot="R90">
+<attribute name="NAME" x="321.555" y="41.443" size="0.762" layer="25" rot="R90" align="center"/>
+<attribute name="PROD_ID" value="CONN-14122" x="319.015" y="41.443" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="VALUE" x="322.825" y="41.443" size="0.762" layer="27" rot="R90" align="center"/>
 </element>
-<element name="R3" library="SparkFun-Resistors" package="0603" value="5.1k" x="315.84" y="48.84" smashed="yes">
-<attribute name="NAME" x="315.84" y="49.602" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="PROD_ID" value="RES-12083" x="315.84" y="48.84" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="315.84" y="48.078" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
+<element name="R3" library="SparkFun-Resistors" package="0603" value="5.1k" x="315.84" y="42.84" smashed="yes">
+<attribute name="NAME" x="315.84" y="43.602" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="PROD_ID" value="RES-12083" x="315.84" y="42.84" size="1.778" layer="27" display="off"/>
+<attribute name="VALUE" x="315.84" y="42.078" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="R4" library="SparkFun-Resistors" package="0603" value="5.1k" x="315.84" y="46.3" smashed="yes">
-<attribute name="NAME" x="315.84" y="47.062" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="PROD_ID" value="RES-12083" x="315.84" y="46.3" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="315.84" y="45.538" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
+<element name="R4" library="SparkFun-Resistors" package="0603" value="5.1k" x="315.84" y="40.3" smashed="yes">
+<attribute name="NAME" x="315.84" y="41.062" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="PROD_ID" value="RES-12083" x="315.84" y="40.3" size="1.778" layer="27" display="off"/>
+<attribute name="VALUE" x="315.84" y="39.538" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="J3" library="SparkFun-Connectors" package="AUDIO_JACK_3.5MM_TRRS_SMD_RA" value="AUDIO_JACK_TRRSSMD_RA" x="324.5" y="30.1" smashed="yes" rot="R180">
-<attribute name="NAME" x="321.325" y="29.973" size="0.6096" layer="25" font="vector" ratio="20" rot="R180"/>
-<attribute name="PROD_ID" value="CONN-10676" x="324.5" y="30.1" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="SF_ID" value="PRT-12639" x="324.5" y="30.1" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="VALUE" x="321.325" y="31.497" size="0.6096" layer="27" font="vector" ratio="20" rot="R180"/>
+<element name="J3" library="SparkFun-Connectors" package="AUDIO_JACK_3.5MM_TRRS_SMD_RA" value="AUDIO_JACK_TRRSSMD_RA" x="324.5" y="24.1" smashed="yes" rot="R180">
+<attribute name="NAME" x="321.325" y="23.973" size="0.6096" layer="25" font="vector" ratio="20" rot="R180"/>
+<attribute name="PROD_ID" value="CONN-10676" x="324.5" y="24.1" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="SF_ID" value="PRT-12639" x="324.5" y="24.1" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="VALUE" x="321.325" y="25.497" size="0.6096" layer="27" font="vector" ratio="20" rot="R180"/>
 </element>
 <element name="U5" library="SparkFun-Sensors" package="ADMP401" value="ADMP401" x="12.7" y="17.52" smashed="yes" rot="R270">
 <attribute name="NAME" x="16.383" y="17.52" size="0.6096" layer="25" font="vector" ratio="20" rot="R270" align="bottom-center"/>
@@ -2595,45 +2598,45 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <attribute name="PROD_ID" value="RES-07828" x="24.7" y="18.545" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="VALUE" x="24.7" y="19.307" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
 </element>
-<element name="R5" library="SparkFun-Resistors" package="0603" value="100k" x="311.8" y="17.5" smashed="yes">
-<attribute name="NAME" x="311.8" y="18.262" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="PROD_ID" value="RES-07828" x="311.8" y="17.5" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="311.8" y="16.738" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
+<element name="R5" library="SparkFun-Resistors" package="0603" value="100k" x="311.8" y="11.5" smashed="yes">
+<attribute name="NAME" x="311.8" y="12.262" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="PROD_ID" value="RES-07828" x="311.8" y="11.5" size="1.778" layer="27" display="off"/>
+<attribute name="VALUE" x="311.8" y="10.738" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="R6" library="SparkFun-Resistors" package="0603" value="100k" x="320" y="38" smashed="yes" rot="R90">
-<attribute name="NAME" x="319.238" y="38" size="0.6096" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center"/>
-<attribute name="PROD_ID" value="RES-07828" x="320" y="38" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="VALUE" x="320.762" y="38" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-center"/>
+<element name="R6" library="SparkFun-Resistors" package="0603" value="100k" x="320" y="32" smashed="yes" rot="R90">
+<attribute name="NAME" x="319.238" y="32" size="0.6096" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center"/>
+<attribute name="PROD_ID" value="RES-07828" x="320" y="32" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="VALUE" x="320.762" y="32" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-center"/>
 </element>
-<element name="R7" library="SparkFun-Resistors" package="0603" value="100k" x="316" y="38" smashed="yes" rot="R270">
-<attribute name="NAME" x="316.762" y="38" size="0.6096" layer="25" font="vector" ratio="20" rot="R270" align="bottom-center"/>
-<attribute name="PROD_ID" value="RES-07828" x="316" y="38" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="VALUE" x="315.238" y="38" size="0.6096" layer="27" font="vector" ratio="20" rot="R270" align="top-center"/>
+<element name="R7" library="SparkFun-Resistors" package="0603" value="100k" x="316" y="32" smashed="yes" rot="R270">
+<attribute name="NAME" x="316.762" y="32" size="0.6096" layer="25" font="vector" ratio="20" rot="R270" align="bottom-center"/>
+<attribute name="PROD_ID" value="RES-07828" x="316" y="32" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="VALUE" x="315.238" y="32" size="0.6096" layer="27" font="vector" ratio="20" rot="R270" align="top-center"/>
 </element>
-<element name="R12" library="SparkFun-Resistors" package="0603" value="100k" x="313.5" y="22.5" smashed="yes" rot="R180">
-<attribute name="NAME" x="313.5" y="21.738" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
-<attribute name="PROD_ID" value="RES-07828" x="313.5" y="22.5" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="VALUE" x="313.5" y="23.262" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
+<element name="R12" library="SparkFun-Resistors" package="0603" value="100k" x="313.5" y="16.5" smashed="yes" rot="R180">
+<attribute name="NAME" x="313.5" y="15.738" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
+<attribute name="PROD_ID" value="RES-07828" x="313.5" y="16.5" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="VALUE" x="313.5" y="17.262" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
 </element>
-<element name="C2" library="SparkFun-Capacitors" package="0603" value="0.1uF" x="318" y="38" smashed="yes" rot="R90">
-<attribute name="NAME" x="317.238" y="38" size="0.6096" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center"/>
-<attribute name="PROD_ID" value="CAP-08604" x="318" y="38" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="VALUE" x="318.762" y="38" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-center"/>
+<element name="C2" library="SparkFun-Capacitors" package="0603" value="0.1uF" x="318" y="32" smashed="yes" rot="R90">
+<attribute name="NAME" x="317.238" y="32" size="0.6096" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center"/>
+<attribute name="PROD_ID" value="CAP-08604" x="318" y="32" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="VALUE" x="318.762" y="32" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-center"/>
 </element>
-<element name="C3" library="SparkFun-Capacitors" package="0603" value="0.1uF" x="313.5" y="21" smashed="yes">
-<attribute name="NAME" x="313.5" y="21.762" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="PROD_ID" value="CAP-08604" x="313.5" y="21" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="313.5" y="20.238" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
+<element name="C3" library="SparkFun-Capacitors" package="0603" value="0.1uF" x="313.5" y="15" smashed="yes">
+<attribute name="NAME" x="313.5" y="15.762" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="PROD_ID" value="CAP-08604" x="313.5" y="15" size="1.778" layer="27" display="off"/>
+<attribute name="VALUE" x="313.5" y="14.238" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="R14" library="SparkFun-Resistors" package="0603" value="1k" x="318" y="35.5" smashed="yes" rot="R180">
-<attribute name="NAME" x="318" y="34.738" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
-<attribute name="PROD_ID" value="RES-07856" x="318" y="35.5" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="VALUE" x="318" y="36.262" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
+<element name="R14" library="SparkFun-Resistors" package="0603" value="1k" x="318" y="29.5" smashed="yes" rot="R180">
+<attribute name="NAME" x="318" y="28.738" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
+<attribute name="PROD_ID" value="RES-07856" x="318" y="29.5" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="VALUE" x="318" y="30.262" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
 </element>
-<element name="R15" library="SparkFun-Resistors" package="0603" value="1k" x="313.5" y="24.5" smashed="yes">
-<attribute name="NAME" x="313.5" y="25.262" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="PROD_ID" value="RES-07856" x="313.5" y="24.5" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="315" y="24.238" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
+<element name="R15" library="SparkFun-Resistors" package="0603" value="1k" x="313.5" y="18.5" smashed="yes">
+<attribute name="NAME" x="313.5" y="19.262" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="PROD_ID" value="RES-07856" x="313.5" y="18.5" size="1.778" layer="27" display="off"/>
+<attribute name="VALUE" x="315" y="18.238" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
 <element name="U$3" library="cec7b2_1ee547f747c2467bb1a21a2065860725_mv2#jpg (1)" package="CEC7B2_1EE547F747C2467BB1A21A2065860725_MV2#JPG" value="" x="55.25" y="27.5" smashed="yes"/>
 <element name="D2" library="SparkFun-LED" package="WS2812B" value="WS2812B" x="22.5" y="187.5" smashed="yes">
@@ -2713,27 +2716,9 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <attribute name="PROD_ID" value="DIO-12503" x="127.5" y="217.5" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="142.5" y="184.706" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="D11" library="SparkFun-LED" package="WS2812B" value="WS2812B" x="157.5" y="187.5" smashed="yes">
-<attribute name="NAME" x="157.5" y="190.294" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="PROD_ID" value="DIO-12503" x="112.5" y="217.5" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="157.5" y="184.706" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
-</element>
 <element name="JP10" library="SparkFun-Jumpers" package="SMT-JUMPER_2_NO_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK" x="142.5" y="187.5" smashed="yes">
 <attribute name="NAME" x="142.5" y="189.4685" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="142.5" y="185.5315" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
-</element>
-<element name="JP11" library="SparkFun-Jumpers" package="SMT-JUMPER_2_NO_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK" x="157.5" y="187.5" smashed="yes">
-<attribute name="NAME" x="157.5" y="189.4685" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="VALUE" x="157.5" y="185.5315" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
-</element>
-<element name="D12" library="SparkFun-LED" package="WS2812B" value="WS2812B" x="172.5" y="187.5" smashed="yes">
-<attribute name="NAME" x="172.5" y="190.294" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="PROD_ID" value="DIO-12503" x="157.5" y="217.5" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="172.5" y="184.706" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
-</element>
-<element name="JP12" library="SparkFun-Jumpers" package="SMT-JUMPER_2_NO_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK" x="172.5" y="187.5" smashed="yes">
-<attribute name="NAME" x="172.5" y="189.4685" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="VALUE" x="172.5" y="185.5315" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
 <element name="D13" library="SparkFun-LED" package="WS2812B" value="WS2812B" x="187.5" y="187.5" smashed="yes">
 <attribute name="NAME" x="187.5" y="190.294" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
@@ -4686,15 +4671,15 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <element name="D231" library="SparkFun-LED" package="WS2812B" value="WS2812B" x="307.5" y="37.5" smashed="yes">
 <attribute name="NAME" x="307.5" y="40.294" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="PROD_ID" value="DIO-12503" x="-682.5" y="97.5" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="319.206" y="38.5" size="0.6096" layer="27" font="vector" ratio="20" rot="R270" align="top-center"/>
+<attribute name="VALUE" x="319.206" y="32.5" size="0.6096" layer="27" font="vector" ratio="20" rot="R270" align="top-center"/>
 </element>
 <element name="JP230" library="SparkFun-Jumpers" package="SMT-JUMPER_2_NO_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK" x="292.5" y="37.5" smashed="yes">
 <attribute name="NAME" x="292.5" y="39.4685" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="292.5" y="35.5315" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
 <element name="JP231" library="SparkFun-Jumpers" package="SMT-JUMPER_2_NO_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK" x="307.5" y="37.5" smashed="yes">
-<attribute name="NAME" x="307.5" y="39.4685" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="VALUE" x="320.0315" y="38.5" size="0.6096" layer="27" font="vector" ratio="20" rot="R270" align="top-center"/>
+<attribute name="NAME" x="307.5" y="33.4685" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="VALUE" x="320.0315" y="32.5" size="0.6096" layer="27" font="vector" ratio="20" rot="R270" align="top-center"/>
 </element>
 <element name="FRAME4" library="SparkFun-Aesthetics" package="CREATIVE_COMMONS" value="FRAME-LEDGER" x="135" y="-15" smashed="yes">
 <attribute name="DESIGNER" value="" x="-1800" y="-15" size="1.778" layer="27" display="off"/>
@@ -4832,7 +4817,7 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <attribute name="VALUE" x="292.5" y="19.706" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
 <element name="D247" library="SparkFun-LED" package="WS2812B" value="WS2812B" x="307.5" y="22.5" smashed="yes">
-<attribute name="NAME" x="313" y="18.294" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="NAME" x="313" y="12.294" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="PROD_ID" value="DIO-12503" x="127.5" y="52.5" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="307.5" y="19.706" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
@@ -4879,24 +4864,6 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <element name="JP251" library="SparkFun-Jumpers" package="SMT-JUMPER_2_NO_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK" x="127.5" y="7.5" smashed="yes">
 <attribute name="NAME" x="127.5" y="9.4685" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="127.5" y="5.5315" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
-</element>
-<element name="D252" library="SparkFun-LED" package="WS2812B" value="WS2812B" x="142.5" y="7.5" smashed="yes">
-<attribute name="NAME" x="142.5" y="10.294" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="PROD_ID" value="DIO-12503" x="-277.5" y="37.5" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="142.5" y="4.706" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
-</element>
-<element name="D253" library="SparkFun-LED" package="WS2812B" value="WS2812B" x="157.5" y="7.5" smashed="yes">
-<attribute name="NAME" x="157.5" y="10.294" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="PROD_ID" value="DIO-12503" x="-142.5" y="52.5" size="1.778" layer="27" display="off"/>
-<attribute name="VALUE" x="157.5" y="4.706" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
-</element>
-<element name="JP252" library="SparkFun-Jumpers" package="SMT-JUMPER_2_NO_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK" x="142.5" y="7.5" smashed="yes">
-<attribute name="NAME" x="142.5" y="9.4685" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="VALUE" x="142.5" y="5.5315" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
-</element>
-<element name="JP253" library="SparkFun-Jumpers" package="SMT-JUMPER_2_NO_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK" x="157.5" y="7.5" smashed="yes">
-<attribute name="NAME" x="157.5" y="9.4685" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="VALUE" x="157.5" y="5.5315" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
 <element name="D254" library="SparkFun-LED" package="WS2812B" value="WS2812B" x="172.5" y="7.5" smashed="yes">
 <attribute name="NAME" x="172.5" y="10.294" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
@@ -4984,13 +4951,13 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <attribute name="PROD_ID" value="RES-07863" x="14.779" y="4.003" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="14.779" y="3.241" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="H1" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="134.86891875" y="190.25" smashed="yes">
-<attribute name="NAME" x="134.86891875" y="192.282" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="VALUE" x="134.86891875" y="188.218" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
+<element name="H1" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="176.073" y="190.25" smashed="yes">
+<attribute name="NAME" x="176.073" y="192.282" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="VALUE" x="176.073" y="188.218" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="H2" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="181.6311" y="7.5" smashed="yes">
-<attribute name="NAME" x="181.6311" y="9.532" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
-<attribute name="VALUE" x="181.6311" y="5.468" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
+<element name="H2" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="140.427" y="7.5" smashed="yes">
+<attribute name="NAME" x="140.427" y="9.532" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="VALUE" x="140.427" y="5.468" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
 <element name="H5" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="309" y="190.25" smashed="yes">
 <attribute name="NAME" x="309" y="192.282" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
@@ -5100,7 +5067,9 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <wire x1="4.6199" y1="17.02" x2="3.65" y2="17.02" width="0.2032" layer="1"/>
 <wire x1="3.65" y1="17.02" x2="2.845" y2="17.02" width="0.2032" layer="1"/>
 <wire x1="2.845" y1="17.02" x2="2.745" y2="17.12" width="0.2032" layer="1"/>
-<wire x1="81.5" y1="15.5" x2="310.5" y2="15.5" width="0.1778" layer="1"/>
+<wire x1="310.5" y1="9.5" x2="309" y2="11" width="0.1778" layer="1"/>
+<wire x1="309" y1="11" x2="86.95" y2="11" width="0.1778" layer="1"/>
+<wire x1="82.45" y1="15.5" x2="86.95" y2="11" width="0.1778" layer="1"/>
 <wire x1="7" y1="17.97" x2="11.03" y2="22" width="0.1778" layer="16"/>
 <wire x1="11.03" y1="22" x2="19.8" y2="22" width="0.1778" layer="16"/>
 <wire x1="21.305" y1="14.805" x2="21.305" y2="16.15" width="0.1778" layer="16"/>
@@ -5116,9 +5085,9 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <wire x1="14.793" y1="1.79" x2="14.783" y2="1.8" width="0.2032" layer="1"/>
 <wire x1="21.051" y1="3.646" x2="21" y2="3.595" width="0.2032" layer="1"/>
 <wire x1="21.051" y1="8.128" x2="21.051" y2="3.646" width="0.2032" layer="1"/>
-<wire x1="316" y1="37.15" x2="316" y2="33.5" width="0.2032" layer="1"/>
+<wire x1="316" y1="31.15" x2="316" y2="27.5" width="0.2032" layer="1"/>
 <wire x1="53.05" y1="19.844" x2="63.156" y2="19.844" width="0.2032" layer="1"/>
-<wire x1="67.5" y1="15.5" x2="81.5" y2="15.5" width="0.2032" layer="1"/>
+<wire x1="67.5" y1="15.5" x2="82.45" y2="15.5" width="0.2032" layer="1"/>
 <wire x1="63.156" y1="19.844" x2="67.5" y2="15.5" width="0.2032" layer="1"/>
 <wire x1="23.295" y1="15.2" x2="22.345" y2="16.15" width="0.2032" layer="1"/>
 <wire x1="22.345" y1="16.15" x2="21.305" y2="16.15" width="0.2032" layer="1"/>
@@ -5136,17 +5105,17 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <wire x1="27.143" y1="16.5" x2="26.799" y2="16.156" width="0.2032" layer="16"/>
 <wire x1="3.65" y1="17.02" x2="3.65" y2="17.72" width="0.1778" layer="1"/>
 <wire x1="3.65" y1="17.72" x2="3.9" y2="17.97" width="0.1778" layer="1"/>
-<wire x1="310.5" y1="15.5" x2="310.95" y2="15.95" width="0.1778" layer="1"/>
-<wire x1="310.95" y1="15.95" x2="310.95" y2="17.5" width="0.1778" layer="1"/>
-<via x="316" y="33.5" extent="1-16" drill="0.381"/>
-<wire x1="316" y1="19.5" x2="312" y2="15.5" width="0.1778" layer="16"/>
-<wire x1="312" y1="15.5" x2="310.5" y2="15.5" width="0.1778" layer="16"/>
-<via x="310.5" y="15.5" extent="1-16" drill="0.381"/>
-<wire x1="316.7667" y1="30.459" x2="316.7667" y2="29.741" width="0.1778" layer="16"/>
-<wire x1="316" y1="33.5" x2="316" y2="31.2257" width="0.1778" layer="16"/>
-<wire x1="316" y1="28.9743" x2="316" y2="19.5" width="0.1778" layer="16"/>
-<wire x1="316" y1="31.2257" x2="316.7667" y2="30.459" width="0.1778" layer="16"/>
-<wire x1="316.7667" y1="29.741" x2="316" y2="28.9743" width="0.1778" layer="16"/>
+<wire x1="310.5" y1="9.5" x2="310.95" y2="9.95" width="0.1778" layer="1"/>
+<wire x1="310.95" y1="9.95" x2="310.95" y2="11.5" width="0.1778" layer="1"/>
+<via x="316" y="27.5" extent="1-16" drill="0.381"/>
+<wire x1="316" y1="13.5" x2="312" y2="9.5" width="0.1778" layer="16"/>
+<wire x1="312" y1="9.5" x2="310.5" y2="9.5" width="0.1778" layer="16"/>
+<via x="310.5" y="9.5" extent="1-16" drill="0.381"/>
+<wire x1="316.7667" y1="24.459" x2="316.7667" y2="23.741" width="0.1778" layer="16"/>
+<wire x1="316" y1="27.5" x2="316" y2="25.2257" width="0.1778" layer="16"/>
+<wire x1="316" y1="22.9743" x2="316" y2="13.5" width="0.1778" layer="16"/>
+<wire x1="316" y1="25.2257" x2="316.7667" y2="24.459" width="0.1778" layer="16"/>
+<wire x1="316.7667" y1="23.741" x2="316" y2="22.9743" width="0.1778" layer="16"/>
 <wire x1="21.305" y1="20.495" x2="21.305" y2="19.844" width="0.1778" layer="16"/>
 <wire x1="19.8" y1="22" x2="21.305" y2="20.495" width="0.1778" layer="16"/>
 <wire x1="53.05" y1="19.844" x2="21.305" y2="19.844" width="0.1778" layer="16"/>
@@ -5203,10 +5172,10 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <vertex x="0" y="0"/>
 <vertex x="0" y="197.75"/>
 <vertex x="316.5" y="197.75"/>
-<vertex x="316.5" y="53"/>
-<vertex x="326.5" y="53"/>
-<vertex x="326.5" y="23"/>
-<vertex x="316.5" y="23"/>
+<vertex x="316.5" y="47"/>
+<vertex x="326.5" y="47"/>
+<vertex x="326.5" y="17"/>
+<vertex x="316.5" y="17"/>
 <vertex x="316.5" y="0"/>
 </polygon>
 <wire x1="16.08" y1="7.1" x2="17.38" y2="7.1" width="0.3048" layer="1"/>
@@ -5250,9 +5219,7 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <contactref element="D6" pad="3"/>
 <contactref element="D9" pad="3"/>
 <contactref element="D8" pad="3"/>
-<contactref element="D11" pad="3"/>
 <contactref element="D10" pad="3"/>
-<contactref element="D12" pad="3"/>
 <contactref element="D14" pad="3"/>
 <contactref element="D13" pad="3"/>
 <contactref element="D16" pad="3"/>
@@ -5490,8 +5457,6 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <contactref element="D248" pad="3"/>
 <contactref element="D251" pad="3"/>
 <contactref element="D250" pad="3"/>
-<contactref element="D253" pad="3"/>
-<contactref element="D252" pad="3"/>
 <contactref element="D254" pad="3"/>
 <contactref element="D256" pad="3"/>
 <contactref element="D255" pad="3"/>
@@ -5515,8 +5480,8 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <vertex x="326.5" y="197.75"/>
 <vertex x="312" y="197.75"/>
 </polygon>
-<via x="313.35" y="48.8" extent="1-16" drill="0.381"/>
-<via x="313.35" y="46.3" extent="1-16" drill="0.381"/>
+<via x="313.35" y="42.8" extent="1-16" drill="0.381"/>
+<via x="313.35" y="40.3" extent="1-16" drill="0.381"/>
 <contactref element="D1" pad="3"/>
 <contactref element="D21" pad="3"/>
 <contactref element="D263" pad="3"/>
@@ -5548,15 +5513,17 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <contactref element="U3" pad="1"/>
 <contactref element="J2" pad="VBUS2"/>
 <contactref element="J2" pad="VBUS1"/>
-<wire x1="318.861" y1="49.893" x2="312.538" y2="49.893" width="0.4064" layer="1"/>
+<wire x1="318.861" y1="43.893" x2="312.538" y2="43.893" width="0.4064" layer="1"/>
 <via x="12.78" y="4.445" extent="1-16" drill="0.381"/>
-<wire x1="318.861" y1="44.993" x2="318.898" y2="45.03" width="0.3048" layer="1"/>
-<wire x1="318.898" y1="45.03" x2="319.65" y2="45.03" width="0.3048" layer="1"/>
-<wire x1="319.65" y1="45.03" x2="320.539" y2="45.919" width="0.3048" layer="1"/>
-<wire x1="320.539" y1="45.919" x2="320.539" y2="49.221" width="0.3048" layer="1"/>
-<wire x1="320.539" y1="49.221" x2="319.867" y2="49.893" width="0.3048" layer="1"/>
-<wire x1="319.867" y1="49.893" x2="318.861" y2="49.893" width="0.3048" layer="1"/>
-<wire x1="318.861" y1="44.993" x2="306" y2="44.993" width="0.55" layer="1"/>
+<wire x1="318.861" y1="38.993" x2="318.898" y2="39.03" width="0.3048" layer="1"/>
+<wire x1="318.898" y1="39.03" x2="319.65" y2="39.03" width="0.3048" layer="1"/>
+<wire x1="319.65" y1="39.03" x2="320.539" y2="39.919" width="0.3048" layer="1"/>
+<wire x1="320.539" y1="39.919" x2="320.539" y2="43.221" width="0.3048" layer="1"/>
+<wire x1="320.539" y1="43.221" x2="319.867" y2="43.893" width="0.3048" layer="1"/>
+<wire x1="319.867" y1="43.893" x2="318.861" y2="43.893" width="0.3048" layer="1"/>
+<wire x1="318.861" y1="38.993" x2="317.861" y2="38.993" width="0.55" layer="1"/>
+<wire x1="317.861" y1="38.993" x2="311.861" y2="32.993" width="0.55" layer="1"/>
+<wire x1="311.861" y1="32.993" x2="306" y2="32.993" width="0.55" layer="1"/>
 <contactref element="D2" pad="1"/>
 <contactref element="D3" pad="1"/>
 <contactref element="D4" pad="1"/>
@@ -5566,8 +5533,6 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <contactref element="D8" pad="1"/>
 <contactref element="D9" pad="1"/>
 <contactref element="D10" pad="1"/>
-<contactref element="D11" pad="1"/>
-<contactref element="D12" pad="1"/>
 <contactref element="D13" pad="1"/>
 <contactref element="D14" pad="1"/>
 <contactref element="D15" pad="1"/>
@@ -5805,8 +5770,6 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <contactref element="D249" pad="1"/>
 <contactref element="D250" pad="1"/>
 <contactref element="D251" pad="1"/>
-<contactref element="D252" pad="1"/>
-<contactref element="D253" pad="1"/>
 <contactref element="D254" pad="1"/>
 <contactref element="D255" pad="1"/>
 <contactref element="D256" pad="1"/>
@@ -5852,12 +5815,6 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <wire x1="145.077" y1="185.9" x2="145" y2="185.823" width="0.55" layer="1"/>
 <wire x1="145" y1="185.823" x2="145" y2="184.5" width="0.55" layer="1"/>
 <via x="145" y="184.5" extent="1-16" drill="0.381"/>
-<wire x1="160.077" y1="185.9" x2="160.077" y2="184.577" width="0.55" layer="1"/>
-<wire x1="160.077" y1="184.577" x2="160" y2="184.5" width="0.55" layer="1"/>
-<via x="160" y="184.5" extent="1-16" drill="0.381"/>
-<wire x1="175.077" y1="185.9" x2="175.077" y2="184.577" width="0.55" layer="1"/>
-<wire x1="175.077" y1="184.577" x2="175" y2="184.5" width="0.55" layer="1"/>
-<via x="175" y="184.5" extent="1-16" drill="0.381"/>
 <wire x1="190.077" y1="185.9" x2="190.077" y2="184.577" width="0.55" layer="1"/>
 <wire x1="190.077" y1="184.577" x2="190" y2="184.5" width="0.55" layer="1"/>
 <via x="190" y="184.5" extent="1-16" drill="0.381"/>
@@ -6559,9 +6516,6 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <contactref element="R16" pad="1"/>
 <wire x1="12.78" y1="4.445" x2="13.222" y2="4.003" width="0.3048" layer="1"/>
 <wire x1="13.222" y1="4.003" x2="13.929" y2="4.003" width="0.3048" layer="1"/>
-<wire x1="145.077" y1="5.9" x2="145.077" y2="4.077" width="0.55" layer="1"/>
-<wire x1="145.077" y1="4.077" x2="145" y2="4" width="0.55" layer="1"/>
-<via x="145" y="4" extent="1-16" drill="0.381"/>
 <wire x1="130.077" y1="5.9" x2="130.077" y2="4.577" width="0.55" layer="1"/>
 <wire x1="130.077" y1="4.577" x2="130" y2="4.5" width="0.55" layer="1"/>
 <via x="130" y="4.5" extent="1-16" drill="0.381"/>
@@ -6574,9 +6528,6 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <wire x1="85.077" y1="5.9" x2="85.077" y2="4.577" width="0.55" layer="1"/>
 <wire x1="85.077" y1="4.577" x2="85" y2="4.5" width="0.55" layer="1"/>
 <via x="85" y="4.5" extent="1-16" drill="0.381"/>
-<wire x1="160.077" y1="5.9" x2="160.077" y2="4.577" width="0.55" layer="1"/>
-<wire x1="160.077" y1="4.577" x2="160" y2="4.5" width="0.55" layer="1"/>
-<via x="160" y="4.5" extent="1-16" drill="0.381"/>
 <wire x1="175.077" y1="5.9" x2="175.077" y2="4.577" width="0.55" layer="1"/>
 <wire x1="175.077" y1="4.577" x2="175" y2="4.5" width="0.55" layer="1"/>
 <via x="175" y="4.5" extent="1-16" drill="0.381"/>
@@ -6606,20 +6557,20 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <via x="295" y="4.5" extent="1-16" drill="0.381"/>
 <contactref element="C8" pad="1"/>
 <contactref element="R8" pad="2"/>
-<wire x1="309.5" y1="48.5" x2="308.5" y2="48.5" width="0.4064" layer="1"/>
-<wire x1="308.5" y1="48.5" x2="307.5" y2="48.5" width="0.4064" layer="1"/>
-<wire x1="307.5" y1="48.5" x2="306.5" y2="48.5" width="0.4064" layer="1"/>
-<wire x1="309.5" y1="48.5" x2="311.145" y2="48.5" width="0.4064" layer="1"/>
-<wire x1="312.538" y1="49.893" x2="311.145" y2="48.5" width="0.4064" layer="1"/>
-<via x="306.5" y="48.5" extent="1-16" drill="0.381"/>
+<wire x1="309.5" y1="42.5" x2="308.5" y2="42.5" width="0.4064" layer="1"/>
+<wire x1="308.5" y1="42.5" x2="307.5" y2="42.5" width="0.4064" layer="1"/>
+<wire x1="307.5" y1="42.5" x2="306.5" y2="42.5" width="0.4064" layer="1"/>
+<wire x1="309.5" y1="42.5" x2="311.145" y2="42.5" width="0.4064" layer="1"/>
+<wire x1="312.538" y1="43.893" x2="311.145" y2="42.5" width="0.4064" layer="1"/>
+<via x="306.5" y="42.5" extent="1-16" drill="0.381"/>
 <via x="310" y="49.5" extent="1-16" drill="0.381"/>
-<via x="308.5" y="48.5" extent="1-16" drill="0.381"/>
-<via x="307.5" y="48.5" extent="1-16" drill="0.381"/>
-<via x="306" y="45" extent="1-16" drill="0.381"/>
-<via x="307" y="45" extent="1-16" drill="0.381"/>
-<via x="308" y="45" extent="1-16" drill="0.381"/>
-<via x="309" y="45" extent="1-16" drill="0.381"/>
-<via x="309.5" y="48.5" extent="1-16" drill="0.381"/>
+<via x="308.5" y="42.5" extent="1-16" drill="0.381"/>
+<via x="307.5" y="42.5" extent="1-16" drill="0.381"/>
+<via x="306" y="33" extent="1-16" drill="0.381"/>
+<via x="307" y="33" extent="1-16" drill="0.381"/>
+<via x="308" y="33" extent="1-16" drill="0.381"/>
+<via x="309" y="33" extent="1-16" drill="0.381"/>
+<via x="309.5" y="42.5" extent="1-16" drill="0.381"/>
 <wire x1="310.077" y1="35.9" x2="310.077" y2="34.577" width="0.55" layer="1"/>
 <wire x1="310.077" y1="34.577" x2="310" y2="34.5" width="0.55" layer="1"/>
 <via x="310" y="34.5" extent="1-16" drill="0.381"/>
@@ -6661,16 +6612,16 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <contactref element="U4" pad="4"/>
 <contactref element="J2" pad="A7"/>
 <contactref element="J2" pad="B7"/>
-<wire x1="318.861" y1="47.693" x2="319.781" y2="47.693" width="0.2032" layer="1"/>
-<wire x1="319.781" y1="47.693" x2="320.031" y2="47.443" width="0.2032" layer="1"/>
-<wire x1="320.031" y1="47.443" x2="320.031" y2="46.935" width="0.2032" layer="1"/>
-<wire x1="320.031" y1="46.935" x2="319.789" y2="46.693" width="0.2032" layer="1"/>
-<wire x1="319.789" y1="46.693" x2="318.861" y2="46.693" width="0.2032" layer="1"/>
-<wire x1="318.861" y1="47.693" x2="40.85418125" y2="47.693" width="0.2032" layer="1"/>
+<wire x1="318.861" y1="41.693" x2="319.781" y2="41.693" width="0.2032" layer="1"/>
+<wire x1="319.781" y1="41.693" x2="320.031" y2="41.443" width="0.2032" layer="1"/>
+<wire x1="320.031" y1="41.443" x2="320.031" y2="40.935" width="0.2032" layer="1"/>
+<wire x1="320.031" y1="40.935" x2="319.789" y2="40.693" width="0.2032" layer="1"/>
+<wire x1="319.789" y1="40.693" x2="318.861" y2="40.693" width="0.2032" layer="1"/>
+<wire x1="318.861" y1="41.693" x2="34.85418125" y2="41.693" width="0.2032" layer="1"/>
 <wire x1="16.08" y1="6.1" x2="14.72" y2="6.1" width="0.2032" layer="1"/>
 <wire x1="14.72" y1="6.1" x2="14" y2="6.82" width="0.2032" layer="1"/>
 <wire x1="14" y1="20.83881875" x2="14" y2="6.82" width="0.2032" layer="1"/>
-<wire x1="14" y1="20.83881875" x2="40.85418125" y2="47.693" width="0.2032" layer="1"/>
+<wire x1="14" y1="20.83881875" x2="34.85418125" y2="41.693" width="0.2032" layer="1"/>
 </signal>
 <signal name="RTS">
 <contactref element="R18" pad="1"/>
@@ -6824,33 +6775,33 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <contactref element="J2" pad="A6"/>
 <contactref element="J2" pad="B6"/>
 <contactref element="U4" pad="3"/>
-<wire x1="318.861" y1="47.193" x2="317.745" y2="47.193" width="0.2032" layer="1"/>
-<via x="317.8069" y="48.5453" extent="1-16" drill="0.381"/>
-<wire x1="318.861" y1="48.193" x2="318.7904" y2="48.2636" width="0.2032" layer="1"/>
-<wire x1="318.7904" y1="48.2636" x2="318.23726875" y2="48.2636" width="0.2032" layer="1"/>
-<wire x1="317.95556875" y1="48.5453" x2="317.8069" y2="48.5453" width="0.2032" layer="1"/>
-<wire x1="318.23726875" y1="48.2636" x2="317.95556875" y2="48.5453" width="0.2032" layer="1"/>
-<wire x1="317.8069" y1="48.5453" x2="317.8069" y2="47.0453" width="0.2032" layer="16"/>
-<via x="317.8069" y="47.0453" extent="1-16" drill="0.381"/>
-<wire x1="317.8069" y1="47.0453" x2="317.8069" y2="47.1311" width="0.2032" layer="1"/>
-<wire x1="317.8069" y1="47.1311" x2="317.745" y2="47.193" width="0.2032" layer="1"/>
+<wire x1="318.861" y1="41.193" x2="317.745" y2="41.193" width="0.2032" layer="1"/>
+<via x="317.8069" y="42.5453" extent="1-16" drill="0.381"/>
+<wire x1="318.861" y1="42.193" x2="318.7904" y2="42.2636" width="0.2032" layer="1"/>
+<wire x1="318.7904" y1="42.2636" x2="318.23726875" y2="42.2636" width="0.2032" layer="1"/>
+<wire x1="317.95556875" y1="42.5453" x2="317.8069" y2="42.5453" width="0.2032" layer="1"/>
+<wire x1="318.23726875" y1="42.2636" x2="317.95556875" y2="42.5453" width="0.2032" layer="1"/>
+<wire x1="317.8069" y1="42.5453" x2="317.8069" y2="41.0453" width="0.2032" layer="16"/>
+<via x="317.8069" y="41.0453" extent="1-16" drill="0.381"/>
+<wire x1="317.8069" y1="41.0453" x2="317.8069" y2="41.1311" width="0.2032" layer="1"/>
+<wire x1="317.8069" y1="41.1311" x2="317.745" y2="41.193" width="0.2032" layer="1"/>
 <wire x1="14.5" y1="20.5" x2="14.5" y2="7.05" width="0.2032" layer="1"/>
 <wire x1="14.5" y1="7.05" x2="14.95" y2="6.6" width="0.2032" layer="1"/>
 <wire x1="14.95" y1="6.6" x2="16.08" y2="6.6" width="0.2032" layer="1"/>
-<wire x1="317.745" y1="47.193" x2="41.193" y2="47.193" width="0.2032" layer="1"/>
-<wire x1="41.193" y1="47.193" x2="14.5" y2="20.5" width="0.2032" layer="1"/>
+<wire x1="317.745" y1="41.193" x2="35.193" y2="41.193" width="0.2032" layer="1"/>
+<wire x1="35.193" y1="41.193" x2="14.5" y2="20.5" width="0.2032" layer="1"/>
 </signal>
 <signal name="N$3">
 <contactref element="J2" pad="B5"/>
 <contactref element="R3" pad="2"/>
-<wire x1="318.861" y1="49.193" x2="317.043" y2="49.193" width="0.2032" layer="1"/>
-<wire x1="317.043" y1="49.193" x2="316.69" y2="48.84" width="0.2032" layer="1"/>
+<wire x1="318.861" y1="43.193" x2="317.043" y2="43.193" width="0.2032" layer="1"/>
+<wire x1="317.043" y1="43.193" x2="316.69" y2="42.84" width="0.2032" layer="1"/>
 </signal>
 <signal name="N$4">
 <contactref element="J2" pad="A5"/>
 <contactref element="R4" pad="2"/>
-<wire x1="318.861" y1="46.193" x2="316.797" y2="46.193" width="0.2032" layer="1"/>
-<wire x1="316.797" y1="46.193" x2="316.69" y2="46.3" width="0.2032" layer="1"/>
+<wire x1="318.861" y1="40.193" x2="316.797" y2="40.193" width="0.2032" layer="1"/>
+<wire x1="316.797" y1="40.193" x2="316.69" y2="40.3" width="0.2032" layer="1"/>
 </signal>
 <signal name="N$5">
 <contactref element="U5" pad="1"/>
@@ -6915,54 +6866,52 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <contactref element="J3" pad="TIP"/>
 <contactref element="R15" pad="2"/>
 <contactref element="C3" pad="2"/>
-<wire x1="314.35" y1="26.3" x2="314.35" y2="26.85" width="0.2032" layer="1"/>
-<wire x1="314.35" y1="26.85" x2="314.3" y2="26.85" width="0.2032" layer="1"/>
-<wire x1="314.35" y1="21" x2="313.5" y2="21.85" width="0.2032" layer="1"/>
-<wire x1="313.5" y1="25.45" x2="314.35" y2="26.3" width="0.2032" layer="1"/>
-<wire x1="313.5" y1="21.85" x2="313.5" y2="24.5" width="0.2032" layer="1"/>
-<wire x1="313.5" y1="24.5" x2="313.5" y2="25.45" width="0.2032" layer="1"/>
-<wire x1="314.35" y1="24.5" x2="313.5" y2="24.5" width="0.2032" layer="1"/>
+<wire x1="314.35" y1="20.3" x2="314.35" y2="20.85" width="0.2032" layer="1"/>
+<wire x1="314.35" y1="20.85" x2="314.3" y2="20.85" width="0.2032" layer="1"/>
+<wire x1="314.35" y1="15" x2="313.5" y2="15.85" width="0.2032" layer="1"/>
+<wire x1="313.5" y1="19.45" x2="314.35" y2="20.3" width="0.2032" layer="1"/>
+<wire x1="313.5" y1="15.85" x2="313.5" y2="18.5" width="0.2032" layer="1"/>
+<wire x1="313.5" y1="18.5" x2="313.5" y2="19.45" width="0.2032" layer="1"/>
+<wire x1="314.35" y1="18.5" x2="313.5" y2="18.5" width="0.2032" layer="1"/>
 </signal>
 <signal name="N$7">
 <contactref element="J3" pad="RING1"/>
 <contactref element="C2" pad="1"/>
 <contactref element="R14" pad="2"/>
-<wire x1="318.3" y1="26.85" x2="318.3" y2="33.2" width="0.1778" layer="1"/>
-<wire x1="318.3" y1="33.2" x2="318" y2="33.5" width="0.1778" layer="1"/>
-<wire x1="318" y1="33.5" x2="318" y2="35.5" width="0.1778" layer="1"/>
-<wire x1="318" y1="35.5" x2="318" y2="37.15" width="0.1778" layer="1"/>
-<wire x1="317.15" y1="35.5" x2="318" y2="35.5" width="0.1778" layer="1"/>
+<wire x1="318.3" y1="20.85" x2="318.3" y2="27.2" width="0.1778" layer="1"/>
+<wire x1="318.3" y1="27.2" x2="318" y2="27.5" width="0.1778" layer="1"/>
+<wire x1="318" y1="27.5" x2="318" y2="29.5" width="0.1778" layer="1"/>
+<wire x1="318" y1="29.5" x2="318" y2="31.15" width="0.1778" layer="1"/>
+<wire x1="317.15" y1="29.5" x2="318" y2="29.5" width="0.1778" layer="1"/>
 </signal>
 <signal name="RING1">
 <contactref element="C2" pad="2"/>
 <contactref element="R7" pad="1"/>
 <contactref element="R6" pad="2"/>
 <contactref element="U2" pad="11"/>
-<wire x1="318" y1="38.85" x2="316" y2="38.85" width="0.2032" layer="1"/>
-<wire x1="320" y1="38.85" x2="318" y2="38.85" width="0.2032" layer="1"/>
-<wire x1="316" y1="38.85" x2="315.35" y2="38.85" width="0.2032" layer="1"/>
-<wire x1="315.35" y1="38.85" x2="311.5" y2="35" width="0.2032" layer="1"/>
-<wire x1="311.5" y1="35" x2="311.5" y2="32" width="0.2032" layer="1"/>
-<wire x1="309.5" y1="30" x2="311.5" y2="32" width="0.2032" layer="1"/>
+<wire x1="318" y1="32.85" x2="316" y2="32.85" width="0.2032" layer="1"/>
+<wire x1="320" y1="32.85" x2="318" y2="32.85" width="0.2032" layer="1"/>
+<wire x1="316" y1="32.85" x2="315.35" y2="32.85" width="0.2032" layer="1"/>
+<wire x1="309.5" y1="27" x2="315.35" y2="32.85" width="0.2032" layer="1"/>
 <wire x1="38.53" y1="18.398" x2="38.53" y2="22.03" width="0.2032" layer="1"/>
-<wire x1="38.53" y1="22.03" x2="46.5" y2="30" width="0.2032" layer="1"/>
-<wire x1="46.5" y1="30" x2="309.5" y2="30" width="0.2032" layer="1"/>
+<wire x1="38.53" y1="22.03" x2="43.5" y2="27" width="0.2032" layer="1"/>
+<wire x1="43.5" y1="27" x2="309.5" y2="27" width="0.2032" layer="1"/>
 </signal>
 <signal name="TIP">
 <contactref element="R5" pad="2"/>
 <contactref element="R12" pad="2"/>
 <contactref element="C3" pad="1"/>
 <contactref element="U2" pad="10"/>
-<wire x1="312.65" y1="17.5" x2="312.65" y2="21" width="0.2032" layer="1"/>
+<wire x1="312.65" y1="11.5" x2="312.65" y2="15" width="0.2032" layer="1"/>
 <wire x1="39.8" y1="21.8" x2="39.8" y2="18.398" width="0.2032" layer="1"/>
-<wire x1="47.5" y1="29.5" x2="309.5" y2="29.5" width="0.2032" layer="1"/>
-<wire x1="47.5" y1="29.5" x2="39.8" y2="21.8" width="0.2032" layer="1"/>
-<wire x1="309.5" y1="29.5" x2="311.5" y2="27.5" width="0.2032" layer="1"/>
-<wire x1="311.5" y1="22" x2="311.75" y2="21.75" width="0.2032" layer="1"/>
-<wire x1="312.65" y1="21.75" x2="311.75" y2="21.75" width="0.2032" layer="1"/>
-<wire x1="311.5" y1="27.5" x2="311.5" y2="22" width="0.2032" layer="1"/>
-<wire x1="312.65" y1="21" x2="312.65" y2="21.75" width="0.2032" layer="1"/>
-<wire x1="312.65" y1="22.5" x2="312.65" y2="21.75" width="0.2032" layer="1"/>
+<wire x1="44.5" y1="26.5" x2="309.5" y2="26.5" width="0.2032" layer="1"/>
+<wire x1="44.5" y1="26.5" x2="39.8" y2="21.8" width="0.2032" layer="1"/>
+<wire x1="309.5" y1="26.5" x2="311.5" y2="24.5" width="0.2032" layer="1"/>
+<wire x1="311.5" y1="16" x2="311.75" y2="15.75" width="0.2032" layer="1"/>
+<wire x1="312.65" y1="15.75" x2="311.75" y2="15.75" width="0.2032" layer="1"/>
+<wire x1="311.5" y1="24.5" x2="311.5" y2="16" width="0.2032" layer="1"/>
+<wire x1="312.65" y1="15" x2="312.65" y2="15.75" width="0.2032" layer="1"/>
+<wire x1="312.65" y1="16.5" x2="312.65" y2="15.75" width="0.2032" layer="1"/>
 </signal>
 <signal name="DIO0">
 <contactref element="U2" pad="13"/>
@@ -7089,32 +7038,6 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <wire x1="109.923" y1="185.9" x2="111.523" y2="187.5" width="0.55" layer="1"/>
 <wire x1="111.523" y1="187.5" x2="112.0936" y2="187.5" width="0.55" layer="1"/>
 </signal>
-<signal name="DIO5">
-<contactref element="D10" pad="2"/>
-<contactref element="D11" pad="4"/>
-<contactref element="JP11" pad="1"/>
-<contactref element="JP10" pad="2"/>
-<wire x1="145.077" y1="189.1" x2="143.477" y2="187.5" width="0.55" layer="1"/>
-<wire x1="143.477" y1="187.5" x2="142.9064" y2="187.5" width="0.55" layer="1"/>
-<wire x1="145.077" y1="189.1" x2="148.4" y2="189.1" width="0.55" layer="1"/>
-<wire x1="151.6" y1="185.9" x2="154.923" y2="185.9" width="0.55" layer="1"/>
-<wire x1="148.4" y1="189.1" x2="151.6" y2="185.9" width="0.55" layer="1"/>
-<wire x1="154.923" y1="185.9" x2="156.523" y2="187.5" width="0.55" layer="1"/>
-<wire x1="156.523" y1="187.5" x2="157.0936" y2="187.5" width="0.55" layer="1"/>
-</signal>
-<signal name="N$8">
-<contactref element="D12" pad="2"/>
-<contactref element="D13" pad="4"/>
-<contactref element="JP12" pad="2"/>
-<contactref element="JP13" pad="1"/>
-<wire x1="175.077" y1="189.1" x2="173.477" y2="187.5" width="0.55" layer="1"/>
-<wire x1="173.477" y1="187.5" x2="172.9064" y2="187.5" width="0.55" layer="1"/>
-<wire x1="175.077" y1="189.1" x2="178.4" y2="189.1" width="0.55" layer="1"/>
-<wire x1="181.6" y1="185.9" x2="184.923" y2="185.9" width="0.55" layer="1"/>
-<wire x1="178.4" y1="189.1" x2="181.6" y2="185.9" width="0.55" layer="1"/>
-<wire x1="184.923" y1="185.9" x2="186.523" y2="187.5" width="0.55" layer="1"/>
-<wire x1="186.523" y1="187.5" x2="187.0936" y2="187.5" width="0.55" layer="1"/>
-</signal>
 <signal name="DIO6">
 <contactref element="D13" pad="2"/>
 <contactref element="D14" pad="4"/>
@@ -7218,11 +7141,11 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <wire x1="7.1361" y1="172.4575" x2="7.0936" y2="172.5" width="0.55" layer="1"/>
 <wire x1="7.5" y1="170.75" x2="7.1361" y2="171.1139" width="0.55" layer="1"/>
 <wire x1="7.1361" y1="171.1139" x2="7.1361" y2="172.4575" width="0.55" layer="1"/>
-<wire x1="27.5" y1="190" x2="128.75" y2="190" width="0.55" layer="16"/>
-<wire x1="128.75" y1="190" x2="132.5" y2="193.75" width="0.55" layer="16"/>
-<wire x1="132.5" y1="193.75" x2="137.5" y2="193.75" width="0.55" layer="16"/>
-<wire x1="137.5" y1="193.75" x2="141.25" y2="190" width="0.55" layer="16"/>
-<wire x1="141.25" y1="190" x2="297.5" y2="190" width="0.55" layer="16"/>
+<wire x1="27.5" y1="190" x2="169.75" y2="190" width="0.55" layer="16"/>
+<wire x1="169.75" y1="190" x2="173.5" y2="193.75" width="0.55" layer="16"/>
+<wire x1="173.5" y1="193.75" x2="178.5" y2="193.75" width="0.55" layer="16"/>
+<wire x1="178.5" y1="193.75" x2="182.25" y2="190" width="0.55" layer="16"/>
+<wire x1="182.25" y1="190" x2="297.5" y2="190" width="0.55" layer="16"/>
 <contactref element="D20" pad="2"/>
 <contactref element="JP20" pad="2"/>
 <wire x1="295.077" y1="189.1" x2="293.477" y2="187.5" width="0.55" layer="1"/>
@@ -10206,19 +10129,6 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <wire x1="124.923" y1="5.9" x2="126.523" y2="7.5" width="0.55" layer="1"/>
 <wire x1="126.523" y1="7.5" x2="127.0936" y2="7.5" width="0.55" layer="1"/>
 </signal>
-<signal name="N$127">
-<contactref element="D251" pad="2"/>
-<contactref element="D252" pad="4"/>
-<contactref element="JP252" pad="1"/>
-<contactref element="JP251" pad="2"/>
-<wire x1="130.077" y1="9.1" x2="128.477" y2="7.5" width="0.55" layer="1"/>
-<wire x1="128.477" y1="7.5" x2="127.9064" y2="7.5" width="0.55" layer="1"/>
-<wire x1="130.077" y1="9.1" x2="133.4" y2="9.1" width="0.55" layer="1"/>
-<wire x1="136.6" y1="5.9" x2="139.923" y2="5.9" width="0.55" layer="1"/>
-<wire x1="133.4" y1="9.1" x2="136.6" y2="5.9" width="0.55" layer="1"/>
-<wire x1="139.923" y1="5.9" x2="141.523" y2="7.5" width="0.55" layer="1"/>
-<wire x1="141.523" y1="7.5" x2="142.0936" y2="7.5" width="0.55" layer="1"/>
-</signal>
 <signal name="N$128">
 <contactref element="D250" pad="4"/>
 <contactref element="D249" pad="2"/>
@@ -10232,31 +10142,20 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <wire x1="109.923" y1="5.9" x2="111.523" y2="7.5" width="0.55" layer="1"/>
 <wire x1="111.523" y1="7.5" x2="112.0936" y2="7.5" width="0.55" layer="1"/>
 </signal>
-<signal name="DIO133">
-<contactref element="D252" pad="2"/>
-<contactref element="D253" pad="4"/>
-<contactref element="JP253" pad="1"/>
-<contactref element="JP252" pad="2"/>
-<wire x1="145.077" y1="9.1" x2="143.477" y2="7.5" width="0.55" layer="1"/>
-<wire x1="143.477" y1="7.5" x2="142.9064" y2="7.5" width="0.55" layer="1"/>
-<wire x1="145.077" y1="9.1" x2="148.4" y2="9.1" width="0.55" layer="1"/>
-<wire x1="151.6" y1="5.9" x2="154.923" y2="5.9" width="0.55" layer="1"/>
-<wire x1="148.4" y1="9.1" x2="151.6" y2="5.9" width="0.55" layer="1"/>
-<wire x1="154.923" y1="5.9" x2="156.523" y2="7.5" width="0.55" layer="1"/>
-<wire x1="156.523" y1="7.5" x2="157.0936" y2="7.5" width="0.55" layer="1"/>
-</signal>
 <signal name="DIO134">
 <contactref element="D254" pad="4"/>
 <contactref element="JP254" pad="1"/>
-<contactref element="D253" pad="2"/>
-<contactref element="JP253" pad="2"/>
-<wire x1="160.077" y1="9.1" x2="158.477" y2="7.5" width="0.55" layer="1"/>
-<wire x1="158.477" y1="7.5" x2="157.9064" y2="7.5" width="0.55" layer="1"/>
-<wire x1="160.077" y1="9.1" x2="163.4" y2="9.1" width="0.55" layer="1"/>
 <wire x1="166.6" y1="5.9" x2="169.923" y2="5.9" width="0.55" layer="1"/>
-<wire x1="163.4" y1="9.1" x2="166.6" y2="5.9" width="0.55" layer="1"/>
 <wire x1="169.923" y1="5.9" x2="171.523" y2="7.5" width="0.55" layer="1"/>
 <wire x1="171.523" y1="7.5" x2="172.0936" y2="7.5" width="0.55" layer="1"/>
+<contactref element="D251" pad="2"/>
+<contactref element="JP251" pad="2"/>
+<wire x1="130.077" y1="9.1" x2="128.477" y2="7.5" width="0.55" layer="1"/>
+<wire x1="128.477" y1="7.5" x2="127.9064" y2="7.5" width="0.55" layer="1"/>
+<wire x1="130.077" y1="9.1" x2="132.4" y2="9.1" width="0.55" layer="1"/>
+<wire x1="132.4" y1="9.1" x2="137.5" y2="4" width="0.55" layer="1"/>
+<wire x1="164.7" y1="4" x2="166.6" y2="5.9" width="0.55" layer="1"/>
+<wire x1="137.5" y1="4" x2="164.7" y2="4" width="0.55" layer="1"/>
 </signal>
 <signal name="N$129">
 <contactref element="D254" pad="2"/>
@@ -10384,19 +10283,6 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <wire x1="79.923" y1="110.9" x2="81.523" y2="112.5" width="0.55" layer="1"/>
 <wire x1="81.523" y1="112.5" x2="82.0936" y2="112.5" width="0.55" layer="1"/>
 </signal>
-<signal name="N$135">
-<contactref element="JP12" pad="1"/>
-<contactref element="D11" pad="2"/>
-<contactref element="JP11" pad="2"/>
-<contactref element="D12" pad="4"/>
-<wire x1="160.077" y1="189.1" x2="158.477" y2="187.5" width="0.55" layer="1"/>
-<wire x1="158.477" y1="187.5" x2="157.9064" y2="187.5" width="0.55" layer="1"/>
-<wire x1="160.077" y1="189.1" x2="163.4" y2="189.1" width="0.55" layer="1"/>
-<wire x1="166.6" y1="185.9" x2="169.923" y2="185.9" width="0.55" layer="1"/>
-<wire x1="163.4" y1="189.1" x2="166.6" y2="185.9" width="0.55" layer="1"/>
-<wire x1="169.923" y1="185.9" x2="171.523" y2="187.5" width="0.55" layer="1"/>
-<wire x1="171.523" y1="187.5" x2="172.0936" y2="187.5" width="0.55" layer="1"/>
-</signal>
 <signal name="N$23">
 <contactref element="D100" pad="2"/>
 <contactref element="D101" pad="4"/>
@@ -10466,12 +10352,12 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <contactref element="JP21" pad="1"/>
 <contactref element="D231" pad="2"/>
 <contactref element="JP231" pad="2"/>
-<wire x1="310.077" y1="39.1" x2="309.2385" y2="38.2615" width="0.55" layer="1"/>
-<wire x1="309.2385" y1="38.2615" x2="308.477" y2="37.5" width="0.55" layer="1"/>
+<wire x1="309.0635" y1="38.0865" x2="308.477" y2="37.5" width="0.55" layer="1"/>
 <wire x1="308.477" y1="37.5" x2="307.9064" y2="37.5" width="0.55" layer="1"/>
 <via x="3.5" y="22" extent="1-16" drill="0.381"/>
 <via x="307.5" y="40" extent="1-16" drill="0.381"/>
-<wire x1="307.5" y1="40" x2="309.2385" y2="38.2615" width="0.55" layer="1"/>
+<wire x1="309.0635" y1="38.0865" x2="307.5" y2="39.65" width="0.55" layer="1"/>
+<wire x1="307.5" y1="40" x2="307.5" y2="39.65" width="0.55" layer="1"/>
 <wire x1="4.923" y1="21.4" x2="4.1" y2="21.4" width="0.55" layer="1"/>
 <wire x1="4.1" y1="21.4" x2="3.5" y2="22" width="0.55" layer="1"/>
 <wire x1="4.923" y1="21.4" x2="6.523" y2="23" width="0.55" layer="1"/>
@@ -10480,6 +10366,7 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <wire x1="10" y1="28.5" x2="3.5" y2="22" width="0.55" layer="16"/>
 <wire x1="307.5" y1="40" x2="102.5" y2="40" width="0.55" layer="16"/>
 <wire x1="91" y1="28.5" x2="10" y2="28.5" width="0.55" layer="16"/>
+<wire x1="309.0635" y1="38.0865" x2="310.077" y2="39.1" width="0.55" layer="1"/>
 </signal>
 <signal name="N$2">
 <contactref element="D21" pad="2"/>
@@ -10547,6 +10434,19 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <wire x1="81.523" y1="22.5" x2="79.923" y2="20.9" width="0.55" layer="1"/>
 <wire x1="70.077" y1="24.1" x2="68.477" y2="22.5" width="0.55" layer="1"/>
 <wire x1="68.477" y1="22.5" x2="67.9064" y2="22.5" width="0.55" layer="1"/>
+</signal>
+<signal name="N$135">
+<contactref element="D13" pad="4"/>
+<contactref element="JP13" pad="1"/>
+<wire x1="184.923" y1="185.9" x2="186.523" y2="187.5" width="0.55" layer="1"/>
+<wire x1="186.523" y1="187.5" x2="187.0936" y2="187.5" width="0.55" layer="1"/>
+<contactref element="JP10" pad="2"/>
+<contactref element="D10" pad="2"/>
+<wire x1="145.077" y1="189.1" x2="148.9" y2="189.1" width="0.55" layer="1"/>
+<wire x1="152.1" y1="185.9" x2="184.923" y2="185.9" width="0.55" layer="1"/>
+<wire x1="148.9" y1="189.1" x2="152.1" y2="185.9" width="0.55" layer="1"/>
+<wire x1="145.077" y1="189.1" x2="143.477" y2="187.5" width="0.55" layer="1"/>
+<wire x1="143.477" y1="187.5" x2="142.9064" y2="187.5" width="0.55" layer="1"/>
 </signal>
 </signals>
 <mfgpreviewcolors>

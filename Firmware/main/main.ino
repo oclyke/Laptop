@@ -186,6 +186,22 @@ void setup()
   FastLED.setBrightness(brightness);
   initArtnet();
   FastLED.setMaxPowerInVoltsAndMilliamps(5, 1500);
+
+  // set initial bluetooth properties
+  BLE.setDisplayBrightness(brightness);
+  BLE.setAudioSensitivity(audioScale);
+  BLE.setAudioSource((audioSource) ? 1 : 0);
+  BLE.setDeviceName(deviceName);
+//  BLE.setNetworkSSID(ssid);
+//  BLE.setNetworkPassword(password);
+
+  BLE.setPattern(patternNum);
+  BLE.setDelay(frameSkip, frameDelay);
+  BLE.setAudioReactivity((audioReaction) ? 1 : 0);
+  BLE.setFFTBounds(avgLowEnd, avgHighEnd);
+  BLE.setColor(customColor.r, customColor.g, customColor.b);
+  BLE.setGradient(singleColorIndex, customColor.r, customColor.g, customColor.b);
+  BLE.setGradientBlending((currentBlending) ? 1 : 0);
 }
 
 void loop()

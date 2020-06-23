@@ -80,6 +80,12 @@ CharacteristicParser Parser;
 
 
 // // global property characteristics
+
+/*
+  Brightness
+  127
+  0-255
+*/
 void displayBrightnessCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   brightness = Parser.parseInt();
@@ -88,6 +94,11 @@ void displayBrightnessCallback(BLECharacteristic* pCharacteristic){
   Parser.flush();
 }
 
+/*
+  Audio Sensitivity
+  0.69
+  0.0-1.0
+*/
 void audioSensitivityCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   audioScale = Parser.parseFloat();
@@ -101,6 +112,11 @@ void audioSensitivityCallback(BLECharacteristic* pCharacteristic){
 //  Serial.println(audioScale);
 }
 
+/*
+  Change audio source between microphone and audio jack
+  1 [MIC]
+  0 [JACK]
+*/
 void audioSourceCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   audioSource = Parser.parseInt();
@@ -109,6 +125,10 @@ void audioSourceCallback(BLECharacteristic* pCharacteristic){
   Parser.flush();
 }
 
+/*
+   Change the name of the Device
+   String : name (up to 32 char)
+*/
 void deviceNameCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   char tempName[32];
@@ -123,6 +143,10 @@ void deviceNameCallback(BLECharacteristic* pCharacteristic){
   Parser.flush();
 }
 
+/*
+  Change the SSID to connect to for ArtNet 
+  String : SSID (up to 32 characters)
+*/
 void networkSSIDCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   char tempSsid[32];
@@ -136,6 +160,10 @@ void networkSSIDCallback(BLECharacteristic* pCharacteristic){
   Parser.flush();
 }
 
+/*
+  Change the Password to connect to for ArtNet
+  String : password (up to 32 characters)
+*/
 void networkPasswordCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   char tempPassword[32];
@@ -149,18 +177,30 @@ void networkPasswordCallback(BLECharacteristic* pCharacteristic){
   Parser.flush();
 }
 
+/* 
+  Write to this characteristic to attempt to connect to artnet (write only)
+  any value
+*/
 void networkConnectCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   initArtnet();
   Parser.flush();
 }
 
+/*
+  Read the device's IP Address from this characteristic (read only)
+*/
 void networkIPAddressCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   // browser does not set ip address
   Parser.flush();
 }
 
+
+/*
+  Write to this characteristic to reset the color index that has been changed by audio reactive stuff (write only)
+  any value
+*/
 void resetCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   resetColorIndex();
@@ -169,6 +209,12 @@ void resetCallback(BLECharacteristic* pCharacteristic){
 
 
 // // expression specific property characteristics
+
+/*
+  Change pattern utilized
+  3 (changes to the 4th pattern, index at 0)
+  range determined by number of drawing methods in main loop
+*/
 void patternCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   patternNum = Parser.parseInt();
@@ -176,6 +222,13 @@ void patternCallback(BLECharacteristic* pCharacteristic){
   Parser.flush();
 }
 
+/*
+  Change delay and how many frames to skip (only works on non audio reactive stuff)
+  s3 (changes so we skip three frames of our animation)
+  d5 (change our delay to 5 ms)
+  s0-255
+  d0-5000? maybe a custom field to input a number
+*/
 void delayCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   char delayType = Parser.read();
@@ -191,6 +244,11 @@ void delayCallback(BLECharacteristic* pCharacteristic){
   Parser.flush();
 }
 
+/*
+  Changes whether or not the pattern is audio reactive
+  1 [audio reaction on]
+  0 [audio reaction off]
+*/
 void audioReactivityCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   audioReaction = Parser.parseInt();
@@ -198,6 +256,14 @@ void audioReactivityCallback(BLECharacteristic* pCharacteristic){
   Parser.flush();
 }
 
+/*
+  change lower and upper frequency bounds on fftAvg function. Controls which frequencies are used to set speeds
+  h12
+  l4
+  l0-20 (that is a lowercase L)
+  h0-20
+  Make sure that fl is never higher than fh
+*/
 void fftBoundsCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   char frequencyType = Parser.read();
@@ -213,6 +279,11 @@ void fftBoundsCallback(BLECharacteristic* pCharacteristic){
   Parser.flush();
 }
 
+/*
+  Change Color used in colorSet
+  255 0 64 (changes color to all red, no green, and a little blue for a purple, similar use to gradient change)
+  0-255 0-255 0-255
+*/
 void colorCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   customColor.red = Parser.parseInt();
@@ -222,6 +293,11 @@ void colorCallback(BLECharacteristic* pCharacteristic){
   Parser.flush();
 }
 
+/*
+  Change colors of gradient currently utilized
+  1 255 0 64 (changes second color in gradient to purple, first number is index of gradient, followed by the color you would like to change it to)
+  0-15 0-255 0-255 0-255
+*/
 void gradientCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   uint8_t paletteIndex = Parser.parseInt();
@@ -234,6 +310,11 @@ void gradientCallback(BLECharacteristic* pCharacteristic){
   Parser.flush();
 }
 
+/*
+  Change gradient blending between a linearblend and no blending
+  1 [blending]
+  0 [no blending] 
+*/
 void gradientBlendingCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   currentBlending = (TBlendType)Parser.parseInt();

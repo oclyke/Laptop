@@ -48,6 +48,13 @@ void setCharacteristic(BLECharacteristic *pCharacteristic, const uint8_t *buffer
   pCharacteristic->notify();
 }
 
+void setCharacteristic(BLECharacteristic *pCharacteristic, String string){
+  const unsigned int len = string.length() + 1;
+  uint8_t arry[len] = {0};
+  string.toCharArray((char*)arry, len);
+  setCharacteristic(pCharacteristic, arry, len);
+}
+
 void defaultCallback(BLECharacteristic* pCharacteristic){
   Serial.print("callback for characteristic: 0x");
   Serial.println((uint32_t)pCharacteristic, HEX);
@@ -165,10 +172,61 @@ bool CustomLittBLE::begin(const char* localName="CustomLittBLE Server"){
 }
 
 
+
+void CustomLittBLE::setDisplayBrightness(uint8_t brightness){  
+  setCharacteristic(pDisplayBrightnessChar, String(brightness));
+}
+
+void CustomLittBLE::setAudioSensitivity(float sensitivity){
+  setCharacteristic(pAudioSensitivityChar, String(sensitivity));
+}
+
+void CustomLittBLE::setAudioSource(uint8_t source){
+  setCharacteristic(pAudioSourceChar, String(source));
+}
+
+void CustomLittBLE::setDeviceName(String name){
+  setCharacteristic(pDeviceNameChar, name);
+}
+
+void CustomLittBLE::setNetworkSSID(String ssid){
+  setCharacteristic(pNetworkSSIDChar, ssid);
+}
+
+void CustomLittBLE::setNetworkPassword(String password){
+  setCharacteristic(pNetworkPasswordChar, password);
+}
+
 void CustomLittBLE::setIPAddress(IPAddress address){  
-  const unsigned int tempIPArrayLen = 24;
-  char tempIPArray[tempIPArrayLen] = {0};
-  String LocalIP = address.toString();
-  LocalIP.toCharArray(tempIPArray, tempIPArrayLen);
-  setCharacteristic(pNetworkIPAddressChar, (uint8_t*)tempIPArray, LocalIP.length());
+  setCharacteristic(pNetworkIPAddressChar, address.toString());
+}
+
+
+
+void CustomLittBLE::setPattern(uint8_t pattern){
+  setCharacteristic(pPatternChar, String(pattern));
+}
+
+void CustomLittBLE::setDelay(uint8_t frames, uint16_t ms){
+  setCharacteristic(pDelayChar, String(frames) + " " + String(ms));
+}
+
+void CustomLittBLE::setAudioReactivity(uint8_t reactivity){
+  setCharacteristic(pAudioReactivityChar, String(reactivity));
+}
+
+void CustomLittBLE::setFFTBounds(uint8_t low, uint8_t high){
+  setCharacteristic(pFFTBoundsChar, String(low) + " " + String(high));
+}
+
+void CustomLittBLE::setColor(uint8_t r, uint8_t g, uint8_t b){
+  setCharacteristic(pColorChar, String(r) + " " + String(g) + " " + String(b));
+}
+
+void CustomLittBLE::setGradient(uint8_t index, uint8_t r, uint8_t g, uint8_t b){
+  setCharacteristic(pGradientChar, String(index) + " " + String(r) + " " + String(g) + " " + String(b));
+}
+
+void CustomLittBLE::setGradientBlending(uint8_t blending){
+  setCharacteristic(pGradientBlendingChar, String(blending));
 }

@@ -65,7 +65,25 @@ public:
   ~CustomLittBLE();
 
   bool begin(const char* localName);
+
+  void setDisplayBrightness(uint8_t brightness);
+  void setAudioSensitivity(float sensitivity);
+  void setAudioSource(uint8_t source);
+  void setDeviceName(String name);
+  void setNetworkSSID(String ssid);
+  void setNetworkPassword(String password);
   void setIPAddress(IPAddress address);
+
+  void setPattern(uint8_t pattern);
+  void setDelay(uint8_t frames, uint16_t ms);
+  void setAudioReactivity(uint8_t reactivity);
+  void setFFTBounds(uint8_t low, uint8_t high);
+  void setColor(uint8_t r, uint8_t g, uint8_t b);
+  void setGradient(uint8_t index, uint8_t r, uint8_t g, uint8_t b);
+  void setGradientBlending(uint8_t blending);
+  
+  
+  
 
 private:
 //  String local_name;

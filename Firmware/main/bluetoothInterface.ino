@@ -224,23 +224,13 @@ void patternCallback(BLECharacteristic* pCharacteristic){
 
 /*
   Change delay and how many frames to skip (only works on non audio reactive stuff)
-  s3 (changes so we skip three frames of our animation)
-  d5 (change our delay to 5 ms)
-  s0-255
-  d0-5000? maybe a custom field to input a number
+  3 5 [skip 3 frames, delay 5 ms]
+  0-255 0-5000?
 */
 void delayCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
-  char delayType = Parser.read();
-  switch (delayType)
-  {
-    case 's':
-      frameSkip = Parser.parseInt();
-      break;
-    case 'd':
-      frameDelay = Parser.parseInt();
-      break;
-  }
+  frameSkip = Parser.parseInt();
+  frameDelay = Parser.parseInt();
   Parser.flush();
 }
 
@@ -258,24 +248,14 @@ void audioReactivityCallback(BLECharacteristic* pCharacteristic){
 
 /*
   change lower and upper frequency bounds on fftAvg function. Controls which frequencies are used to set speeds
-  h12
-  l4
-  l0-20 (that is a lowercase L)
-  h0-20
+  4 12 [sets low bound to 4 and high to 12]
+  0-20 0-20
   Make sure that fl is never higher than fh
 */
 void fftBoundsCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
-  char frequencyType = Parser.read();
-  switch (frequencyType)
-  {
-    case 'l':
-      avgLowEnd = Parser.parseInt();
-      break;
-    case 'h':
-      avgHighEnd = Parser.parseInt();
-      break;
-  }
+  avgLowEnd = Parser.parseInt();
+  avgHighEnd = Parser.parseInt();
   Parser.flush();
 }
 

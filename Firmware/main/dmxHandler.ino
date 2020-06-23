@@ -62,6 +62,7 @@ bool connectWifi(void) //Sets our ESP32 device up as an access point
   Serial.println(password);
   state = WiFi.begin(ssid.c_str(), "figureitoutdude");
   Serial.println(WiFi.localIP());
+  BLE.setIPAddress(WiFi.localIP());  
   state = getWiFiOkay();
   return state;
 }

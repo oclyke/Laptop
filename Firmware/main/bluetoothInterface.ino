@@ -9,300 +9,234 @@
    Example string
    Range
 */
-void bluetoothHandler(char instructionType)
-{
-  switch (instructionType)
-  {
-    /*
-      Audio Sensitivity
-      a5.6 (Doesn't need to have a decimal place)
-      a0-a100
-    */
-    case 'a': //audio scaling
-      {
-        audioScale = SerialBT.parseFloat();
-        char saveSetting = SerialBT.read();
-        if (saveSetting == 'e')
-        {
-          setFloatCharacteristic(AUDIO_SCALE, audioScale);
-        }
-        break;
-      }
 
-    /*
-      Brightness
-      b127
-      b0-b255
-    */
-    case 'b': //brightness
-      {
-        brightness = SerialBT.parseInt();
-        FastLED.setBrightness(brightness);
-        setCharacteristic(BRIGHTNESS, brightness);
-      }
-      break;
+#include "RingBuffer.h"
 
-    /*
-      Change Color used in colorSet
-      c255 0 64 (changes color to all red, no green, and a little blue for a purple, similar use to gradient change)
-      c0-255 0-255 0-255
-    */
-    case 'c': //color
-      {
-        customColor.red = SerialBT.parseInt();
-        customColor.green = SerialBT.parseInt();
-        customColor.blue = SerialBT.parseInt();
-        setColor(COLOR, customColor);
-      }
-      break;
+#ifndef PARSER_RINGBUFF_SIZE
+#define PARSER_RINGBUFF_SIZE 64
+#endif
 
-    /*
-      Change delay and how many frames to skip (only works on non audio reactive stuff)
-      ds3 (changes so we skip three frames of our animation)
-      dd5 (change our delay to 5 ms)
-      ds0-255
-      dd0-5000? maybe a custom field to input a number
-    */
-    case 'd':
-      {
-        char delayType = SerialBT.read();
-        switch (delayType)
-        {
-          case 's':
-            frameSkip = SerialBT.parseInt();
-            break;
-          case 'd':
-            frameDelay = SerialBT.parseInt();
-            break;
-        }
-      }
-      break;
+typedef RingBufferN<PARSER_RINGBUFF_SIZE> ParserRingBuffer;
 
-    /*
-      change lower and upper frequency bounds on fftAvg function. Controls which frequencies are used to set speeds
-      fh12
-      fl4
-      fl0-20 (that is a lowercase L)
-      fh0-20
-      Make sure that fl is never higher than fh
-    */
-    case 'f':
-      {
-        char frequencyType = SerialBT.read();
-        switch (frequencyType)
-        {
-          case 'l':
-            avgLowEnd = SerialBT.parseInt();
-            break;
-          case 'h':
-            avgHighEnd = SerialBT.parseInt();
-            break;
-        }
-        break;
-      }
+class CharacteristicParser: public Stream {
+public:
+  ParserRingBuffer _buffer;
 
-    /*
-      Change colors of gradient currently utilized
-      g1 255 0 64 (changes second color in gradient to purple, first number is index of gradient, followed by the color you would like to change it to)
-      g0-15 0-255 0-255 0-255
-    */
-    case 'g'://Set indivudal gradient colors
-      {
-        uint8_t paletteIndex = SerialBT.parseInt();
-        uint8_t red = SerialBT.parseInt();
-        uint8_t green = SerialBT.parseInt();
-        uint8_t blue = SerialBT.parseInt();
-        CRGB paletteColor = CRGB(red, green, blue);
-        setColor(GRADIENT + (paletteIndex * 3), paletteColor);
-        setPalettePosition(paletteIndex, paletteColor);
-      }
-      break;
+  CharacteristicParser();
 
-    /*
-      Change audio source between microphone and audio jack
-      mm (switches audio source to microphone) mj switches to audio jack
-      m
-    */
-    case 'm': //audio Source
-      {
-        char tempSource = SerialBT.read();
-        switch (tempSource)
-        {
-          case 'm':
-            audioSource = MIC;
-            break;
-          case 'j':
-            audioSource = JACK;
-            break;
-        }
-        resetColorIndex();
-        setCharacteristic(AUDIO_SOURCE, audioSource);
-        break;
-      }
+  int available(void);
+  int peek(void);
+  int read(void);
 
-    /*
-      Change pattern utilized
-      p3 (changes to the 4th pattern, index at 0)
-      p0-12 (currently expanding, check main loop for more accurate pattern count, as well as what pattern is assigned to what number)
-    */
-    case 'p': //pattern
-      patternNum = SerialBT.parseInt();
-      setCharacteristic(PATTERN, patternNum);
-      break;
+  size_t write(uint8_t c);
+  size_t write(const uint8_t *buffer, size_t size);
+  void flush(void);
 
-    /*
-      Resets color index that has been changed by audio reactive stuff (just used in testing)
-      r
-      r
-    */
-    case 'r': //reset
-      resetColorIndex();
-      break;
+  int loadCharacteristicValue(BLECharacteristic* pCharacteristic);
+  
+};
 
-    /*
-      Sends current settings to the app
-      s
-      s
-    */
-    case 's':
-      SerialBT.print('D');
-      SerialBT.println(deviceName);
-      delay(5);
-      SerialBT.print('a');
-      SerialBT.println(audioScale);
-      delay(5);
-      SerialBT.print('b');
-      SerialBT.println(brightness);
-      delay(5);
-      SerialBT.print("c");
-      SerialBT.print(customColor.red);
-      SerialBT.print(" ");
-      SerialBT.print(customColor.green);
-      SerialBT.print(" ");
-      SerialBT.println(customColor.blue);
-      delay(5);
-      SerialBT.print("ds");
-      SerialBT.println(frameSkip);
-      delay(5);
-      SerialBT.print("dd");
-      SerialBT.println(frameDelay);
-      delay(5);
-      SerialBT.print("fl");
-      SerialBT.println(avgLowEnd);
-      delay(5);
-      SerialBT.print("fh");
-      SerialBT.println(avgHighEnd);
-      delay(5);
-      for (uint8_t index = 0; index < 16; index++)
-      {
-        SerialBT.print("g");
-        SerialBT.print(index);
-        SerialBT.print(" ");
-        SerialBT.print(currentPalette[index].red);
-        SerialBT.print(" ");
-        SerialBT.print(currentPalette[index].green);
-        SerialBT.print(" ");
-        SerialBT.println(currentPalette[index].blue);
-        delay(5);
-      }
-      SerialBT.print('m');
-      SerialBT.println(audioSource);
-      delay(5);
-      SerialBT.print('p');
-      SerialBT.println(patternNum);
-      delay(5);
-      SerialBT.print('A');
-      SerialBT.println(audioReaction);
-      delay(5);
-      SerialBT.print('B');
-      SerialBT.println(currentBlending);
-      delay(5);
-      SerialBT.println("FINISH");
-      break;
+CharacteristicParser::CharacteristicParser(){
+  
+}
 
-    /*
-      Changes whether or not the pattern is audio reactive
-      A
-      A
-    */
-    case 'A':
-      {
-        audioReaction = SerialBT.parseInt();
-        setCharacteristic(AUDIO_REACTION, audioReaction);
-        break;
-      }
+int CharacteristicParser::available(void){
+  return _buffer.available();
+}
 
-    /*
-      Change gradient blending between a linearblend and no blending
-      B0 (no blending) B1 (blending)
-      B
-    */
-    case 'B':
-      currentBlending = (TBlendType)SerialBT.parseInt();
-      setCharacteristic(BLENDING, currentBlending);
-      break;
+int CharacteristicParser::peek(void){
+  return _buffer.peek();
+}
 
-    /*
-      Attempt to connect to wifi after changing settings or for any other reason you might want to attempt to reconnect (Still needs backend work for eeprom storage issue)
-      C
-      C
-    */
-    case 'C':
-      initArtnet();
-      break;
+int CharacteristicParser::read(void){
+  return _buffer.read_char();
+}
 
-    /*
-       Change the name of the Device
-       DNew Device Name
-    */
-    case 'D':
-      {
-        char tempName[32];
-        int position = 0;
-        while (SerialBT.available())
-        {
-          char temp = SerialBT.read();
-          tempName[position++] = temp;
-        }
-        deviceName = tempName;
-        EEPROM.put(DEVICE_NAME_ADDRESS, deviceName);
-        break;
-      }
+size_t CharacteristicParser::write(uint8_t c){
+  return write(&c, 1);
+}
 
-    /*
-      Change the SSID to connect to for ArtNet (still needs backend work for eeprom storage issue)
-      SBlack Panther (My home SSID is Black Panther)
-      SSSIDString (SSIDString may be anywhere up to 32 characters)
-    */
-    case 'S': //SSIDSet
-      {
-        char tempSsid[32];
-        int position = 0;
-        while (SerialBT.available())
-        {
-          char temp = SerialBT.read();
-          tempSsid[position++] = temp;
-        }
-        setSSID(tempSsid);
-        break;
+size_t CharacteristicParser::write(const uint8_t *buffer, size_t size){
+  return 0;
+}
 
-      }
-    /*
-      Change the Password to connect to for ArtNet (still needs backend work for eeprom storage issue)
-      Pfigureitoutdude (My password is figureitoutdude)
-      Pfigureitoutdude (Pfigureitoutdude may be anywhere up to 32 characters)
-    */
-    case 'P': //PasswordSet
-      {
-        char tempPassword[32];
-        int position = 0;
-        while (SerialBT.available())
-        {
-          char temp = SerialBT.read();
-          tempPassword[position++] = temp;
-        }
-        setPassword(tempPassword);
-        break;
-      }
+void CharacteristicParser::flush( void ){
+  while(read() >= 0){};
+}
+
+int CharacteristicParser::loadCharacteristicValue(BLECharacteristic* pCharacteristic){
+  if(pCharacteristic == NULL){ return 0; }
+  std::string value = pCharacteristic->getValue();
+  for (int i = 0; i < value.length(); i++){
+    _buffer.store_char(value[i]);
   }
+  _buffer.store_char(' '); // terminating in a space allows the parser to find the end of an input easily
+}
+
+CharacteristicParser Parser;
+
+
+
+
+
+// // global property characteristics
+void displayBrightnessCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  brightness = Parser.parseInt();
+  FastLED.setBrightness(brightness);
+  setCharacteristic(BRIGHTNESS, brightness);
+  Parser.flush();
+}
+
+void audioSensitivityCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  audioScale = Parser.parseFloat();
+//  char saveSetting = Parser.read();
+//  if (saveSetting == 'e')
+//  {
+//    setFloatCharacteristic(AUDIO_SCALE, audioScale);
+//  }
+  Parser.flush();
+//  Serial.println("audio sensitivity callback");
+//  Serial.println(audioScale);
+}
+
+void audioSourceCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  audioSource = Parser.parseInt();
+  resetColorIndex();
+  setCharacteristic(AUDIO_SOURCE, audioSource);
+  Parser.flush();
+}
+
+void deviceNameCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  char tempName[32];
+  int position = 0;
+  while (Parser.available())
+  {
+    char temp = Parser.read();
+    tempName[position++] = temp;
+  }
+  deviceName = tempName;
+  EEPROM.put(DEVICE_NAME_ADDRESS, deviceName);
+  Parser.flush();
+}
+
+void networkSSIDCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  char tempSsid[32];
+  int position = 0;
+  while (Parser.available())
+  {
+    char temp = Parser.read();
+    tempSsid[position++] = temp;
+  }
+  setSSID(tempSsid);
+  Parser.flush();
+}
+
+void networkPasswordCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  char tempPassword[32];
+  int position = 0;
+  while (Parser.available())
+  {
+    char temp = Parser.read();
+    tempPassword[position++] = temp;
+  }
+  setPassword(tempPassword);
+  Parser.flush();
+}
+
+void networkConnectCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  initArtnet();
+  Parser.flush();
+}
+
+void networkIPAddressCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  // browser does not set ip address
+  Parser.flush();
+}
+
+void resetCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  resetColorIndex();
+  Parser.flush();
+}
+
+
+// // expression specific property characteristics
+void patternCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  patternNum = Parser.parseInt();
+  setCharacteristic(PATTERN, patternNum);
+  Parser.flush();
+}
+
+void delayCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  char delayType = Parser.read();
+  switch (delayType)
+  {
+    case 's':
+      frameSkip = Parser.parseInt();
+      break;
+    case 'd':
+      frameDelay = Parser.parseInt();
+      break;
+  }
+  Parser.flush();
+}
+
+void audioReactivityCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  audioReaction = Parser.parseInt();
+  setCharacteristic(AUDIO_REACTION, audioReaction);
+  Parser.flush();
+}
+
+void fftBoundsCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  char frequencyType = Parser.read();
+  switch (frequencyType)
+  {
+    case 'l':
+      avgLowEnd = Parser.parseInt();
+      break;
+    case 'h':
+      avgHighEnd = Parser.parseInt();
+      break;
+  }
+  Parser.flush();
+}
+
+void colorCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  customColor.red = Parser.parseInt();
+  customColor.green = Parser.parseInt();
+  customColor.blue = Parser.parseInt();
+  setColor(COLOR, customColor);
+  Parser.flush();
+}
+
+void gradientCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  uint8_t paletteIndex = Parser.parseInt();
+  uint8_t red = Parser.parseInt();
+  uint8_t green = Parser.parseInt();
+  uint8_t blue = Parser.parseInt();
+  CRGB paletteColor = CRGB(red, green, blue);
+  setColor(GRADIENT + (paletteIndex * 3), paletteColor);
+  setPalettePosition(paletteIndex, paletteColor);
+  Parser.flush();
+}
+
+void gradientBlendingCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  currentBlending = (TBlendType)Parser.parseInt();
+  setCharacteristic(BLENDING, currentBlending);
+  Parser.flush();
 }

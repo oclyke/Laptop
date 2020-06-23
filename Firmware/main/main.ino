@@ -5,10 +5,10 @@
 
 #include "arduinoFFT.h"
 #include <FastLED.h>
-#include "BLESerial.h"
+#include "CustomLittBLE.h"
 
-/**Serial Bluetooth**/
-BLESerial SerialBT;
+/**CustomLitt BLE**/
+CustomLittBLE BLE;
 
 uint8_t brightness = 255;
 
@@ -181,7 +181,7 @@ void setup()
   Serial.begin(115200);
   makeLedArray();
   LEDS.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS);
-  SerialBT.begin("CustomLitt"); //Bluetooth device name
+  BLE.begin("CustomLitt");
   initializeEEPROM();
   FastLED.setBrightness(brightness);
   initArtnet();
@@ -190,11 +190,14 @@ void setup()
 
 void loop()
 {
-  //long timerStart = millis();
-  if (SerialBT.available()) {
-    char instructionType = SerialBT.read();
-    bluetoothHandler(instructionType);
-  }
+//  //long timerStart = millis();
+//  if (SerialBT.available()) {
+//    char instructionType = SerialBT.read();
+//    bluetoothHandler(instructionType);
+//    Serial.write(instructionType);
+//  }
+
+
   switch (patternNum)
   {
     case 0:

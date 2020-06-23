@@ -1,0 +1,99 @@
+/*
+Copyright (c) 2020 Owen Lyke
+
+CustomLittBLE
+
+Direct characteristic mapping of CustomLitt properties (global and expression-specific)
+
+Built on top of the BLE utilities by Neil Kolban
+https://github.com/nkolban/esp32-snippets/blob/master/cpp_utils/tests/BLE%20Tests/SampleNotify.cpp
+*/
+
+/* todo:
+- separate the bluetooth device and server - BLESerial should be added to an existing server before advertisement begins
+- fix lorem-ipsum partial send (quits at ~231 characters). Buffer length? Or other problem?
+*/
+
+
+#ifndef _CUSTOMLITTBLE_H_
+#define _CUSTOMLITTBLE_H_
+
+#include "Arduino.h"
+
+#include <BLEDevice.h>
+#include <BLEServer.h>
+#include <BLEUtils.h>
+#include <BLE2902.h>
+
+#include <WiFi.h>
+
+#include "bluetoothInterface.h"
+
+class CustomLittBLE; // forward declaration
+
+class CustomLittBLEServerCallbacks: public BLEServerCallbacks {
+  void onConnect(BLEServer* pServer) {
+    // deviceConnected = true;
+    // // code here for when device connects
+  };
+
+  void onDisconnect(BLEServer* pServer) {
+    // deviceConnected = false;
+    // // code here for when device disconnects
+  }
+};
+
+typedef void (*CustomLittBLECallback_fn)(BLECharacteristic* pCharacteristic);
+
+class CustomLittBLECharacteristicCallbacks: public BLECharacteristicCallbacks {
+public:
+  CustomLittBLECharacteristicCallbacks(CustomLittBLE* p_customlittble, CustomLittBLECallback_fn callback){
+    _p_customlittble = p_customlittble;
+    _callback = callback;
+  }
+  
+  CustomLittBLE* _p_customlittble = NULL;
+  CustomLittBLECallback_fn _callback = NULL;
+
+  void onWrite(BLECharacteristic *pCharacteristic);
+};
+
+class CustomLittBLE {
+public:
+
+  CustomLittBLE();
+  ~CustomLittBLE();
+
+  bool begin(const char* localName);
+  void setIPAddress(IPAddress address);
+
+private:
+//  String local_name;
+
+  BLEServer *pServer = NULL;
+  
+  BLEService *pCustomLittService = NULL;
+  BLECharacteristic * pCustomLittIdCharacteristic = NULL;
+
+  BLEService *pGlobalPropertiesService = NULL;
+  BLECharacteristic * pDisplayBrightnessChar = NULL;
+  BLECharacteristic * pAudioSensitivityChar = NULL;
+  BLECharacteristic * pAudioSourceChar = NULL;
+  BLECharacteristic * pDeviceNameChar = NULL;
+  BLECharacteristic * pNetworkSSIDChar = NULL;
+  BLECharacteristic * pNetworkPasswordChar = NULL;
+  BLECharacteristic * pNetworkConnectChar = NULL;
+  BLECharacteristic * pNetworkIPAddressChar = NULL;
+  BLECharacteristic * pResetChar = NULL;
+  
+  BLEService *pExpressionPropertiesService = NULL;
+  BLECharacteristic * pPatternChar = NULL;
+  BLECharacteristic * pDelayChar = NULL;
+  BLECharacteristic * pAudioReactivityChar = NULL;
+  BLECharacteristic * pFFTBoundsChar = NULL;
+  BLECharacteristic * pColorChar = NULL;
+  BLECharacteristic * pGradientChar = NULL;
+  BLECharacteristic * pGradientBlendingChar = NULL;
+};
+
+#endif // _CUSTOMLITTBLE_H_

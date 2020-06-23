@@ -28,7 +28,12 @@ Header: CustomLitt_BLE.h
 #define CHARACTERISTIC_UUID_CLEP_GRADIENT               "9F170306-899F-4F35-AD8A-85DF24B12007"
 #define CHARACTERISTIC_UUID_CLEP_GRADIENT_BLENDING      "9F170307-899F-4F35-AD8A-85DF24B12007"
 
-#define PROPERTY_RWN (BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_NOTIFY)
+#define PROPERTY_RWN  (BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_NOTIFY)
+#define PROPERTY_RN   (BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY)
+#define PROPERTY_WN   (BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_NOTIFY)
+#define PROPERTY_R    (BLECharacteristic::PROPERTY_READ)
+#define PROPERTY_W    (BLECharacteristic::PROPERTY_WRITE)
+
 
 void setCharacteristic(BLECharacteristic *pCharacteristic, const uint8_t *buffer, size_t size){
   size_t remaining = size;
@@ -99,9 +104,9 @@ bool CustomLittBLE::begin(const char* localName="CustomLittBLE Server"){
   pDeviceNameChar =         pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_DEVICE_NAME),           PROPERTY_RWN);
   pNetworkSSIDChar =        pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_NETWORK_SSID),          PROPERTY_RWN);
   pNetworkPasswordChar =    pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_NETWORK_PASSWORD),      PROPERTY_RWN);
-  pNetworkConnectChar =     pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_NETWORK_CONNECT),       PROPERTY_RWN);
-  pNetworkIPAddressChar =   pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_NETWORK_IP_ADDRESS),    PROPERTY_RWN);
-  pResetChar =              pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_RESET),                 PROPERTY_RWN);
+  pNetworkConnectChar =     pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_NETWORK_CONNECT),       PROPERTY_W);
+  pNetworkIPAddressChar =   pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_NETWORK_IP_ADDRESS),    PROPERTY_RN);
+  pResetChar =              pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_RESET),                 PROPERTY_W);
 
   pDisplayBrightnessChar->addDescriptor(new BLE2902());
   pAudioSensitivityChar->addDescriptor(new BLE2902());
@@ -109,9 +114,9 @@ bool CustomLittBLE::begin(const char* localName="CustomLittBLE Server"){
   pDeviceNameChar->addDescriptor(new BLE2902());
   pNetworkSSIDChar->addDescriptor(new BLE2902());
   pNetworkPasswordChar->addDescriptor(new BLE2902());
-  pNetworkConnectChar->addDescriptor(new BLE2902());
+//  pNetworkConnectChar->addDescriptor(new BLE2902()); // connect is write-only (writing is a command to connect)
   pNetworkIPAddressChar->addDescriptor(new BLE2902());
-  pResetChar->addDescriptor(new BLE2902());
+//  pResetChar->addDescriptor(new BLE2902()); // reset is write-only (writing is a command to reset)
 
   pDisplayBrightnessChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &displayBrightnessCallback));
   pAudioSensitivityChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &audioSensitivityCallback));
@@ -120,7 +125,7 @@ bool CustomLittBLE::begin(const char* localName="CustomLittBLE Server"){
   pNetworkSSIDChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &networkSSIDCallback));
   pNetworkPasswordChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &networkPasswordCallback));
   pNetworkConnectChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &networkConnectCallback));
-  pNetworkIPAddressChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &networkIPAddressCallback));
+//  pNetworkIPAddressChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &networkIPAddressCallback)); // ip address is read-only (it is determined by the device on artnet connect)
   pResetChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &resetCallback));
 
   // // Expression Properties Service

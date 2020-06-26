@@ -25,8 +25,9 @@ Header: CustomLitt_BLE.h
 #define CHARACTERISTIC_UUID_CLEP_AUDIO_REACTIVITY       "9F170303-899F-4F35-AD8A-85DF24B12007"
 #define CHARACTERISTIC_UUID_CLEP_FFT_BOUNDS             "9F170304-899F-4F35-AD8A-85DF24B12007"
 #define CHARACTERISTIC_UUID_CLEP_COLOR                  "9F170305-899F-4F35-AD8A-85DF24B12007"
-#define CHARACTERISTIC_UUID_CLEP_GRADIENT               "9F170306-899F-4F35-AD8A-85DF24B12007"
-#define CHARACTERISTIC_UUID_CLEP_GRADIENT_BLENDING      "9F170307-899F-4F35-AD8A-85DF24B12007"
+#define CHARACTERISTIC_UUID_CLEP_GRADIENT_INDEX         "9F170306-899F-4F35-AD8A-85DF24B12007"
+#define CHARACTERISTIC_UUID_CLEP_GRADIENT_COLOR         "9F170307-899F-4F35-AD8A-85DF24B12007"
+#define CHARACTERISTIC_UUID_CLEP_GRADIENT_BLENDING      "9F170308-899F-4F35-AD8A-85DF24B12007"
 
 #define PROPERTY_RWN  (BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_NOTIFY)
 #define PROPERTY_RN   (BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY)
@@ -62,6 +63,13 @@ void defaultCallback(BLECharacteristic* pCharacteristic){
 
 void CustomLittBLECharacteristicCallbacks::onWrite(BLECharacteristic *pCharacteristic) {
   std::string val = pCharacteristic->getValue();
+
+// // uncomment to debug all BLE write callbacks
+//  for(unsigned int indi = 0; indi < val.length(); indi++){
+//    Serial.print(val[indi]);
+//  }
+//  Serial.println();
+  
   if(_p_customlittble != NULL){
     if(_callback != NULL){
       _callback(pCharacteristic);
@@ -136,20 +144,22 @@ bool CustomLittBLE::begin(const char* localName="CustomLittBLE Server"){
   pResetChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &resetCallback));
 
   // // Expression Properties Service
-  pPatternChar =            pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_PATTERN),            PROPERTY_RWN);
-  pDelayChar =              pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_DELAY),              PROPERTY_RWN);
-  pAudioReactivityChar =    pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_AUDIO_REACTIVITY),   PROPERTY_RWN);
-  pFFTBoundsChar =          pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_FFT_BOUNDS),         PROPERTY_RWN);
-  pColorChar =              pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_COLOR),              PROPERTY_RWN);
-  pGradientChar =           pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_GRADIENT),           PROPERTY_RWN);
-  pGradientBlendingChar =   pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_GRADIENT_BLENDING),  PROPERTY_RWN);
+  pPatternChar =            pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_PATTERN),             PROPERTY_RWN);
+  pDelayChar =              pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_DELAY),               PROPERTY_RWN);
+  pAudioReactivityChar =    pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_AUDIO_REACTIVITY),    PROPERTY_RWN);
+  pFFTBoundsChar =          pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_FFT_BOUNDS),          PROPERTY_RWN);
+  pColorChar =              pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_COLOR),               PROPERTY_RWN);
+  pGradientIndexChar =      pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_GRADIENT_INDEX),      PROPERTY_RWN);
+  pGradientColorChar =      pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_GRADIENT_COLOR),      PROPERTY_RWN);
+  pGradientBlendingChar =   pExpressionPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLEP_GRADIENT_BLENDING),   PROPERTY_RWN);
 
   pPatternChar->addDescriptor(new BLE2902());
   pDelayChar->addDescriptor(new BLE2902());
   pAudioReactivityChar->addDescriptor(new BLE2902());
   pFFTBoundsChar->addDescriptor(new BLE2902());
   pColorChar->addDescriptor(new BLE2902());
-  pGradientChar->addDescriptor(new BLE2902());
+  pGradientIndexChar->addDescriptor(new BLE2902());
+  pGradientColorChar->addDescriptor(new BLE2902());
   pGradientBlendingChar->addDescriptor(new BLE2902());
 
   pPatternChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &patternCallback));
@@ -157,7 +167,8 @@ bool CustomLittBLE::begin(const char* localName="CustomLittBLE Server"){
   pAudioReactivityChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &audioReactivityCallback));
   pFFTBoundsChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &fftBoundsCallback));
   pColorChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &colorCallback));
-  pGradientChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &gradientCallback));
+  pGradientIndexChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &gradientIndexCallback));
+  pGradientColorChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &gradientColorCallback));
   pGradientBlendingChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &gradientBlendingCallback));
 
   // Start the service(s)
@@ -223,8 +234,12 @@ void CustomLittBLE::setColor(uint8_t r, uint8_t g, uint8_t b){
   setCharacteristic(pColorChar, String(r) + " " + String(g) + " " + String(b));
 }
 
-void CustomLittBLE::setGradient(uint8_t index, uint8_t r, uint8_t g, uint8_t b){
-  setCharacteristic(pGradientChar, String(index) + " " + String(r) + " " + String(g) + " " + String(b));
+void CustomLittBLE::setGradientIndex(uint8_t index){
+  setCharacteristic(pGradientIndexChar, String(index));
+}
+
+void CustomLittBLE::setGradientColor(uint8_t r, uint8_t g, uint8_t b){
+  setCharacteristic(pGradientColorChar, String(r) + " " + String(g) + " " + String(b));
 }
 
 void CustomLittBLE::setGradientBlending(uint8_t blending){

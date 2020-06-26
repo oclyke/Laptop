@@ -23,7 +23,8 @@ void delayCallback(BLECharacteristic* pCharacteristic);
 void audioReactivityCallback(BLECharacteristic* pCharacteristic);
 void fftBoundsCallback(BLECharacteristic* pCharacteristic);
 void colorCallback(BLECharacteristic* pCharacteristic);
-void gradientCallback(BLECharacteristic* pCharacteristic);
+void gradientIndexCallback(BLECharacteristic* pCharacteristic);
+void gradientColorCallback(BLECharacteristic* pCharacteristic);
 void gradientBlendingCallback(BLECharacteristic* pCharacteristic);
 
 #endif // _BLUETOOTH_INTERFACE_H_

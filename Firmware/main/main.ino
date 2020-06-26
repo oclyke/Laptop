@@ -66,6 +66,7 @@ int preArray[Y_LEDS][X_LEDS] = {
 uint8_t singleColorIndex = 0;
 uint8_t frameSkip = 1;
 uint8_t frameDelay = 0;
+uint8_t paletteIndex = 0;
 CRGBPalette16 currentPalette = RainbowColors_p;
 TBlendType    currentBlending = LINEARBLEND;
 bool audioReaction = true;
@@ -200,8 +201,11 @@ void setup()
   BLE.setAudioReactivity((audioReaction) ? 1 : 0);
   BLE.setFFTBounds(avgLowEnd, avgHighEnd);
   BLE.setColor(customColor.r, customColor.g, customColor.b);
-  BLE.setGradient(singleColorIndex, customColor.r, customColor.g, customColor.b);
+  BLE.setGradientIndex(paletteIndex);
   BLE.setGradientBlending((currentBlending) ? 1 : 0);
+
+  CRGB color = currentPalette[paletteIndex];
+  BLE.setGradientColor(color.r, color.g, color.b);
 }
 
 void loop()

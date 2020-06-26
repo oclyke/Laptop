@@ -26,6 +26,7 @@ https://github.com/nkolban/esp32-snippets/blob/master/cpp_utils/tests/BLE%20Test
 #include <BLE2902.h>
 
 #include <WiFi.h>
+#include <FastLED.h>
 
 #include "bluetoothInterface.h"
 
@@ -79,8 +80,13 @@ public:
   void setAudioReactivity(uint8_t reactivity);
   void setFFTBounds(uint8_t low, uint8_t high);
   void setColor(uint8_t r, uint8_t g, uint8_t b);
-  void setGradient(uint8_t index, uint8_t r, uint8_t g, uint8_t b);
+  void setGradientIndex(uint8_t index);
+  void setGradientColor(uint8_t r, uint8_t g, uint8_t b);
   void setGradientBlending(uint8_t blending);
+
+  void setGradient(CRGBPalette16 palette);
+
+  
   
   
   
@@ -110,7 +116,8 @@ private:
   BLECharacteristic * pAudioReactivityChar = NULL;
   BLECharacteristic * pFFTBoundsChar = NULL;
   BLECharacteristic * pColorChar = NULL;
-  BLECharacteristic * pGradientChar = NULL;
+  BLECharacteristic * pGradientIndexChar = NULL;
+  BLECharacteristic * pGradientColorChar = NULL;
   BLECharacteristic * pGradientBlendingChar = NULL;
 };
 

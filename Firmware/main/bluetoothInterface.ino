@@ -108,8 +108,6 @@ void audioSensitivityCallback(BLECharacteristic* pCharacteristic){
 //    setFloatCharacteristic(AUDIO_SCALE, audioScale);
 //  }
   Parser.flush();
-//  Serial.println("audio sensitivity callback");
-//  Serial.println(audioScale);
 }
 
 /*
@@ -273,14 +271,27 @@ void colorCallback(BLECharacteristic* pCharacteristic){
   Parser.flush();
 }
 
+
 /*
-  Change colors of gradient currently utilized
-  1 255 0 64 (changes second color in gradient to purple, first number is index of gradient, followed by the color you would like to change it to)
-  0-15 0-255 0-255 0-255
+  Change index of current gradient element
+  3 (changes the index to the 4th element of the gradient. subsequent operations to the GRADIENT_COLOR characteristic will operate on that element)
+  0-15
 */
-void gradientCallback(BLECharacteristic* pCharacteristic){
+void gradientIndexCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
-  uint8_t paletteIndex = Parser.parseInt();
+  paletteIndex = Parser.parseInt();
+  CRGB color = currentPalette[paletteIndex];
+  BLE.setGradientColor(color.r, color.g, color.b);
+  Parser.flush();
+}
+
+/*
+  Change color of current gradient element
+  255 0 64 (changes second color in gradient to purple, first number is index of gradient, followed by the color you would like to change it to)
+   0-255 0-255 0-255
+*/
+void gradientColorCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
   uint8_t red = Parser.parseInt();
   uint8_t green = Parser.parseInt();
   uint8_t blue = Parser.parseInt();

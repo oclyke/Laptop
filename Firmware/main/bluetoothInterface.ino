@@ -90,7 +90,7 @@ void displayBrightnessCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   brightness = Parser.parseInt();
   FastLED.setBrightness(brightness);
-  setCharacteristic(BRIGHTNESS, brightness);
+  storeBrightness(brightness);
   Parser.flush();
 }
 
@@ -102,11 +102,7 @@ void displayBrightnessCallback(BLECharacteristic* pCharacteristic){
 void audioSensitivityCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   audioScale = Parser.parseFloat();
-//  char saveSetting = Parser.read();
-//  if (saveSetting == 'e')
-//  {
-//    setFloatCharacteristic(AUDIO_SCALE, audioScale);
-//  }
+  storeAudioScale(audioScale);
   Parser.flush();
 }
 
@@ -119,7 +115,7 @@ void audioSourceCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   audioSource = Parser.parseInt();
   resetColorIndex();
-  setCharacteristic(AUDIO_SOURCE, audioSource);
+  storeAudioSource(audioSource);
   Parser.flush();
 }
 
@@ -129,15 +125,17 @@ void audioSourceCallback(BLECharacteristic* pCharacteristic){
 */
 void deviceNameCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
-  char tempName[32];
-  int position = 0;
+  char tempName[33];
+  uint8_t position = 0;
   while (Parser.available())
   {
     char temp = Parser.read();
     tempName[position++] = temp;
+    if(position > 31){ break; }
   }
+  tempName[position] = 0; // null terminate
   deviceName = tempName;
-  EEPROM.put(DEVICE_NAME_ADDRESS, deviceName);
+  storeDeviceName(deviceName);
   Parser.flush();
 }
 
@@ -147,14 +145,30 @@ void deviceNameCallback(BLECharacteristic* pCharacteristic){
 */
 void networkSSIDCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
-  char tempSsid[32];
-  int position = 0;
-  while (Parser.available())
+  char tempSsid[33];
+  uint8_t position = 0;
+  
+  Serial.println("Getting SSID");
+  Serial.print("Available: "); Serial.println(Parser.available());
+  
+  
+  while (Parser.available() > 1)
   {
     char temp = Parser.read();
     tempSsid[position++] = temp;
+    if(position > 31){ break; }
+
+//    Serial.print("0x");
+//    if(temp < 0x10){
+//      Serial.print("0");
+//    }
+//    Serial.print(temp, HEX);
+//    Serial.print(", ");
   }
-  setSSID(tempSsid);
+  tempSsid[position] = 0; // null terminate
+  
+  ssid = String(tempSsid);
+  storeSSID(ssid);
   Parser.flush();
 }
 
@@ -164,14 +178,17 @@ void networkSSIDCallback(BLECharacteristic* pCharacteristic){
 */
 void networkPasswordCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
-  char tempPassword[32];
-  int position = 0;
-  while (Parser.available())
+  char tempPassword[33];
+  uint8_t position = 0;
+  while (Parser.available() > 1)
   {
     char temp = Parser.read();
     tempPassword[position++] = temp;
+    if(position > 31){ break; }
   }
-  setPassword(tempPassword);
+  tempPassword[position] = 0; // null terminate
+  password = String(tempPassword);
+  storePassword(password);
   Parser.flush();
 }
 
@@ -216,7 +233,7 @@ void resetCallback(BLECharacteristic* pCharacteristic){
 void patternCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   patternNum = Parser.parseInt();
-  setCharacteristic(PATTERN, patternNum);
+  storePatternNum(patternNum);
   Parser.flush();
 }
 
@@ -229,6 +246,8 @@ void delayCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   frameSkip = Parser.parseInt();
   frameDelay = Parser.parseInt();
+  storeFrameSkip(frameSkip);
+  storeFrameDelay(frameDelay);
   Parser.flush();
 }
 
@@ -240,7 +259,7 @@ void delayCallback(BLECharacteristic* pCharacteristic){
 void audioReactivityCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   audioReaction = Parser.parseInt();
-  setCharacteristic(AUDIO_REACTION, audioReaction);
+  storeAudioReaction(audioReaction);
   Parser.flush();
 }
 
@@ -254,6 +273,8 @@ void fftBoundsCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   avgLowEnd = Parser.parseInt();
   avgHighEnd = Parser.parseInt();
+  storeAvgLowEnd(avgLowEnd);
+  storeAvgHighEnd(avgHighEnd);
   Parser.flush();
 }
 
@@ -267,7 +288,7 @@ void colorCallback(BLECharacteristic* pCharacteristic){
   customColor.red = Parser.parseInt();
   customColor.green = Parser.parseInt();
   customColor.blue = Parser.parseInt();
-  setColor(COLOR, customColor);
+  storeCustomColor(customColor);
   Parser.flush();
 }
 
@@ -280,6 +301,7 @@ void colorCallback(BLECharacteristic* pCharacteristic){
 void gradientIndexCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   paletteIndex = Parser.parseInt();
+  storePaletteIndex(paletteIndex);
   CRGB color = currentPalette[paletteIndex];
   BLE.setGradientColor(color.r, color.g, color.b);
   Parser.flush();
@@ -296,8 +318,8 @@ void gradientColorCallback(BLECharacteristic* pCharacteristic){
   uint8_t green = Parser.parseInt();
   uint8_t blue = Parser.parseInt();
   CRGB paletteColor = CRGB(red, green, blue);
-  setColor(GRADIENT + (paletteIndex * 3), paletteColor);
   setPalettePosition(paletteIndex, paletteColor);
+  storeCurrentPalette(currentPalette);
   Parser.flush();
 }
 
@@ -309,6 +331,6 @@ void gradientColorCallback(BLECharacteristic* pCharacteristic){
 void gradientBlendingCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   currentBlending = (TBlendType)Parser.parseInt();
-  setCharacteristic(BLENDING, currentBlending);
+  storeGradientBlending(currentBlending);
   Parser.flush();
 }

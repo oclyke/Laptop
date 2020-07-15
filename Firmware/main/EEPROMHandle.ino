@@ -2,185 +2,314 @@
   Copyright (c) 2019 Andy England
   CustomLitt Laptop
 */
-#include <EEPROM.h>
+#include <Preferences.h>
+#include "EEPROMHandle.h"
 
-//Wildly inefficient use of EEPROM, for the love of god pare this down when you have time
-#define SSID_ADDRESS 0
-#define PASSWORD_ADDRESS 32
-#define DEVICE_NAME_ADDRESS 64
-#define AUDIO_SOURCE_ADDRESS 96
-#define SSID_OKAY 97
-#define SSID_SIZE 98
-#define PASSWORD_OKAY 99
-#define PASSWORD_SIZE 100
-#define AUDIO_SCALE 101
-#define BRIGHTNESS 102
-#define COLOR 103 //103, 104, 105
-#define FRAME_SKIP 106
-#define FRAME_DELAY 107
-#define LOW_FREQUENCY 108
-#define HIGH_FREQUENCY 109
-#define GRADIENT 110//81-129 110-158
-#define AUDIO_SOURCE 159
-#define PATTERN 160
-#define AUDIO_REACTION 161
-#define BLENDING 162
-#define EEPROM_OKAY 163
+Preferences preferences;
+                              //".......|......." // max key length 15 chars, unique
+#define PREF_NAMESPACE          "customlitt"
+#define PREF_KEY_SSID           "ssid"
+#define PREF_KEY_PASSWORD       "pass"
+#define PREF_KEY_DEVICE_NAME    "name"
+#define PREF_KEY_AUDIO_SOURCE   "source"
+#define PREF_KEY_AUDIO_SCALE    "scale"
+#define PREF_KEY_BRIGHTNESS     "bright"
+#define PREF_KEY_COLOR          "color"
+#define PREF_KEY_FRAME_SKIP     "skip"
+#define PREF_KEY_FRAME_DELAY    "delay"
+#define PREF_KEY_LOW_FREQUENCY  "low"
+#define PREF_KEY_HIGH_FREQUENCY "high"
+#define PREF_KEY_GRADIENT       "gradient"
+#define PREF_KEY_PALETTE_INDEX  "index"
+#define PREF_KEY_PATTERN        "pattern"
+#define PREF_KEY_AUDIO_REACTION "react"
+#define PREF_KEY_BLENDING       "blend"
+#define PREF_KEY_WIFI_CONFIG_OK "wifiok"
+#define PREF_KEY_EEPROM_OKAY    "valid"
+
+#define EEPROM_STATUS_OKAY (0xE5)
 
 void initializeEEPROM()
 {
-  EEPROM.begin(512);
-  uint8_t eepromOkay;
-  EEPROM.get(EEPROM_OKAY, eepromOkay);
-  if (eepromOkay == 70)
-  {
-    EEPROM.get(DEVICE_NAME_ADDRESS, deviceName);
-    EEPROM.get(AUDIO_SCALE, audioScale);
-    EEPROM.get(BRIGHTNESS, brightness);
-    EEPROM.get(FRAME_SKIP, frameSkip);
-    EEPROM.get(FRAME_DELAY, frameDelay);
-    EEPROM.get(LOW_FREQUENCY, avgLowEnd);
-    EEPROM.get(HIGH_FREQUENCY, avgHighEnd);
-    EEPROM.get(AUDIO_SOURCE, audioSource);
-    EEPROM.get(PATTERN, patternNum);
-    EEPROM.get(AUDIO_REACTION, audioReaction);
-    EEPROM.get(BLENDING, currentBlending);
-    for (uint8_t address = 0; address < 48; address += 3)
-    {
-      EEPROM.get(GRADIENT + address, currentPalette[address].red);
-      EEPROM.get(GRADIENT + address + 1, currentPalette[address].green);
-      EEPROM.get(GRADIENT + address + 2, currentPalette[address].blue);
+  preferences.begin(PREF_NAMESPACE, false); // RW mode
+  uint8_t status = getEEPROMStatus();
+  if(status == EEPROM_STATUS_OKAY){
+    Serial.println("EEPROM was already initialized");
+    ssid = getSSID();
+    password = getPassword();
+    deviceName = getDeviceName();
+    audioSource = getAudioSource();
+    audioScale = getAudioScale();
+    brightness = getBrightness();
+    customColor = getCustomColor();
+    frameSkip = getFrameSkip();
+    frameDelay = getFrameDelay();
+    avgLowEnd = getAvgLowEnd();
+    avgHighEnd = getAvgHighEnd();
+    currentPalette = getCurrentPalette();
+    patternNum = getPatternNum();
+    audioReaction = getAudioReaction();
+    currentBlending = getGradientBlending();
+    wifiStatus = getWiFiStatus();
+
+    if(wifiStatus){
+      initArtnet();
     }
-    Serial.println("got");
-  }
-  else
-  {
-    EEPROM.put(DEVICE_NAME_ADDRESS, "Custom Litt Laptop");
-    EEPROM.put(AUDIO_SCALE, audioScale);
-    EEPROM.put(BRIGHTNESS, brightness);
-    EEPROM.put(FRAME_SKIP, frameSkip);
-    EEPROM.put(FRAME_DELAY, frameDelay);
-    EEPROM.put(LOW_FREQUENCY, avgLowEnd);
-    EEPROM.put(HIGH_FREQUENCY, avgHighEnd);
-    EEPROM.put(AUDIO_SOURCE, audioSource);
-    EEPROM.put(PATTERN, patternNum);
-    EEPROM.put(AUDIO_REACTION, audioReaction);
-    EEPROM.put(BLENDING, currentBlending);
-    EEPROM.put(EEPROM_OKAY, 69);
-    for (uint8_t address = 0; address < 48; address += 3)
-    {
-      EEPROM.put(GRADIENT + address, currentPalette[address].red);
-      EEPROM.put(GRADIENT + address + 1, currentPalette[address].green);
-      EEPROM.put(GRADIENT + address + 2, currentPalette[address].blue);
-    }
-    Serial.println("set");
+  }else{
+    Serial.println("Configuring EEPROM for the first time");
+    storeEEPROMStatus(EEPROM_STATUS_OKAY);
+    storeSSID(ssid);
+    storePassword(password);
+    storeDeviceName(deviceName);
+    storeAudioSource(audioSource);
+    storeAudioScale(audioScale);
+    storeBrightness(brightness);
+    storeCustomColor(customColor);
+    storeFrameSkip(frameSkip);
+    storeFrameDelay(frameDelay);
+    storeAvgLowEnd(avgLowEnd);
+    storeAvgHighEnd(avgHighEnd);
+    storeCurrentPalette(currentPalette);
+    storePatternNum(patternNum);
+    storeAudioReaction(audioReaction);
+    storeGradientBlending(currentBlending);
+    storeWiFiStatus(wifiStatus);
   }
 }
 
-void setCharacteristic(uint8_t address, uint8_t value)
-{
-  EEPROM.put(address, value);
-  EEPROM.commit();
+//
+// getters / store-ers
+
+//
+// SSID
+String getSSID( void ){
+  return preferences.getString(PREF_KEY_SSID, ssid);
+}
+size_t storeSSID(String val){
+  return preferences.putString(PREF_KEY_SSID, val);
 }
 
-void setFloatCharacteristic(uint8_t address, float value)
-{
-  EEPROM.put(address, value);
-  EEPROM.commit();
+//
+// Password
+String getPassword( void ){
+  return preferences.getString(PREF_KEY_PASSWORD, password);
+}
+size_t storePassword(String val){
+  return preferences.putString(PREF_KEY_PASSWORD, val);
 }
 
-void setColor(uint8_t address, CRGB color)
-{
-  EEPROM.put(address, color.red);
-  EEPROM.put(address + 1, color.green);
-  EEPROM.put(address + 2, color.blue);
-  EEPROM.commit();
+//
+// Device Name
+String getDeviceName( void ){
+  return preferences.getString(PREF_KEY_DEVICE_NAME, deviceName);
+}
+size_t storeDeviceName(String val){
+  return preferences.putString(PREF_KEY_DEVICE_NAME, val);
 }
 
-uint8_t getCharacteristic(uint8_t address)
-{
-  uint8_t value;
-  EEPROM.get(address, value);
-  return value;
+//
+// Audio Source
+bool getAudioSource( void ){
+  return (preferences.getUChar(PREF_KEY_AUDIO_SOURCE, (uint8_t)audioSource)) ? true : false;
+}
+size_t storeAudioSource(bool val){
+  return preferences.putUChar(PREF_KEY_AUDIO_SOURCE, (val) ? 0x01 : 0x00);
 }
 
-float getFloatCharacteristic(uint8_t address)
-{
-  float value;
-  EEPROM.get(address, value);
-  return value;
+//
+// Audio Scale
+float getAudioScale( void ){
+  return preferences.getFloat(PREF_KEY_AUDIO_SCALE, audioScale);
+}
+size_t storeAudioScale(float val){
+  return preferences.putFloat(PREF_KEY_AUDIO_SCALE, val);
 }
 
-CRGB getColor(uint8_t address)
-{
-  CRGB tempColor;
-  for (uint8_t colorToWrite = 0; colorToWrite < 3; colorToWrite++)
-  {
-    uint8_t temp;
-    EEPROM.get(address + colorToWrite, temp);
-    tempColor[colorToWrite] = temp;
+//
+// Brightness
+uint8_t getBrightness( void ){
+  return preferences.getUChar(PREF_KEY_BRIGHTNESS, brightness);
+}
+size_t storeBrightness(uint8_t val){
+  return preferences.putUChar(PREF_KEY_BRIGHTNESS, val);
+}
+
+//
+// Custom Color
+typedef struct _color_t {
+  uint8_t r;
+  uint8_t g;
+  uint8_t b;
+} color_t;
+
+CRGB getCustomColor( void ){
+  CRGB retval;
+  color_t color;
+  size_t got = preferences.getBytes(PREF_KEY_COLOR, (void*)&color, (sizeof(color_t)/sizeof(uint8_t)));
+  if(!got){
+    retval.r = customColor.r;
+    retval.g = customColor.g;
+    retval.b = customColor.b;
+    return retval;
   }
-  return tempColor;
+  retval.r = color.r;
+  retval.g = color.g;
+  retval.b = color.b;
+  return retval;
+}
+size_t storeCustomColor(CRGB val){
+  color_t color;
+  color.r = val.r;
+  color.g = val.g;
+  color.b = val.b;
+  return preferences.putBytes(PREF_KEY_COLOR, (const void*)&color, (sizeof(color_t)/sizeof(uint8_t)));
 }
 
-void setName(String tempName)
-{
-  Serial.println(tempName);
-  EEPROM.writeString(DEVICE_NAME_ADDRESS, tempName);
-  EEPROM.commit();
+//
+// Frame Skip
+uint8_t getFrameSkip( void ){
+  return preferences.getUChar(PREF_KEY_FRAME_SKIP, frameSkip);
+}
+size_t storeFrameSkip(uint8_t val){
+  return preferences.putUChar(PREF_KEY_FRAME_SKIP, val);
 }
 
-String getName()
-{
-  return EEPROM.readString(DEVICE_NAME_ADDRESS);
+//
+// Frame Delay
+uint8_t getFrameDelay( void ){
+  return preferences.getUChar(PREF_KEY_FRAME_DELAY, frameDelay);
+}
+size_t storeFrameDelay(uint8_t val){
+  return preferences.putUChar(PREF_KEY_FRAME_DELAY, val);
 }
 
-void setSSID(String tempSsid)
-{
-  Serial.println(tempSsid);
-  EEPROM.writeString(SSID_ADDRESS, tempSsid);
-  EEPROM.put(SSID_OKAY, true);
-  EEPROM.commit();
+//
+// Avg Low End
+uint8_t getAvgLowEnd( void ){
+  return preferences.getUChar(PREF_KEY_LOW_FREQUENCY, avgLowEnd);
+}
+size_t storeAvgLowEnd(uint8_t val){
+  return preferences.putUChar(PREF_KEY_LOW_FREQUENCY, val);
 }
 
-String getSSID()
-{
-  return EEPROM.readString(SSID_ADDRESS);
+//
+// Avg High End
+uint8_t getAvgHighEnd( void ){
+  return preferences.getUChar(PREF_KEY_HIGH_FREQUENCY, avgLowEnd);
+}
+size_t storeAvgHighEnd(uint8_t val){
+  return preferences.putUChar(PREF_KEY_HIGH_FREQUENCY, val);
 }
 
-void setPassword(String tempPassword)
-{
-  Serial.println(tempPassword);
-  EEPROM.writeString(PASSWORD_ADDRESS, tempPassword);
-  EEPROM.put(PASSWORD_OKAY, true);
-  EEPROM.commit();
+//
+// Current Palette
+typedef struct _gradient_t {
+  color_t c0;
+  color_t c1;
+  color_t c2;
+  color_t c3;
+  color_t c4;
+  color_t c5;
+  color_t c6;
+  color_t c7;
+  color_t c8;
+  color_t c9;
+  color_t c10;
+  color_t c11;
+  color_t c12;
+  color_t c13;
+  color_t c14;
+  color_t c15;
+} gradient_t;
+
+CRGBPalette16 getCurrentPalette( void ){
+  CRGBPalette16 retval;
+  gradient_t gradient;
+  size_t got = preferences.getBytes(PREF_KEY_GRADIENT, (void*)&gradient, (sizeof(gradient_t)/sizeof(uint8_t)));
+  if(!got){
+    return currentPalette;
+  }
+  color_t* base = (color_t*)&gradient;
+  color_t* color = NULL;
+  for(int idx = 0; idx < 16; idx++){
+    color = (base + idx);
+    retval[idx].r = color->r;
+    retval[idx].g = color->g;
+    retval[idx].b = color->b;
+  }
+  return retval;
+}
+size_t storeCurrentPalette(CRGBPalette16 val){
+  gradient_t gradient;
+  color_t* base = (color_t*)&gradient;
+  color_t* color = NULL;
+  for(int idx = 0; idx < 16; idx++){
+    color = (base + idx);
+    color->r = val[idx].r;
+    color->g = val[idx].g;
+    color->b = val[idx].b;
+  }
+  return preferences.putBytes(PREF_KEY_GRADIENT, (const void*)&gradient, (sizeof(gradient_t)/sizeof(uint8_t)));
 }
 
-String getPassword()
-{
-  return EEPROM.readString(PASSWORD_ADDRESS);
+// Palette Index
+uint8_t getPaletteIndex( void ){
+  return preferences.getUChar(PREF_KEY_PALETTE_INDEX, patternNum);
+}
+size_t storePaletteIndex(uint8_t val){
+  return preferences.putUChar(PREF_KEY_PALETTE_INDEX, val);
 }
 
-void setAudioSource (bool tempAudioSource)
-{
-  EEPROM.put(AUDIO_SOURCE_ADDRESS, tempAudioSource);
-  EEPROM.commit();
+//
+// Pattern Num
+uint8_t getPatternNum( void ){
+  return preferences.getUChar(PREF_KEY_PATTERN, patternNum);
+}
+size_t storePatternNum(uint8_t val){
+  return preferences.putUChar(PREF_KEY_PATTERN, val);
 }
 
-bool getAudioSource ()
-{
-  bool tempAudioSource;
-  return EEPROM.get(AUDIO_SOURCE_ADDRESS, tempAudioSource);
+//
+// Audio Reaction
+bool getAudioReaction( void ){
+  return (preferences.getUChar(PREF_KEY_AUDIO_REACTION, (uint8_t)audioReaction)) ? true : false;
+}
+size_t storeAudioReaction(bool val){
+  return preferences.putUChar(PREF_KEY_AUDIO_REACTION, (val) ? 0x01 : 0x00);
 }
 
-bool getWiFiOkay()
-{
-  bool ssidOkay = false;
-  bool passwordOkay = false;
-  EEPROM.get(SSID_OKAY, ssidOkay);
-  EEPROM.get(PASSWORD_OKAY, passwordOkay);
-  EEPROM.commit();
-  Serial.println(ssidOkay & passwordOkay);
-  Serial.println(passwordOkay);
-  return ssidOkay && passwordOkay;
+//
+// Gradient Blending
+TBlendType getGradientBlending( void ){
+  return (preferences.getUChar(PREF_KEY_BLENDING, (uint8_t)audioReaction)) ? LINEARBLEND : NOBLEND;
+}
+size_t storeGradientBlending(TBlendType val){
+  return preferences.putUChar(PREF_KEY_BLENDING, (val == LINEARBLEND) ? 0x01 : 0x00);
+}
+
+//
+// WiFi Configured OK
+bool   getWiFiStatus( void ){
+  uint8_t got = preferences.getUChar(PREF_KEY_WIFI_CONFIG_OK, wifiStatus);
+  
+  Serial.print("getting wifiStatus: ");
+  Serial.println(got);
+  
+  return (got) ? true : false; 
+}
+size_t storeWiFiStatus(bool val){
+  
+  Serial.print("Storing wifiStatus: ");
+  Serial.println(val);
+  
+  return preferences.putUChar(PREF_KEY_WIFI_CONFIG_OK, (val) ? 0x01 : 0x00);
+}
+
+//
+// EEPROM Status
+uint8_t getEEPROMStatus( void ){
+  return preferences.getUChar(PREF_KEY_EEPROM_OKAY, 0);
+}
+size_t storeEEPROMStatus(uint8_t val){
+  return preferences.putUChar(PREF_KEY_EEPROM_OKAY, val);
 }

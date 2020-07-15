@@ -17,8 +17,6 @@ bool sendFrame = 1;
 int previousDataLength = 0;
 
 //Wifi settings
-String ssid = "dummy";
-String password = "dummy";
 IPAddress local_IP(192, 168, 1, 4);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 0, 0);
@@ -42,30 +40,56 @@ void artRead ()
   artnet.read();
 }
 
+void WiFiEvent(WiFiEvent_t event){
+  switch(event) {
+    case SYSTEM_EVENT_STA_GOT_IP:
+      Serial.println("WiFi event: got ip!");
+      Serial.println(WiFi.localIP());
+      
+      wifiStatus = true;
+      storeWiFiStatus(wifiStatus);
+      
+      BLE.setIPAddress(WiFi.localIP());  
+      BLE.setNetworkSSID(ssid);
+      BLE.setNetworkPassword(password);
+      break;
+      
+    case SYSTEM_EVENT_STA_DISCONNECTED:
+      Serial.println("WiFi event: disconnected");
+      
+      wifiStatus = false;
+      storeWiFiStatus(wifiStatus);
+      
+      break;
+      
+    default:
+      Serial.print("Unknown WiFi Event: (");
+      Serial.print(event);
+      Serial.println(")");
+      break;
+  }
+}
+
 bool connectWifi(void) //Sets our ESP32 device up as an access point
 {
   boolean state = false;
-  //WiFi.mode(WIFI_AP_STA);
-  //state = WiFi.softAP(ssid, password);
-  //Comment out the above two lines and uncomment the below line to connect to an existing network specified on lines 8 and 9
-  /*if (state)
-    {
-    ssid = getSSID();
-    password = getPassword();
-    }*/
 
-  ssid = getSSID();
-  password = getPassword();
+  Serial.println("Connecting to WiFi: ");
   Serial.print("SSID: ");
   Serial.println(ssid);
   Serial.print("Password: ");
   Serial.println(password);
-  state = WiFi.begin(ssid.c_str(), "figureitoutdude");
-  Serial.println(WiFi.localIP());
-  BLE.setIPAddress(WiFi.localIP());  
-  BLE.setNetworkSSID(ssid);
-  BLE.setNetworkPassword(password);
-  state = getWiFiOkay();
+
+  const unsigned int c_ssid_len = 33;
+  char c_ssid[c_ssid_len];
+  ssid.toCharArray(c_ssid, c_ssid_len);
+
+  const unsigned int c_pass_len = 33;
+  char c_pass[c_pass_len];
+  password.toCharArray(c_pass, c_pass_len);
+  
+  WiFi.onEvent(WiFiEvent);
+  state = WiFi.begin(c_ssid, c_pass);
   return state;
 }
 

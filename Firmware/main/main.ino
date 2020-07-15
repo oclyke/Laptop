@@ -28,6 +28,9 @@ uint8_t patternNum = 0;
 #define Y_LEDS 13
 
 String deviceName = "dummy";
+String ssid = "dummy";
+String password = "dummy";
+bool wifiStatus = false;
 
 #define MISSING0 3
 #define MISSING1 0
@@ -183,9 +186,10 @@ void setup()
   makeLedArray();
   LEDS.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS);
   BLE.begin("CustomLitt");
+  
   initializeEEPROM();
+  
   FastLED.setBrightness(brightness);
-  initArtnet();
   FastLED.setMaxPowerInVoltsAndMilliamps(5, 1500);
 
   // set initial bluetooth properties
@@ -193,8 +197,8 @@ void setup()
   BLE.setAudioSensitivity(audioScale);
   BLE.setAudioSource((audioSource) ? 1 : 0);
   BLE.setDeviceName(deviceName);
-//  BLE.setNetworkSSID(ssid);
-//  BLE.setNetworkPassword(password);
+  BLE.setNetworkSSID(ssid);
+  BLE.setNetworkPassword(password);
 
   BLE.setPattern(patternNum);
   BLE.setDelay(frameSkip, frameDelay);
@@ -210,14 +214,6 @@ void setup()
 
 void loop()
 {
-//  //long timerStart = millis();
-//  if (SerialBT.available()) {
-//    char instructionType = SerialBT.read();
-//    bluetoothHandler(instructionType);
-//    Serial.write(instructionType);
-//  }
-
-
   switch (patternNum)
   {
     case 0:

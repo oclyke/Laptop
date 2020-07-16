@@ -192,22 +192,29 @@ void networkPasswordCallback(BLECharacteristic* pCharacteristic){
   Parser.flush();
 }
 
-/* 
-  Write to this characteristic to attempt to connect to artnet (write only)
-  any value
-*/
-void networkConnectCallback(BLECharacteristic* pCharacteristic){
-  Parser.loadCharacteristicValue(pCharacteristic);
-  initArtnet();
-  Parser.flush();
-}
-
 /*
   Read the device's IP Address from this characteristic (read only)
 */
 void networkIPAddressCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   // browser does not set ip address
+  Parser.flush();
+}
+
+/* 
+  Write to this characteristic to request a change in network status
+  Read this characteristic (or be notified) to determine the actual network status
+  1 [network is connected and operational]
+  0 [network is disconnected and non-operational]
+*/
+void networkStatusCallback(BLECharacteristic* pCharacteristic){
+  Parser.loadCharacteristicValue(pCharacteristic);
+  bool stat = (Parser.parseInt() == 0x00) ? false : true;
+  if(stat != 0){
+    initArtnet();
+  }else{
+    deinitArtnet();
+  }
   Parser.flush();
 }
 

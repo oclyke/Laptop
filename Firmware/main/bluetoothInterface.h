@@ -14,8 +14,8 @@ void audioSourceCallback(BLECharacteristic* pCharacteristic);
 void deviceNameCallback(BLECharacteristic* pCharacteristic);
 void networkSSIDCallback(BLECharacteristic* pCharacteristic);
 void networkPasswordCallback(BLECharacteristic* pCharacteristic);
-void networkConnectCallback(BLECharacteristic* pCharacteristic);
 void networkIPAddressCallback(BLECharacteristic* pCharacteristic);
+void networkStatusCallback(BLECharacteristic* pCharacteristic);
 void resetCallback(BLECharacteristic* pCharacteristic);
 
 void patternCallback(BLECharacteristic* pCharacteristic);

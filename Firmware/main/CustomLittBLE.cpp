@@ -15,10 +15,9 @@ Header: CustomLitt_BLE.h
 #define CHARACTERISTIC_UUID_CLGP_DEVICE_NAME            "9F170204-899F-4F35-AD8A-85DF24B12007"
 #define CHARACTERISTIC_UUID_CLGP_NETWORK_SSID           "9F170205-899F-4F35-AD8A-85DF24B12007"
 #define CHARACTERISTIC_UUID_CLGP_NETWORK_PASSWORD       "9F170206-899F-4F35-AD8A-85DF24B12007"
-#define CHARACTERISTIC_UUID_CLGP_NETWORK_CONNECT        "9F170207-899F-4F35-AD8A-85DF24B12007"
-#define CHARACTERISTIC_UUID_CLGP_NETWORK_IP_ADDRESS     "9F170208-899F-4F35-AD8A-85DF24B12007"
-#define CHARACTERISTIC_UUID_CLGP_NETWORK_STATUS         "9F170209-899F-4F35-AD8A-85DF24B12007"
-#define CHARACTERISTIC_UUID_CLGP_RESET                  "9F17020A-899F-4F35-AD8A-85DF24B12007"
+#define CHARACTERISTIC_UUID_CLGP_NETWORK_IP_ADDRESS     "9F170207-899F-4F35-AD8A-85DF24B12007"
+#define CHARACTERISTIC_UUID_CLGP_NETWORK_STATUS         "9F170208-899F-4F35-AD8A-85DF24B12007"
+#define CHARACTERISTIC_UUID_CLGP_RESET                  "9F170209-899F-4F35-AD8A-85DF24B12007"
 
 #define SERVICE_UUID_EXPRESSION_PROPERTIES              "9F170300-899F-4F35-AD8A-85DF24B12007"
 #define CHARACTERISTIC_UUID_CLEP_PATTERN                "9F170301-899F-4F35-AD8A-85DF24B12007"
@@ -51,9 +50,9 @@ void setCharacteristic(BLECharacteristic *pCharacteristic, const uint8_t *buffer
 }
 
 void setCharacteristic(BLECharacteristic *pCharacteristic, String string){
-  const unsigned int len = string.length() + 1;
-  uint8_t arry[len] = {0};
-  string.toCharArray((char*)arry, len);
+  const unsigned int len = string.length();
+  uint8_t arry[len + 1] = {0};
+  string.toCharArray((char*)arry, len + 1);
   setCharacteristic(pCharacteristic, arry, len);
 }
 
@@ -120,9 +119,8 @@ bool CustomLittBLE::begin(const char* localName="CustomLittBLE Server"){
   pDeviceNameChar =         pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_DEVICE_NAME),           PROPERTY_RWN);
   pNetworkSSIDChar =        pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_NETWORK_SSID),          PROPERTY_RWN);
   pNetworkPasswordChar =    pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_NETWORK_PASSWORD),      PROPERTY_RWN);
-  pNetworkConnectChar =     pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_NETWORK_CONNECT),       PROPERTY_W);
   pNetworkIPAddressChar =   pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_NETWORK_IP_ADDRESS),    PROPERTY_RN);
-  pNetworkStatusChar =      pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_NETWORK_STATUS),        PROPERTY_RN);
+  pNetworkStatusChar =      pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_NETWORK_STATUS),        PROPERTY_RWN);
   pResetChar =              pGlobalPropertiesService->createCharacteristic(BLEUUID(CHARACTERISTIC_UUID_CLGP_RESET),                 PROPERTY_W);
 
   pDisplayBrightnessChar->addDescriptor(new BLE2902());
@@ -131,7 +129,6 @@ bool CustomLittBLE::begin(const char* localName="CustomLittBLE Server"){
   pDeviceNameChar->addDescriptor(new BLE2902());
   pNetworkSSIDChar->addDescriptor(new BLE2902());
   pNetworkPasswordChar->addDescriptor(new BLE2902());
-//  pNetworkConnectChar->addDescriptor(new BLE2902()); // connect is write-only (writing is a command to connect)
   pNetworkIPAddressChar->addDescriptor(new BLE2902());
   pNetworkStatusChar->addDescriptor(new BLE2902());
 //  pResetChar->addDescriptor(new BLE2902()); // reset is write-only (writing is a command to reset)
@@ -142,9 +139,8 @@ bool CustomLittBLE::begin(const char* localName="CustomLittBLE Server"){
   pDeviceNameChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &deviceNameCallback));
   pNetworkSSIDChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &networkSSIDCallback));
   pNetworkPasswordChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &networkPasswordCallback));
-  pNetworkConnectChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &networkConnectCallback));
 //  pNetworkIPAddressChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &networkIPAddressCallback)); // ip address is read-only (it is determined by the device on artnet connect)
-//  pNetworkStatusChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &networkIPAddressCallback)); // network status is read-only (the device can change it at any time)
+  pNetworkStatusChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &networkStatusCallback)); // network status is read-only (the device can change it at any time)
   pResetChar->setCallbacks(new CustomLittBLECharacteristicCallbacks(this, &resetCallback));
 
   // // Expression Properties Service

@@ -107,7 +107,6 @@ private:
   BLECharacteristic * pDeviceNameChar = NULL;
   BLECharacteristic * pNetworkSSIDChar = NULL;
   BLECharacteristic * pNetworkPasswordChar = NULL;
-  BLECharacteristic * pNetworkConnectChar = NULL;
   BLECharacteristic * pNetworkIPAddressChar = NULL;
   BLECharacteristic * pNetworkStatusChar = NULL;
   BLECharacteristic * pResetChar = NULL;

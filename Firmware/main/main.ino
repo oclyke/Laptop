@@ -199,6 +199,7 @@ void setup()
   BLE.setDeviceName(deviceName);
   BLE.setNetworkSSID(ssid);
   BLE.setNetworkPassword(password);
+  BLE.setNetworkStatus(wifiStatus);
 
   BLE.setPattern(patternNum);
   BLE.setDelay(frameSkip, frameDelay);

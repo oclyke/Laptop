@@ -35,12 +35,20 @@ void initArtnet()
   }
 }
 
+void deinitArtnet()
+{
+  WiFi.disconnect();
+}
+
 void artRead ()
 {
   artnet.read();
 }
 
 void WiFiEvent(WiFiEvent_t event){
+  IPAddress null_ip;
+  null_ip.fromString(String("0.0.0.0"));
+  
   switch(event) {
     case SYSTEM_EVENT_STA_GOT_IP:
       Serial.println("WiFi event: got ip!");
@@ -50,10 +58,7 @@ void WiFiEvent(WiFiEvent_t event){
       storeWiFiStatus(wifiStatus);
       
       BLE.setIPAddress(WiFi.localIP());  
-      BLE.setNetworkSSID(ssid);
-      BLE.setNetworkPassword(password);
       BLE.setNetworkStatus(wifiStatus);
-      
       break;
       
     case SYSTEM_EVENT_STA_DISCONNECTED:
@@ -63,6 +68,8 @@ void WiFiEvent(WiFiEvent_t event){
       storeWiFiStatus(wifiStatus);
       BLE.setNetworkStatus(wifiStatus);
       
+      BLE.setIPAddress(null_ip); 
+      BLE.setNetworkStatus(wifiStatus);
       break;
       
     default:

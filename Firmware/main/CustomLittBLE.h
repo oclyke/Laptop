@@ -74,6 +74,7 @@ public:
   void setNetworkSSID(String ssid);
   void setNetworkPassword(String password);
   void setIPAddress(IPAddress address);
+  void setNetworkStatus(bool status);
 
   void setPattern(uint8_t pattern);
   void setDelay(uint8_t frames, uint16_t ms);
@@ -108,6 +109,7 @@ private:
   BLECharacteristic * pNetworkPasswordChar = NULL;
   BLECharacteristic * pNetworkConnectChar = NULL;
   BLECharacteristic * pNetworkIPAddressChar = NULL;
+  BLECharacteristic * pNetworkStatusChar = NULL;
   BLECharacteristic * pResetChar = NULL;
   
   BLEService *pExpressionPropertiesService = NULL;

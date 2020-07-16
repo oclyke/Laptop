@@ -52,6 +52,8 @@ void WiFiEvent(WiFiEvent_t event){
       BLE.setIPAddress(WiFi.localIP());  
       BLE.setNetworkSSID(ssid);
       BLE.setNetworkPassword(password);
+      BLE.setNetworkStatus(wifiStatus);
+      
       break;
       
     case SYSTEM_EVENT_STA_DISCONNECTED:
@@ -59,6 +61,7 @@ void WiFiEvent(WiFiEvent_t event){
       
       wifiStatus = false;
       storeWiFiStatus(wifiStatus);
+      BLE.setNetworkStatus(wifiStatus);
       
       break;
       

@@ -67,9 +67,7 @@ void WiFiEvent(WiFiEvent_t event){
       wifiStatus = false;
       storeWiFiStatus(wifiStatus);
       BLE.setNetworkStatus(wifiStatus);
-      
       BLE.setIPAddress(null_ip); 
-      BLE.setNetworkStatus(wifiStatus);
       break;
       
     default:

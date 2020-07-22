@@ -52,9 +52,13 @@ void initializeEEPROM()
     currentBlending = getGradientBlending();
     wifiStatus = getWiFiStatus();
 
-    if(wifiStatus){
-      initArtnet();
-    }
+//    if(wifiStatus){
+//      initArtnet();
+//    }
+
+    wifiStatus = false;
+    storeWiFiStatus(wifiStatus);
+    
   }else{
     Serial.println("Configuring EEPROM for the first time");
     storeEEPROMStatus(EEPROM_STATUS_OKAY);

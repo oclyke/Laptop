@@ -37,12 +37,15 @@ void initArtnet()
 
 void deinitArtnet()
 {
+  artnet.setArtDmxCallback(NULL);
   WiFi.disconnect();
 }
 
 void artRead ()
 {
-  artnet.read();
+  if(wifiStatus){
+    artnet.read();
+  }
 }
 
 void WiFiEvent(WiFiEvent_t event){

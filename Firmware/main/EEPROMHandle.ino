@@ -29,9 +29,17 @@ Preferences preferences;
 
 #define EEPROM_STATUS_OKAY (0xE5)
 
+#define RECOVERY_STRAPPING_PIN (0)
+
 void initializeEEPROM()
 {
   preferences.begin(PREF_NAMESPACE, false); // RW mode
+
+  pinMode(RECOVERY_STRAPPING_PIN, INPUT_PULLUP);
+  if(!digitalRead(RECOVERY_STRAPPING_PIN)){
+    preferences.clear();
+  }
+  
   uint8_t status = getEEPROMStatus();
   if(status == EEPROM_STATUS_OKAY){
     Serial.println("EEPROM was already initialized");

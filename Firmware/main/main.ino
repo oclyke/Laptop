@@ -5,10 +5,10 @@
 
 #include "arduinoFFT.h"
 #include <FastLED.h>
-#include "BLESerial.h"
+#include "CustomLittBLE.h"
 
-/**Serial Bluetooth**/
-BLESerial SerialBT;
+/**CustomLitt BLE**/
+CustomLittBLE BLE;
 
 uint8_t brightness = 255;
 
@@ -28,6 +28,9 @@ uint8_t patternNum = 0;
 #define Y_LEDS 13
 
 String deviceName = "dummy";
+String ssid = "dummy";
+String password = "dummy";
+bool wifiStatus = false;
 
 #define MISSING0 3
 #define MISSING1 0
@@ -66,6 +69,7 @@ int preArray[Y_LEDS][X_LEDS] = {
 uint8_t singleColorIndex = 0;
 uint8_t frameSkip = 1;
 uint8_t frameDelay = 0;
+uint8_t paletteIndex = 0;
 CRGBPalette16 currentPalette = RainbowColors_p;
 TBlendType    currentBlending = LINEARBLEND;
 bool audioReaction = true;
@@ -181,20 +185,36 @@ void setup()
   Serial.begin(115200);
   makeLedArray();
   LEDS.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS);
-  SerialBT.begin("CustomLitt"); //Bluetooth device name
+  BLE.begin("CustomLitt");
+  
   initializeEEPROM();
+  
   FastLED.setBrightness(brightness);
-  initArtnet();
   FastLED.setMaxPowerInVoltsAndMilliamps(5, 1500);
+
+  // set initial bluetooth properties
+  BLE.setDisplayBrightness(brightness);
+  BLE.setAudioSensitivity(audioScale);
+  BLE.setAudioSource((audioSource) ? 1 : 0);
+  BLE.setDeviceName(deviceName);
+  BLE.setNetworkSSID(ssid);
+  BLE.setNetworkPassword(password);
+  BLE.setNetworkStatus(wifiStatus);
+
+  BLE.setPattern(patternNum);
+  BLE.setDelay(frameSkip, frameDelay);
+  BLE.setAudioReactivity((audioReaction) ? 1 : 0);
+  BLE.setFFTBounds(avgLowEnd, avgHighEnd);
+  BLE.setColor(customColor.r, customColor.g, customColor.b);
+  BLE.setGradientIndex(paletteIndex);
+  BLE.setGradientBlending((currentBlending) ? 1 : 0);
+
+  CRGB color = currentPalette[paletteIndex];
+  BLE.setGradientColor(color.r, color.g, color.b);
 }
 
 void loop()
 {
-  //long timerStart = millis();
-  if (SerialBT.available()) {
-    char instructionType = SerialBT.read();
-    bluetoothHandler(instructionType);
-  }
   switch (patternNum)
   {
     case 0:

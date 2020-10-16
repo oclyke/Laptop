@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.2">
+<eagle version="9.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -5573,18 +5573,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="JP248" library="SparkFun-Jumpers" deviceset="JUMPER-SMT_2_NO" device="_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK"/>
 <part name="GND263" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
 <part name="SUPPLY258" library="SparkFun-PowerSymbols" deviceset="V_USB" device=""/>
-<part name="D309" library="SparkFun-LED" deviceset="WS2812B" device="" value="WS2812B"/>
-<part name="SUPPLY318" library="SparkFun-PowerSymbols" deviceset="V_USB" device=""/>
-<part name="D310" library="SparkFun-LED" deviceset="WS2812B" device="" value="WS2812B"/>
-<part name="GND323" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
-<part name="SUPPLY319" library="SparkFun-PowerSymbols" deviceset="V_USB" device=""/>
-<part name="GND324" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
-<part name="JP309" library="SparkFun-Jumpers" deviceset="JUMPER-SMT_2_NO" device="_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK"/>
-<part name="JP310" library="SparkFun-Jumpers" deviceset="JUMPER-SMT_2_NO" device="_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK"/>
-<part name="D311" library="SparkFun-LED" deviceset="WS2812B" device="" value="WS2812B"/>
-<part name="SUPPLY320" library="SparkFun-PowerSymbols" deviceset="V_USB" device=""/>
-<part name="GND325" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
-<part name="JP311" library="SparkFun-Jumpers" deviceset="JUMPER-SMT_2_NO" device="_NO-SILK" value="JUMPER-SMT_2_NO_NO-SILK"/>
 <part name="D315" library="SparkFun-LED" deviceset="WS2812B" device="" value="WS2812B"/>
 <part name="SUPPLY324" library="SparkFun-PowerSymbols" deviceset="V_USB" device=""/>
 <part name="GND329" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
@@ -16069,42 +16057,6 @@ Gain=1+trimpot/thruhole</text>
 <instance part="SUPPLY258" gate="G$1" x="60.96" y="162.56" smashed="yes">
 <attribute name="VALUE" x="60.96" y="165.354" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="D309" gate="G$1" x="-96.52" y="104.14" smashed="yes">
-<attribute name="NAME" x="-99.06" y="112.522" size="1.778" layer="95" font="vector" align="bottom-center"/>
-</instance>
-<instance part="SUPPLY318" gate="G$1" x="-114.3" y="111.76" smashed="yes">
-<attribute name="VALUE" x="-114.3" y="114.554" size="1.778" layer="96" align="bottom-center"/>
-</instance>
-<instance part="D310" gate="G$1" x="-60.96" y="104.14" smashed="yes">
-<attribute name="NAME" x="-63.5" y="112.522" size="1.778" layer="95" font="vector" align="bottom-center"/>
-</instance>
-<instance part="GND323" gate="1" x="-45.72" y="96.52" smashed="yes">
-<attribute name="VALUE" x="-45.72" y="96.266" size="1.778" layer="96" align="top-center"/>
-</instance>
-<instance part="SUPPLY319" gate="G$1" x="-78.74" y="111.76" smashed="yes">
-<attribute name="VALUE" x="-78.74" y="114.554" size="1.778" layer="96" align="bottom-center"/>
-</instance>
-<instance part="GND324" gate="1" x="-81.28" y="96.52" smashed="yes">
-<attribute name="VALUE" x="-81.28" y="96.266" size="1.778" layer="96" align="top-center"/>
-</instance>
-<instance part="JP309" gate="G$1" x="-99.06" y="93.98" smashed="yes">
-<attribute name="NAME" x="-101.6" y="96.52" size="1.778" layer="95" font="vector"/>
-</instance>
-<instance part="JP310" gate="G$1" x="-63.5" y="93.98" smashed="yes">
-<attribute name="NAME" x="-66.04" y="96.52" size="1.778" layer="95" font="vector"/>
-</instance>
-<instance part="D311" gate="G$1" x="-25.4" y="104.14" smashed="yes">
-<attribute name="NAME" x="-27.94" y="112.522" size="1.778" layer="95" font="vector" align="bottom-center"/>
-</instance>
-<instance part="SUPPLY320" gate="G$1" x="-43.18" y="111.76" smashed="yes">
-<attribute name="VALUE" x="-43.18" y="114.554" size="1.778" layer="96" align="bottom-center"/>
-</instance>
-<instance part="GND325" gate="1" x="-10.16" y="96.52" smashed="yes">
-<attribute name="VALUE" x="-10.16" y="96.266" size="1.778" layer="96" align="top-center"/>
-</instance>
-<instance part="JP311" gate="G$1" x="-27.94" y="93.98" smashed="yes">
-<attribute name="NAME" x="-30.48" y="96.52" size="1.778" layer="95" font="vector"/>
-</instance>
 <instance part="D315" gate="G$1" x="10.16" y="104.14" smashed="yes">
 <attribute name="NAME" x="7.62" y="112.522" size="1.778" layer="95" font="vector" align="bottom-center"/>
 </instance>
@@ -16720,24 +16672,6 @@ Gain=1+trimpot/thruhole</text>
 <wire x1="60.96" y1="160.02" x2="63.5" y2="160.02" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="D309" gate="G$1" pin="VDD"/>
-<wire x1="-111.76" y1="109.22" x2="-114.3" y2="109.22" width="0.1524" layer="91"/>
-<wire x1="-114.3" y1="109.22" x2="-114.3" y2="111.76" width="0.1524" layer="91"/>
-<pinref part="SUPPLY318" gate="G$1" pin="V_USB"/>
-</segment>
-<segment>
-<pinref part="D310" gate="G$1" pin="VDD"/>
-<wire x1="-76.2" y1="109.22" x2="-78.74" y2="109.22" width="0.1524" layer="91"/>
-<wire x1="-78.74" y1="109.22" x2="-78.74" y2="111.76" width="0.1524" layer="91"/>
-<pinref part="SUPPLY319" gate="G$1" pin="V_USB"/>
-</segment>
-<segment>
-<pinref part="D311" gate="G$1" pin="VDD"/>
-<wire x1="-40.64" y1="109.22" x2="-43.18" y2="109.22" width="0.1524" layer="91"/>
-<wire x1="-43.18" y1="109.22" x2="-43.18" y2="111.76" width="0.1524" layer="91"/>
-<pinref part="SUPPLY320" gate="G$1" pin="V_USB"/>
-</segment>
-<segment>
 <pinref part="D315" gate="G$1" pin="VDD"/>
 <wire x1="-5.08" y1="109.22" x2="-7.62" y2="109.22" width="0.1524" layer="91"/>
 <wire x1="-7.62" y1="109.22" x2="-7.62" y2="111.76" width="0.1524" layer="91"/>
@@ -17322,24 +17256,6 @@ Gain=1+trimpot/thruhole</text>
 <wire x1="93.98" y1="160.02" x2="93.98" y2="149.86" width="0.1524" layer="91"/>
 <pinref part="D248" gate="G$1" pin="VSS"/>
 <wire x1="93.98" y1="160.02" x2="91.44" y2="160.02" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="D310" gate="G$1" pin="VSS"/>
-<wire x1="-48.26" y1="109.22" x2="-45.72" y2="109.22" width="0.1524" layer="91"/>
-<wire x1="-45.72" y1="109.22" x2="-45.72" y2="99.06" width="0.1524" layer="91"/>
-<pinref part="GND323" gate="1" pin="GND"/>
-</segment>
-<segment>
-<pinref part="D309" gate="G$1" pin="VSS"/>
-<wire x1="-83.82" y1="109.22" x2="-81.28" y2="109.22" width="0.1524" layer="91"/>
-<wire x1="-81.28" y1="109.22" x2="-81.28" y2="99.06" width="0.1524" layer="91"/>
-<pinref part="GND324" gate="1" pin="GND"/>
-</segment>
-<segment>
-<pinref part="D311" gate="G$1" pin="VSS"/>
-<wire x1="-12.7" y1="109.22" x2="-10.16" y2="109.22" width="0.1524" layer="91"/>
-<wire x1="-10.16" y1="109.22" x2="-10.16" y2="99.06" width="0.1524" layer="91"/>
-<pinref part="GND325" gate="1" pin="GND"/>
 </segment>
 <segment>
 <pinref part="D315" gate="G$1" pin="VSS"/>
@@ -18699,36 +18615,6 @@ Gain=1+trimpot/thruhole</text>
 <junction x="99.06" y="144.78"/>
 </segment>
 </net>
-<net name="DIO143" class="0">
-<segment>
-<wire x1="-78.74" y1="93.98" x2="-68.58" y2="93.98" width="0.1524" layer="91"/>
-<pinref part="D309" gate="G$1" pin="DO"/>
-<pinref part="D310" gate="G$1" pin="DI"/>
-<wire x1="-83.82" y1="101.6" x2="-78.74" y2="101.6" width="0.1524" layer="91"/>
-<wire x1="-78.74" y1="101.6" x2="-76.2" y2="101.6" width="0.1524" layer="91"/>
-<wire x1="-78.74" y1="93.98" x2="-78.74" y2="101.6" width="0.1524" layer="91"/>
-<junction x="-78.74" y="101.6"/>
-<pinref part="JP310" gate="G$1" pin="1"/>
-<pinref part="JP309" gate="G$1" pin="2"/>
-<wire x1="-93.98" y1="93.98" x2="-78.74" y2="93.98" width="0.1524" layer="91"/>
-<junction x="-78.74" y="93.98"/>
-</segment>
-</net>
-<net name="N$170" class="0">
-<segment>
-<pinref part="D310" gate="G$1" pin="DO"/>
-<wire x1="-48.26" y1="101.6" x2="-43.18" y2="101.6" width="0.1524" layer="91"/>
-<pinref part="D311" gate="G$1" pin="DI"/>
-<wire x1="-43.18" y1="101.6" x2="-40.64" y2="101.6" width="0.1524" layer="91"/>
-<wire x1="-58.42" y1="93.98" x2="-43.18" y2="93.98" width="0.1524" layer="91"/>
-<pinref part="JP311" gate="G$1" pin="1"/>
-<pinref part="JP310" gate="G$1" pin="2"/>
-<wire x1="-43.18" y1="93.98" x2="-33.02" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="-43.18" y1="101.6" x2="-43.18" y2="93.98" width="0.1524" layer="91"/>
-<junction x="-43.18" y="101.6"/>
-<junction x="-43.18" y="93.98"/>
-</segment>
-</net>
 <net name="DIO153" class="0">
 <segment>
 <pinref part="JP232" gate="G$1" pin="1"/>
@@ -18742,21 +18628,6 @@ Gain=1+trimpot/thruhole</text>
 <pinref part="D315" gate="G$1" pin="DO"/>
 <wire x1="27.94" y1="101.6" x2="22.86" y2="101.6" width="0.1524" layer="91"/>
 <junction x="27.94" y="101.6"/>
-</segment>
-</net>
-<net name="N$173" class="0">
-<segment>
-<pinref part="D315" gate="G$1" pin="DI"/>
-<pinref part="D311" gate="G$1" pin="DO"/>
-<wire x1="-12.7" y1="101.6" x2="-7.62" y2="101.6" width="0.1524" layer="91"/>
-<pinref part="JP315" gate="G$1" pin="1"/>
-<pinref part="JP311" gate="G$1" pin="2"/>
-<wire x1="-7.62" y1="101.6" x2="-5.08" y2="101.6" width="0.1524" layer="91"/>
-<wire x1="2.54" y1="93.98" x2="-7.62" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="-7.62" y1="93.98" x2="-22.86" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="-7.62" y1="101.6" x2="-7.62" y2="93.98" width="0.1524" layer="91"/>
-<junction x="-7.62" y="101.6"/>
-<junction x="-7.62" y="93.98"/>
 </segment>
 </net>
 <net name="JUMPER12" class="0">
@@ -18877,12 +18748,7 @@ Gain=1+trimpot/thruhole</text>
 <label x="347.98" y="15.24" size="1.27" layer="95" xref="yes"/>
 </segment>
 <segment>
-<pinref part="JP309" gate="G$1" pin="1"/>
-<pinref part="D309" gate="G$1" pin="DI"/>
-<wire x1="-119.38" y1="101.6" x2="-111.76" y2="101.6" width="0.1524" layer="91"/>
-<wire x1="-119.38" y1="101.6" x2="-119.38" y2="96.52" width="0.1524" layer="91"/>
-<wire x1="-119.38" y1="96.52" x2="-119.38" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="-119.38" y1="93.98" x2="-104.14" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="-12.7" y1="96.52" x2="-12.7" y2="93.98" width="0.1524" layer="91"/>
 <pinref part="D231" gate="G$1" pin="DO"/>
 <wire x1="485.14" y1="127" x2="490.22" y2="127" width="0.1524" layer="91"/>
 <wire x1="490.22" y1="127" x2="492.76" y2="127" width="0.1524" layer="91"/>
@@ -18890,13 +18756,19 @@ Gain=1+trimpot/thruhole</text>
 <pinref part="JP231" gate="G$1" pin="2"/>
 <wire x1="490.22" y1="127" x2="490.22" y2="119.38" width="0.1524" layer="91"/>
 <junction x="490.22" y="127"/>
-<wire x1="-119.38" y1="116.84" x2="492.76" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="-12.7" y1="116.84" x2="492.76" y2="116.84" width="0.1524" layer="91"/>
 <wire x1="492.76" y1="116.84" x2="492.76" y2="127" width="0.1524" layer="91"/>
-<wire x1="-119.38" y1="101.6" x2="-119.38" y2="116.84" width="0.1524" layer="91"/>
-<junction x="-119.38" y="101.6"/>
-<wire x1="-119.38" y1="96.52" x2="-121.92" y2="96.52" width="0.1524" layer="91"/>
-<junction x="-119.38" y="96.52"/>
-<label x="-121.92" y="96.52" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="-12.7" y1="96.52" x2="-12.7" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="-12.7" y1="96.52" x2="-15.24" y2="96.52" width="0.1524" layer="91"/>
+<junction x="-12.7" y="96.52"/>
+<label x="-15.24" y="96.52" size="1.27" layer="95" rot="R180" xref="yes"/>
+<pinref part="D315" gate="G$1" pin="DI"/>
+<pinref part="JP315" gate="G$1" pin="1"/>
+<wire x1="-7.62" y1="101.6" x2="-5.08" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="93.98" x2="-7.62" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="-7.62" y1="101.6" x2="-7.62" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="-12.7" y1="93.98" x2="-7.62" y2="93.98" width="0.1524" layer="91"/>
+<junction x="-7.62" y="93.98"/>
 </segment>
 </net>
 <net name="JUMPER1" class="0">

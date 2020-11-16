@@ -3084,7 +3084,6 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 <attribute name="PROD_ID" value="CAP-11015" x="-27.62" y="-26.73" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="10.988" y="22.8" size="0.6096" layer="27" font="vector" ratio="20" rot="R270" align="top-center"/>
 </element>
-<element name="FD1" library="SparkFun-Aesthetics" package="FIDUCIAL-MICRO" value="FIDUCIALUFIDUCIAL" x="313.75" y="210" smashed="yes"/>
 <element name="FD2" library="SparkFun-Aesthetics" package="FIDUCIAL-MICRO" value="FIDUCIALUFIDUCIAL" x="9.5" y="48.25" smashed="yes"/>
 <element name="FD4" library="SparkFun-Aesthetics" package="FIDUCIAL-MICRO" value="FIDUCIALUFIDUCIAL" x="1" y="2" smashed="yes"/>
 <element name="Q2" library="SparkFun-DiscreteSemi" package="SC70-6" value="MBT3904DW1T1" x="28.48" y="8.445" smashed="yes" rot="R180">

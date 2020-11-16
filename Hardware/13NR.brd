@@ -3100,7 +3100,6 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 </element>
 <element name="FD1" library="SparkFun-Aesthetics" package="FIDUCIAL-MICRO" value="FIDUCIALUFIDUCIAL" x="313.75" y="195" smashed="yes"/>
 <element name="FD2" library="SparkFun-Aesthetics" package="FIDUCIAL-MICRO" value="FIDUCIALUFIDUCIAL" x="3.75" y="42.5" smashed="yes"/>
-<element name="FD4" library="SparkFun-Aesthetics" package="FIDUCIAL-MICRO" value="FIDUCIALUFIDUCIAL" x="10.5" y="13" smashed="yes" rot="R90"/>
 <element name="FRAME1" library="SparkFun-Aesthetics" package="CREATIVE_COMMONS" value="FRAME-LEDGER" x="7.62" y="-8.89" smashed="yes">
 <attribute name="DESIGNER" value="" x="7.62" y="-8.89" size="1.778" layer="27" display="off"/>
 <attribute name="REV" value="" x="7.62" y="-8.89" size="1.778" layer="27" display="off"/>

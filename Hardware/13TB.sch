@@ -4384,7 +4384,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="SUPPLY6" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="GND3" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="C1" library="SparkFun-Capacitors" deviceset="10UF" device="-0603-6.3V-20%" value="10uF"/>
-<part name="FD1" library="SparkFun-Aesthetics" deviceset="FIDUCIAL" device="UFIDUCIAL"/>
 <part name="FD2" library="SparkFun-Aesthetics" deviceset="FIDUCIAL" device="UFIDUCIAL"/>
 <part name="FD4" library="SparkFun-Aesthetics" deviceset="FIDUCIAL" device="UFIDUCIAL"/>
 <part name="S2" library="SparkFun-Switches" deviceset="MOMENTARY-SWITCH-SPST-2" device="-SMD-4.6X2.8MM" value="0"/>
@@ -5422,7 +5421,6 @@ Gain=1+trimpot/thruhole</text>
 <attribute name="NAME" x="110.744" y="236.601" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="110.744" y="231.521" size="1.778" layer="96" font="vector"/>
 </instance>
-<instance part="FD1" gate="G$1" x="429.26" y="33.02" smashed="yes"/>
 <instance part="FD2" gate="G$1" x="426.72" y="33.02" smashed="yes"/>
 <instance part="FD4" gate="G$1" x="429.26" y="30.48" smashed="yes"/>
 <instance part="S2" gate="G$1" x="294.64" y="177.8" smashed="yes">

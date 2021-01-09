@@ -48,7 +48,12 @@ void computeFFT (bool source, uint16_t samples = 256)
       
       vReal[i] *= i;
       vReal[i] /= 100 * (1.0001 - audioScale);//pow(10.0, 1 - audioScale);
-      constrain(vReal[i], 0, 255);
+      if(vReal[i] > 255.0){
+        vReal[i] = 255.0;
+      }
+      if(vReal[i] < 0.0){
+        vReal[i] = 0.0;
+      }
     }
   }
   else if (source == JACK)
@@ -70,17 +75,27 @@ void computeFFT (bool source, uint16_t samples = 256)
     {
       vReal[i] *= i;
       vReal[i] /= audioScale;
-      constrain(vReal[i], 0, 255);
+      if(vReal[i] > 255.0){
+        vReal[i] = 255.0;
+      }
+      if(vReal[i] < 0.0){
+        vReal[i] = 0.0;
+      }
       vReal1[i] *= i;
       vReal1[i] /= audioScale;
-      constrain(vReal1[i], 0, 255);
+      if(vReal1[i] > 255.0){
+        vReal1[i] = 255.0;
+      }
+      if(vReal1[i] < 0.0){
+        vReal1[i] = 0.0;
+      }
     }
   }
 }
 
 uint8_t strengthMajorPeak()
 {
-  
+  return 0;
 }
 
 uint8_t fftAvg()
@@ -91,7 +106,8 @@ uint8_t fftAvg()
     average += vReal[i];
   }
   average /= (avgHighEnd - avgLowEnd);
-  constrain(average, 0, 255);
+  if(average > 255.0){ average = 255.0; }
+  if(average < 0.0){ average = 0.0; }
   Serial.println(average);
   return average;
 }

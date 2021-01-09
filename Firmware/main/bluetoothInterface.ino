@@ -71,6 +71,7 @@ int CharacteristicParser::loadCharacteristicValue(BLECharacteristic* pCharacteri
     _buffer.store_char(value[i]);
   }
   _buffer.store_char(' '); // terminating in a space allows the parser to find the end of an input easily
+  return 0;
 }
 
 CharacteristicParser Parser;

@@ -2,23 +2,23 @@
   Copyright (c) 2019 Andy England
   CustomLitt Laptop
 */
+
+#include "patterns.h"
+
 uint8_t colorBuffer[X_LEDS][3];
 
 void mirrorFFT()
 {
-  uint8_t fadeValue;
+  uint8_t fadeValue = 0;
   computeFFT(audioSource);
   for (uint8_t x = LEFT; x < RIGHT; x++)
   {
     uint8_t xValue;
     uint8_t yValue;
-    switch (audioSource)
-    {
-      case MIC:
+    if(audioSource == MIC){
         fadeValue = 245;
         xValue = vReal[abs(x - X_CENTER) + LOWEST_HZ_BIN];
-        break;
-      case JACK:
+    }else{
         fadeValue = 235;
         if (x < X_CENTER)
         {
@@ -32,7 +32,6 @@ void mirrorFFT()
         {
           xValue = vReal1[(x - X_CENTER) + LOWEST_HZ_BIN];
         }
-        break;
     }
     yValue = map(xValue, 0, 255, BOTTOM, TOP);
     for (int y = BOTTOM; y >= yValue; y--)
@@ -55,13 +54,10 @@ void centerFFT()
   {
     uint8_t xValue;
     uint8_t yValue;
-    switch (audioSource)
-    {
-      case MIC:
+    if(audioSource == MIC){
         xValue = vReal[abs(x - X_CENTER) + LOWEST_HZ_BIN];
         fadeValue = 245;
-        break;
-      case JACK:
+    }else{
         fadeValue = 235;
         if (x < X_CENTER)
         {
@@ -104,12 +100,9 @@ void diamond()
   for (uint8_t x = LEFT; x <= RIGHT; x++)
   {
     uint8_t absX = abs(x - X_CENTER);
-    switch (audioSource)
-    {
-      case MIC:
+    if (audioSource == MIC){
         memcpy(vDummy, vReal, sizeof(vReal));
-        break;
-      case JACK:
+    }else{
         if (x < X_CENTER)
         {
           memcpy(vDummy, vReal, sizeof(vReal));
@@ -122,7 +115,6 @@ void diamond()
         {
           memcpy(vDummy, vReal1, sizeof(vReal1));
         }
-        break;
     }
     for (uint8_t y = TOP; y <= BOTTOM; y++)
     {
@@ -142,8 +134,8 @@ void diamond()
 void diagonal(uint8_t corner)
 {
   computeFFT(audioSource);
-  uint8_t xVal;
-  uint8_t yVal;
+  uint8_t xVal = 0;
+  uint8_t yVal = 0;
   switch (corner)
   {
     case 0: //Topleft origin

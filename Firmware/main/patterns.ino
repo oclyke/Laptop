@@ -14,13 +14,6 @@ void animation_task(void* args){
     if(now >= next_animation){
       next_animation = now + (MS_PER_S/ANIMATION_RATE_HZ);
       computeFFT();
-
-      for(size_t idx = 0; idx < 20; idx++){
-        Serial.print(u8FFT(idx, audioSource));
-        Serial.print(", ");
-      }
-      Serial.println();
-
       run_animation();
     }
   }

@@ -15,8 +15,28 @@ CustomLittBLE BLE;
 
 uint8_t brightness = 255;
 
+#define OUTPUT_RATE_HZ (60)
+#define ANIMATION_RATE_HZ (4*OUTPUT_RATE_HZ)
+#define MS_PER_S (1000)
+#define US_PER_MS (1000)
+
+#define OUTPUT_TASK_PRIO (configMAX_PRIORITIES - 1)
+#define ANIMATION_TASK_PRIO (OUTPUT_TASK_PRIO - 1)
+
+#if OUTPUT_TASK_PRIO >= configMAX_PRIORITIES
+#error output task priority is too high
+#endif
+
 #define MIC true
 #define JACK false
+
+typedef void (*frame_fn_t)(uint32_t time, void* args);
+typedef struct _animation_t {
+  volatile frame_fn_t get_frame;
+  void* arg;
+} animation_t;
+
+animation_t current_animation;
 
 uint8_t avgLowEnd = 3;
 uint8_t avgHighEnd = 8;
@@ -32,13 +52,16 @@ String ssid = "dummy";
 String password = "dummy";
 bool wifiStatus = false;
 
+const char* ANIMATION_TAG = "animation";
+const char* OUTPUT_TAG = "output";
+
 uint8_t singleColorIndex = 0;
-uint8_t frameSkip = 1;
-uint8_t frameDelay = 0;
 uint8_t paletteIndex = 0;
 CRGBPalette16 currentPalette = RainbowColors_p;
 TBlendType    currentBlending = LINEARBLEND;
 bool audioReaction = true;
+
+float speedFactor = 0.5;
 
 uint8_t WIDTH = 0;
 uint8_t LEFT = 0;
@@ -50,7 +73,13 @@ uint8_t TOP = 0;
 uint8_t BOTTOM = 0;
 uint8_t Y_CENTER = 0;
 
-CRGB leds[NUM_LEDS];
+// double buffered output
+SemaphoreHandle_t output_lock = NULL;
+volatile bool buf = false;
+CRGB ledbuf1[NUM_LEDS];
+CRGB ledbuf2[NUM_LEDS];
+CRGB output[NUM_LEDS];  // todo: send data out directly from either of the two buffers
+                        //       FastLED may not support this
 
 CRGB customColor = CHSV(0, 255, 255);
 
@@ -111,23 +140,11 @@ void makeLedArray()
   Serial.println(WIDTH);
 }
 
-/* @brief fadeAll - used to fade leds
-   @param scale - percentage by which leds are faded every step
-*/
-void fadeAll(uint8_t scale = 250)
-{
-  for (int i = 0; i < NUM_LEDS; i++)
-  {
-    leds[i].nscale8(scale);
-  }
-}
-
-void setup()
-{
+void setup(){
   Serial.begin(115200);
   initLedArray();
   makeLedArray();
-  LEDS.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS);
+  LEDS.addLeds<WS2812, DATA_PIN, GRB>(output, NUM_LEDS);
   BLE.begin("CustomLitt");
   
   initializeEEPROM();
@@ -145,7 +162,7 @@ void setup()
   BLE.setNetworkStatus(wifiStatus);
 
   BLE.setPattern(patternNum);
-  BLE.setDelay(frameSkip, frameDelay);
+  BLE.setSpeedFactor(speedFactor);
   BLE.setAudioReactivity((audioReaction) ? 1 : 0);
   BLE.setFFTBounds(avgLowEnd, avgHighEnd);
   BLE.setColor(customColor.r, customColor.g, customColor.b);
@@ -154,91 +171,16 @@ void setup()
 
   CRGB color = currentPalette[paletteIndex];
   BLE.setGradientColor(color.r, color.g, color.b);
+
+  onPatternChange(patternNum); // set initial animation function
+
+  output_lock = xSemaphoreCreateMutex();
+  assert(output_lock);
+  xTaskCreate(output_task, OUTPUT_TAG, 10000, NULL, OUTPUT_TASK_PRIO, NULL);
+  xTaskCreate(animation_task, ANIMATION_TAG, 10000, NULL, ANIMATION_TASK_PRIO, NULL);
 }
 
 void loop()
 {
-  switch (patternNum)
-  {
-    case 0:
-      mirrorFFT();
-      break;
-    case 1:
-      centerFFT();
-      break;
-    case 2:
-      diamond();
-      break;
-    case 3:
-      diagonal(0);
-      break;
-    case 4:
-      diagonal(1);
-      break;
-    case 5:
-      diagonal(2);
-      break;
-    case 6:
-      diagonal(3);
-      break;
-    case 7:
-      audioBuffer();
-      break;
-    case 8:
-      centerAudioBuffer();
-      break;
-    case 9:
-      gradient();
-      break;
-    case 10:
-      audioJump();
-      break;
-    case 11:
-      momentaryAudioRamp();
-      break;
-    case 12:
-      sparkle();
-      break;
-    case 13:
-      rightToLeftFade();
-      break;
-    case 14:
-      leftToRightFade();
-      break;
-    case 15:
-      topToBottomFade();
-      break;
-    case 16:
-      bottomToTopFade();
-      break;
-    case 17:
-      colorSet(customColor);
-      break;
-    case 18:
-      artRead();
-      break;
-  }
-  FastLED.show();
-  /*Serial.print("ms: ");
-    long timerEnd = millis();
-    long fullTimer = timerEnd - timerStart;
-    Serial.println(fullTimer);*/
+  // sample 
 }
-
-/*TODO
-  add device name as a setting
-  Hardware changes
-  X Add sparkle pattern w/ music reaction    
-  X add setting sender to send settings to Owen
-  X diagonal fade?
-  X store color in eeprom
-  X store current state in eeprom
-  X buffered left to right option that shifts things across display
-  X -add middle out
-  X Add speed control
-  X add blending change option
-  X flicker on off to the beat/flicker from one color to another
-  X beat detect and jump
-  X Add music jumping to simple left/right/top/bottom functions
-  X add audio jack functionality to left and right on audio sensitive stuff
-*/

@@ -19,7 +19,7 @@ void networkStatusCallback(BLECharacteristic* pCharacteristic);
 void resetCallback(BLECharacteristic* pCharacteristic);
 
 void patternCallback(BLECharacteristic* pCharacteristic);
-void delayCallback(BLECharacteristic* pCharacteristic);
+void speedFactorCallback(BLECharacteristic* pCharacteristic);
 void audioReactivityCallback(BLECharacteristic* pCharacteristic);
 void fftBoundsCallback(BLECharacteristic* pCharacteristic);
 void colorCallback(BLECharacteristic* pCharacteristic);

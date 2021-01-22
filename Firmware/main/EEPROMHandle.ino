@@ -15,8 +15,7 @@ Preferences preferences;
 #define PREF_KEY_AUDIO_SCALE    "scale"
 #define PREF_KEY_BRIGHTNESS     "bright"
 #define PREF_KEY_COLOR          "color"
-#define PREF_KEY_FRAME_SKIP     "skip"
-#define PREF_KEY_FRAME_DELAY    "delay"
+#define PREF_KEY_SPEED_FACTOR   "speed"
 #define PREF_KEY_LOW_FREQUENCY  "low"
 #define PREF_KEY_HIGH_FREQUENCY "high"
 #define PREF_KEY_GRADIENT       "gradient"
@@ -50,8 +49,7 @@ void initializeEEPROM()
     audioScale = getAudioScale();
     brightness = getBrightness();
     customColor = getCustomColor();
-    frameSkip = getFrameSkip();
-    frameDelay = getFrameDelay();
+    speedFactor = getSpeedFactor();
     avgLowEnd = getAvgLowEnd();
     avgHighEnd = getAvgHighEnd();
     currentPalette = getCurrentPalette();
@@ -77,8 +75,7 @@ void initializeEEPROM()
     storeAudioScale(audioScale);
     storeBrightness(brightness);
     storeCustomColor(customColor);
-    storeFrameSkip(frameSkip);
-    storeFrameDelay(frameDelay);
+    storeSpeedFactor(speedFactor);
     storeAvgLowEnd(avgLowEnd);
     storeAvgHighEnd(avgHighEnd);
     storeCurrentPalette(currentPalette);
@@ -178,21 +175,12 @@ size_t storeCustomColor(CRGB val){
 }
 
 //
-// Frame Skip
-uint8_t getFrameSkip( void ){
-  return preferences.getUChar(PREF_KEY_FRAME_SKIP, frameSkip);
+// Speed Factor
+float getSpeedFactor( void ){
+  return preferences.getFloat(PREF_KEY_SPEED_FACTOR, speedFactor);
 }
-size_t storeFrameSkip(uint8_t val){
-  return preferences.putUChar(PREF_KEY_FRAME_SKIP, val);
-}
-
-//
-// Frame Delay
-uint8_t getFrameDelay( void ){
-  return preferences.getUChar(PREF_KEY_FRAME_DELAY, frameDelay);
-}
-size_t storeFrameDelay(uint8_t val){
-  return preferences.putUChar(PREF_KEY_FRAME_DELAY, val);
+size_t storeSpeedFactor(float val){
+  return preferences.putFloat(PREF_KEY_SPEED_FACTOR, val);
 }
 
 //

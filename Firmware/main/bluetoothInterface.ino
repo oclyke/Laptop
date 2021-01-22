@@ -242,6 +242,7 @@ void patternCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   patternNum = Parser.parseInt();
   storePatternNum(patternNum);
+  onPatternChange(patternNum);
   Parser.flush();
 }
 
@@ -250,12 +251,10 @@ void patternCallback(BLECharacteristic* pCharacteristic){
   3 5 [skip 3 frames, delay 5 ms]
   0-255 0-5000?
 */
-void delayCallback(BLECharacteristic* pCharacteristic){
+void speedFactorCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
-  frameSkip = Parser.parseInt();
-  frameDelay = Parser.parseInt();
-  storeFrameSkip(frameSkip);
-  storeFrameDelay(frameDelay);
+  speedFactor = Parser.parseFloat();
+  storeSpeedFactor(speedFactor);
   Parser.flush();
 }
 

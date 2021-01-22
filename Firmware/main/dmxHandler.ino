@@ -41,7 +41,7 @@ void deinitArtnet()
   WiFi.disconnect();
 }
 
-void artRead ()
+void artRead (uint32_t now, void* arg)
 {
   if(wifiStatus){
     artnet.read();
@@ -106,6 +106,7 @@ bool connectWifi(void) //Sets our ESP32 device up as an access point
 
 void onDmxFrame(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* data)
 {
+  CRGB* leds = activeLEDs();
   sendFrame = 1;
   int ledOffset = universe * 170;
   for (int led = ledOffset; led < ledOffset + (length / 3); led++)

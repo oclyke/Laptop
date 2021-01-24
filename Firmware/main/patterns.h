@@ -5,20 +5,19 @@
 
 #include <FastLED.h>
 
-void mirrorFFT();
-void centerFFT();
-void diamond();
-void diagonal(uint8_t corner);
-void audioBuffer();
-void centerAudioBuffer();
-void rightToLeftFade();
-void leftToRightFade();
-void bottomToTopFade();
-void topToBottomFade();
-void gradient();
-void momentaryAudioRamp();
-void audioJump();
-void sparkle();
+void mirrorFFT(uint32_t now, void* arg);
+void centerFFT(uint32_t now, void* arg);
+void diamond(uint32_t now, void* arg);
+void diagonal(uint32_t now, void* arg);
+void audioBuffer(uint32_t now, void* arg);
+void centerAudioBuffer(uint32_t now, void* arg);
+void linearFade(uint32_t now, void* arg);
+void gradient(uint32_t now, void* arg);
+void momentaryAudioRamp(uint32_t now, void* arg);
+void audioJump(uint32_t now, void* arg);
+void sparkle(uint32_t now, void* arg);
+void solidColor(uint32_t now, void* arg);
+
 void colorSet(CRGB color);
 void resetColorIndex();
 

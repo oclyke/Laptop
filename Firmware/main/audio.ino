@@ -31,7 +31,7 @@ double vDummy[MAX_SAMPLES];
    @param bool mic - true if we are reading the mic, false if reading the 3.5mm jack
    @param uint16_t sample - number of samples taken to compute FFT, must be a power of 2
 */
-void computeFFT (uint16_t samples = 256)
+void computeFFT (uint16_t samples)
 {
   if (audioSource == MIC)
   {
@@ -92,6 +92,9 @@ void computeFFT (uint16_t samples = 256)
     }
   }
 }
+void computeFFT (void){
+  computeFFT(256);
+}
 
 uint8_t strengthMajorPeak()
 {
@@ -103,7 +106,7 @@ uint8_t fftAvg()
   int average = 0;
   for (uint8_t i = avgLowEnd; i < avgHighEnd; i++)
   {
-    average += u8FFT(i, true);
+    average += u8FFT(i, audioSource);
   }
   average /= (avgHighEnd - avgLowEnd);
   if(average > 255.0){ average = 255.0; }
@@ -119,7 +122,7 @@ uint8_t u8FFT(uint8_t idx, bool Lr) {
   }else{
     src = vReal1[bin];
   }
-  float scaled = src * (5.0/(1.0 - audioScale));
+  float scaled = src * (3.0/(1.0 - audioScale)); // increase denominator for more low-level capability, decrease for more sensitivity at high levels
   uint8_t clamped = scaled;
   if(scaled < 0){ clamped = 0; }
   if(scaled > 255){ clamped = 255; }

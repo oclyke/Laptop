@@ -5,41 +5,22 @@
 
 #include "patterns.h"
 
-void animation_task(void* args){
-  uint32_t now = 0;
-  while(1){
-    now = millis();
-
-    static uint32_t next_animation = 0;
-    if(now >= next_animation){
-      next_animation = now + (MS_PER_S/ANIMATION_RATE_HZ);
-      computeFFT();
-      run_animation();
-    }
-  }
-}
-
-void run_animation( void ){
-  if(pdTRUE != xSemaphoreTake(output_lock, 0)){
-    return; // just bail - we can afford to lose some frames
-  }
-  if(current_animation.get_frame != NULL){
-    uint32_t now = millis();
-    current_animation.get_frame(now, current_animation.arg);
-  }else{
-    ESP_LOGE(ANIMATION_TAG, "no frame function available");
-  }
-  xSemaphoreGive(output_lock);
-}
-
 uint8_t colorBuffer[X_LEDS][3];
+
+double getPhase(uint32_t now, double min_hz, double max_hz){
+  double freq_hz = (max_hz - min_hz)*speedFactor + min_hz;
+  const double seconds = (double)now / MS_PER_S;
+  const double phase = fmod(seconds*freq_hz, 1.0);
+  if(phase > 1.0){ return 1.0; }
+  if(phase < 0.0){ return 0.0; }
+  return phase;
+}
 
 /* @brief fadeAll - used to fade leds
    @param scale - percentage by which leds are faded every step
 */
 void fadeAll(uint8_t scale = 250)
 {
-  // this fn should be called while in control of the output_lock mutex
   CRGB* leds = activeLEDs();
   for (int i = 0; i < NUM_LEDS; i++)
   {
@@ -139,14 +120,7 @@ void diamond(uint32_t now, void* arg)
   const float min_freq_hz = 0.2;
   const float max_freq_hz = 1.0;
 
-  const float freq = (max_freq_hz - min_freq_hz)*speedFactor + min_freq_hz;
-
-  static uint32_t prev = 0;
-  float delta = (now - prev);
-  float cycles = freq*delta / 1000;
-  uint8_t advance = (uint8_t)((uint32_t)(cycles*255) % 255);
-
-  prev = now;
+  static double phase = 0;
 
   CRGB* leds = activeLEDs();
   for (uint8_t x = LEFT; x <= RIGHT; x++)
@@ -156,285 +130,289 @@ void diamond(uint32_t now, void* arg)
     {
       if (audioReaction)
       {
+        phase = 0.0;
         size_t bin = ((absX + abs(y - (Y_LEDS / 2))) / 2);
         if(audioSource == MIC){
-          colorIndex[y][x] += u8FFT(bin, true);
+          colorIndex[y][x] = u8FFT(bin, true);
         }else{
           if (x < X_CENTER)
           {
-            colorIndex[y][x] += u8FFT(bin, true);
+            colorIndex[y][x] = u8FFT(bin, true);
           }
           else if (x == X_CENTER)
           {
-            colorIndex[y][x] += (u8FFT(bin, true) + u8FFT(bin, false)) / 2;
+            colorIndex[y][x] = (u8FFT(bin, true) + u8FFT(bin, false)) / 2;
           }
           else
           {
-            colorIndex[y][x] += u8FFT(bin, false);
+            colorIndex[y][x] = u8FFT(bin, false);
           }
         }
       }
       else
       {
-        colorIndex[y][x] += advance;
+        phase = getPhase(now, min_freq_hz, max_freq_hz);
       }
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorIndex[y][x], 255, currentBlending);
+      uint8_t offset = colorIndex[y][x]; // existing amount that the color is advanced
+      uint8_t basis = phase * 255;
+      uint8_t index = basis + offset;
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, index, 255, currentBlending);
     }
   }
 }
 
 void diagonal(uint32_t now, void* arg)
 {
-  // CRGB* leds = activeLEDs();
-  // uint8_t corner = (uint32_t)arg;
-  // uint8_t xVal = 0;
-  // uint8_t yVal = 0;
-  // switch (corner)
-  // {
-  //   case 0: //Topleft origin
-  //     xVal = 0;
-  //     yVal = 0;
-  //     break;
-  //   case 1:
-  //     xVal = WIDTH;
-  //     yVal = 0;
-  //     break;
-  //   case 2:
-  //     xVal = WIDTH;
-  //     yVal = HEIGHT;
-  //     break;
-  //   case 3:
-  //     xVal = 0;
-  //     yVal = HEIGHT;
-  // }
-  // for (uint8_t x = LEFT; x <= RIGHT; x++)
-  // {
-  //   uint8_t absX = abs(x - xVal);
-  //   for (uint8_t y = TOP; y <= BOTTOM; y++)
-  //   {
-  //     uint8_t absY = abs(y - yVal);
-  //     if (audioReaction)
-  //     {
-  //       colorIndex[y][x] += vReal[((absX + absY) / 2) + LOWEST_HZ_BIN];
-  //     }
-  //     else
-  //     {
-  //       colorIndex[y][x] = singleColorIndex + ((absX + absY) / 2);
-  //     }
-  //     leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorIndex[y][x], 255, currentBlending);
-  //   }
-  // }
-  // singleColorIndex++;
+  CRGB* leds = activeLEDs();
+  uint8_t corner = (uint32_t)arg;
+
+  const float min_freq_hz = 0.1;
+  const float max_freq_hz = 0.5;
+
+  static uint8_t offset = 0;
+  offset = 0;
+
+  uint8_t xVal = 0;
+  uint8_t yVal = 0;
+  switch (corner)
+  {
+    case 0: //Topleft origin
+      xVal = 0;
+      yVal = 0;
+      break;
+    case 1:
+      xVal = WIDTH;
+      yVal = 0;
+      break;
+    case 2:
+      xVal = WIDTH;
+      yVal = HEIGHT;
+      break;
+    case 3:
+      xVal = 0;
+      yVal = HEIGHT;
+  }
+  for (uint8_t x = LEFT; x <= RIGHT; x++)
+  {
+    uint8_t absX = abs(x - xVal);
+    for (uint8_t y = TOP; y <= BOTTOM; y++)
+    {
+      uint8_t absY = abs(y - yVal);
+      if (audioReaction)
+      {
+        colorIndex[y][x] += u8FFT(((absX + absY) / 2), audioSource);
+      }
+      else
+      {
+        offset = 255 *  getPhase(now, min_freq_hz, max_freq_hz);
+        colorIndex[y][x] = offset + ((absX + absY) / 2);
+      }
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorIndex[y][x], 255, currentBlending);
+    }
+  }
 }
 
 void audioBuffer(uint32_t now, void* arg)
 {
-  // CRGB* leds = activeLEDs();
-  // uint8_t temp = vReal[LOWEST_HZ_BIN];
-  // colorBuffer[0][0] = temp;
-  // colorBuffer[0][1] = round(map(temp, 0, 255, TOP, BOTTOM) / 2.0);
-  // for (int x = LEFT; x <= RIGHT; x++)
-  // {
-  //   for (int y = Y_CENTER; y >= Y_CENTER - colorBuffer[x][1]; y--)
-  //   {
-  //     leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[x][0], colorBuffer[x][0], currentBlending);
-  //   }
-  //   for (int y = Y_CENTER; y <= Y_CENTER + colorBuffer[x][1]; y++)
-  //   {
-  //     leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[x][0], colorBuffer[x][0], currentBlending);
-  //   }
-  // }
-  // for (int bufferPosition = RIGHT; bufferPosition >= LEFT; bufferPosition--)
-  // {
-  //   colorBuffer[bufferPosition][0] = colorBuffer[bufferPosition - 1][0];
-  //   colorBuffer[bufferPosition][1] = colorBuffer[bufferPosition - 1][1];
-  // }
-  // fadeAll(127);
+  CRGB* leds = activeLEDs();
+  uint8_t temp = u8FFT(0, audioSource);
+  colorBuffer[0][0] = temp;
+  colorBuffer[0][1] = round(map(temp, 0, 255, TOP, BOTTOM) / 2.0);
+  for (int x = LEFT; x <= RIGHT; x++)
+  {
+    for (int y = Y_CENTER; y >= Y_CENTER - colorBuffer[x][1]; y--)
+    {
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[x][0], colorBuffer[x][0], currentBlending);
+    }
+    for (int y = Y_CENTER; y <= Y_CENTER + colorBuffer[x][1]; y++)
+    {
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[x][0], colorBuffer[x][0], currentBlending);
+    }
+  }
+  for (int bufferPosition = RIGHT; bufferPosition >= LEFT; bufferPosition--)
+  {
+    colorBuffer[bufferPosition][0] = colorBuffer[bufferPosition - 1][0];
+    colorBuffer[bufferPosition][1] = colorBuffer[bufferPosition - 1][1];
+  }
+  fadeAll(220);
 }
 
 void centerAudioBuffer(uint32_t now, void* arg)
 {
-  // CRGB* leds = activeLEDs();
-  // uint8_t temp = vReal[LOWEST_HZ_BIN];
-  // colorBuffer[0][0] = temp;
-  // colorBuffer[0][1] = round(map(temp, 0, 255, TOP, BOTTOM) / 2.0);
-  // for (int x = LEFT; x <= RIGHT; x++)
-  // {
-  //   uint8_t colorPosition = abs(x - X_CENTER);//rename this variable
-  //   for (int y = Y_CENTER; y >= Y_CENTER - colorBuffer[colorPosition][1]; y--)
-  //   {
-  //     leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], colorBuffer[colorPosition][0], currentBlending);
-  //   }
-  //   for (int y = Y_CENTER; y <= Y_CENTER + colorBuffer[colorPosition][1]; y++)
-  //   {
-  //     leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], colorBuffer[colorPosition][0], currentBlending);
-  //   }
-  // }
-  // for (int bufferPosition = RIGHT; bufferPosition >= LEFT; bufferPosition--)
-  // {
-  //   colorBuffer[bufferPosition][0] = colorBuffer[bufferPosition - 1][0];
-  //   colorBuffer[bufferPosition][1] = colorBuffer[bufferPosition - 1][1];
-  // }
-  // fadeAll(127);
+  CRGB* leds = activeLEDs();
+  uint8_t temp = u8FFT(0, audioSource);
+  colorBuffer[0][0] = temp;
+  colorBuffer[0][1] = round(map(temp, 0, 255, TOP, BOTTOM) / 2.0);
+  for (int x = LEFT; x <= RIGHT; x++)
+  {
+    uint8_t colorPosition = abs(x - X_CENTER);//rename this variable
+    for (int y = Y_CENTER; y >= Y_CENTER - colorBuffer[colorPosition][1]; y--)
+    {
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], colorBuffer[colorPosition][0], currentBlending);
+    }
+    for (int y = Y_CENTER; y <= Y_CENTER + colorBuffer[colorPosition][1]; y++)
+    {
+      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], colorBuffer[colorPosition][0], currentBlending);
+    }
+  }
+  for (int bufferPosition = RIGHT; bufferPosition >= LEFT; bufferPosition--)
+  {
+    colorBuffer[bufferPosition][0] = colorBuffer[bufferPosition - 1][0];
+    colorBuffer[bufferPosition][1] = colorBuffer[bufferPosition - 1][1];
+  }
+  fadeAll(220);
 }
 
-void rightToLeftFade(uint32_t now, void* arg)
+void linearFade(uint32_t now, void* arg)
 {
-  // CRGB* leds = activeLEDs();
-  // for (int x = LEFT; x <= RIGHT; x++)
-  // {
-  //   uint8_t adjustedIndex = singleColorIndex + map(x, LEFT, RIGHT, 0, 255);
-  //   for (int y = TOP; y <= BOTTOM; y++)
-  //   {
-  //     leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
-  //   }
-  // }
-  // if (audioReaction == true)
-  // {
-  //   singleColorIndex += fftAvg() / 4;
-  // }
-  // else
-  // {
-  //   singleColorIndex += frameSkip;
-  // }
-  // delay(frameDelay);//Delay
-}
+  CRGB* leds = activeLEDs();
+  uint8_t mode = (uint32_t)arg;
 
-void leftToRightFade(uint32_t now, void* arg)
-{
-  // CRGB* leds = activeLEDs();
-  // for (int x = RIGHT; x >= LEFT; x--)
-  // {
-  //   uint8_t adjustedIndex = singleColorIndex + map(x, RIGHT, LEFT, 0, 255);
-  //   for (int y = TOP; y <= BOTTOM; y++)
-  //   {
-  //     leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
-  //   }
-  // }
-  // if (audioReaction == true)
-  // {
-  //   singleColorIndex += fftAvg() / 4;
-  // }
-  // else
-  // {
-  //   singleColorIndex += frameSkip;
-  // }
-  // delay(frameDelay);//Delay
-}
+  const float min_freq_hz = 0.1;
+  const float max_freq_hz = 0.8;
 
-void bottomToTopFade(uint32_t now, void* arg)
-{
-  // CRGB* leds = activeLEDs();
-  // for (int y = TOP; y <= BOTTOM; y++)
-  // {
-  //   uint8_t adjustedIndex = singleColorIndex + map(y, TOP, BOTTOM, 0, 255);
-  //   for (int x = LEFT; x <= RIGHT; x++)
-  //   {
-  //     leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
-  //   }
-  // }
-  // if (audioReaction == true)
-  // {
-  //   singleColorIndex += fftAvg() / 4;
-  // }
-  // else
-  // {
-  //   singleColorIndex += frameSkip;
-  // }
-  // delay(frameDelay);//Delay
-}
+  bool axis = false; // true: up/down, false: left/right
+  bool dir = false; // true: L->R or T->B, false: R->L or B->T
 
-void topToBottomFade(uint32_t now, void* arg)
-{
-  // CRGB* leds = activeLEDs();
-  // for (int y = BOTTOM; y >= TOP; y--)
-  // {
-  //   uint8_t adjustedIndex = singleColorIndex + map(y, BOTTOM, TOP, 0, 255);
-  //   for (int x = LEFT; x <= RIGHT; x++)
-  //   {
-  //     leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
-  //   }
-  // }
-  // if (audioReaction == true)
-  // {
-  //   singleColorIndex += fftAvg() / 4;
-  // }
-  // else
-  // {
-  //   singleColorIndex += frameSkip;
-  // }
-  // delay(frameDelay);//Delay
+  switch (mode)
+  {
+    case 0: // L->R
+      axis = false;
+      dir = true;
+      break;
+    case 1: // R->L
+      axis = false;
+      dir = false;
+      break;
+    case 2: // T->B
+      axis = true;
+      dir = true;
+      break;
+    case 3: // B->T
+      axis = true;
+      dir = false;
+      break;
+  }
+
+  static uint8_t index = 0;
+
+  if (audioReaction == true)
+  {
+    index += fftAvg() / 4;
+  }
+  else
+  {
+    index = 255 * getPhase(now, min_freq_hz, max_freq_hz);
+  }
+  CRGB color;
+  if(axis){
+    for (size_t y = 0; y < HEIGHT; y++){
+      uint8_t adj_index = index + map(y, (dir) ? BOTTOM : TOP, (dir) ? TOP : BOTTOM, 0, 255);
+      color = ColorFromPalette(currentPalette, adj_index, 255, currentBlending);
+      for (size_t x = 0; x < WIDTH; x++){
+        leds[ledArray[y][x]] = color;
+      }
+    }
+  }else{
+    for (size_t x = 0; x < WIDTH; x++){
+      uint8_t adj_index = index + map(x, (dir) ? LEFT : RIGHT, (dir) ? RIGHT : LEFT, 0, 255);
+      color = ColorFromPalette(currentPalette, adj_index, 255, currentBlending);
+      for (size_t y = 0; y < HEIGHT; y++){
+        leds[ledArray[y][x]] = color;
+      }
+    }
+  }
 }
 
 void gradient(uint32_t now, void* arg)
 {
-  // if (audioReaction == true)
-  // {
-  //   singleColorIndex += fftAvg() / 4;
-  // }
-  // else
-  // {
-  //   singleColorIndex += frameSkip;
-  // }
-  // CRGB color = ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending);
-  // colorSet(now, &color);
+  const float min_freq_hz = 0.1;
+  const float max_freq_hz = 0.5;
+
+  static uint8_t index = 0;
+
+  if (audioReaction == true)
+  {
+    index += fftAvg() / 4;
+  }
+  else
+  {
+    index = 255 * getPhase(now, min_freq_hz, max_freq_hz);
+  }
+  CRGB color = ColorFromPalette(currentPalette, index, 255, currentBlending);
+  colorSet(now, &color);
 }
 
 void momentaryAudioRamp(uint32_t now, void* arg)
 {
-  // uint8_t avg = fftAvg();
-  // if (singleColorIndex < avg)
-  // {
-  //   singleColorIndex = avg;
-  // }
-  // CRGB color = ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending);
-  // colorSet(now, &color);
-  // singleColorIndex = (singleColorIndex * 235) / 256;
+  uint8_t avg = fftAvg();
+  static uint8_t index = 0;
+  static uint32_t prev = 0;
+  if (index < avg)
+  {
+    index = avg;
+  }
+  CRGB color = ColorFromPalette(currentPalette, index, 255, currentBlending);
+  colorSet(now, &color);
+  if((now - prev) > 5){ // constrain the decay to real time
+    prev = now;
+    index = (index * 245) / 256;
+  }
 }
 
 void audioJump(uint32_t now, void* arg)
 {
-  // CRGB color;
-  // if (fftAvg() > 200)
-  // {
-  //   singleColorIndex += 16;
-  //   color = ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending);
-  //   colorSet(now, &color);
-  //   FastLED.show();
-  //   delay(75);
-  // }
-  // color = ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending);
-  // colorSet(now, &color);
+  CRGB color;
+  static uint8_t index = 0;
+  static uint32_t prev = 0;
+  if((now - prev) > 75){  // debounce
+    prev = now;
+    if (fftAvg() > 150)
+    {
+      index += 16;
+    }
+  }
+  color = ColorFromPalette(currentPalette, index, 255, currentBlending);
+  colorSet(now, &color);
 }
 
 void sparkle(uint32_t now, void* arg)
 {
-  // CRGB* leds = activeLEDs();
-  // int randomMax;
-  // int randomVal;
-  // if (audioReaction == true)
-  // {
-  //   randomMax = 255 - (fftAvg() * 2);//vReal[LOWEST_HZ_BIN];
-  //   if (randomMax <= 48)
-  //   {
-  //     randomMax = 5;
-  //   }
-  //   //randomMax /= 4;
-  // }
-  // else
-  // {
-  //   randomMax = 20;
-  // }
-  // for (int led = 0; led < NUM_LEDS; led++)
-  // {
-  //   randomVal = random(randomMax);
-  //   if (randomVal == 0)
-  //   {
-  //     leds[led] = ColorFromPalette(currentPalette, singleColorIndex, 255, currentBlending);
-  //   }
-  // }
-  // singleColorIndex++;
-  // fadeAll(196);
+  CRGB* leds = activeLEDs();
+
+  const float min_freq_hz = 0.1;
+  const float max_freq_hz = 2.0;
+  uint8_t index = 255 * getPhase(now, min_freq_hz, max_freq_hz);
+
+  int randomMax;
+  int randomVal;
+  if (audioReaction == true)
+  {
+    randomMax = 255 - (fftAvg() * 2);
+    if (randomMax <= 48)
+    {
+      randomMax = 5;
+    }
+    //randomMax /= 4;
+  }
+  else
+  {
+    randomMax = 20;
+  }
+  for (int led = 0; led < NUM_LEDS; led++)
+  {
+    randomVal = random(randomMax);
+    if (randomVal == 0)
+    {
+      leds[led] = ColorFromPalette(currentPalette, index, 255, currentBlending);
+    }
+  }
+
+  fadeAll(196);
+}
+
+void solidColor(uint32_t now, void* arg){
+  colorSet(now, &currentPalette[0]);
 }
 
 void colorSet(uint32_t now, void* arg)
@@ -515,24 +493,24 @@ void onPatternChange(uint8_t val){
       current_animation.arg = NULL;
       break;
     case 13:
-      current_animation.get_frame = rightToLeftFade;
-      current_animation.arg = NULL;
+      current_animation.get_frame = linearFade;
+      current_animation.arg = (void*)0;
       break;
     case 14:
-      current_animation.get_frame = leftToRightFade;
-      current_animation.arg = NULL;
+      current_animation.get_frame = linearFade;
+      current_animation.arg = (void*)1;
       break;
     case 15:
-      current_animation.get_frame = topToBottomFade;
-      current_animation.arg = NULL;
+      current_animation.get_frame = linearFade;
+      current_animation.arg = (void*)2;
       break;
     case 16:
-      current_animation.get_frame = bottomToTopFade;
-      current_animation.arg = NULL;
+      current_animation.get_frame = linearFade;
+      current_animation.arg = (void*)3;
       break;
     case 17:
-      current_animation.get_frame = colorSet;
-      current_animation.arg = (void*)&customColor;
+      current_animation.get_frame = solidColor;
+      current_animation.arg = NULL;
       break;
     case 18:
       current_animation.get_frame = artRead;

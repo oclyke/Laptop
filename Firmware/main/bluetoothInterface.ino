@@ -18,6 +18,8 @@
 
 typedef RingBufferN<PARSER_RINGBUFF_SIZE> ParserRingBuffer;
 
+extern volatile uint32_t last_ble_op;
+
 class CharacteristicParser: public Stream {
 public:
   ParserRingBuffer _buffer;
@@ -247,14 +249,14 @@ void patternCallback(BLECharacteristic* pCharacteristic){
 }
 
 /*
-  Change delay and how many frames to skip (only works on non audio reactive stuff)
-  3 5 [skip 3 frames, delay 5 ms]
-  0-255 0-5000?
+  Change speed when not reacting to audio
+  0.0-1.0 (float)
 */
 void speedFactorCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
-  speedFactor = Parser.parseFloat();
-  storeSpeedFactor(speedFactor);
+  speed_changed = true;
+  speedFactorISRVal = Parser.parseFloat(); // allow animations to store their previous phases...
+  storeSpeedFactor(speedFactorISRVal);
   Parser.flush();
 }
 
@@ -286,26 +288,12 @@ void fftBoundsCallback(BLECharacteristic* pCharacteristic){
 }
 
 /*
-  Change Color used in colorSet
-  255 0 64 (changes color to all red, no green, and a little blue for a purple, similar use to gradient change)
-  0-255 0-255 0-255
-*/
-void colorCallback(BLECharacteristic* pCharacteristic){
-  Parser.loadCharacteristicValue(pCharacteristic);
-  customColor.red = Parser.parseInt();
-  customColor.green = Parser.parseInt();
-  customColor.blue = Parser.parseInt();
-  storeCustomColor(customColor);
-  Parser.flush();
-}
-
-
-/*
   Change index of current gradient element
   3 (changes the index to the 4th element of the gradient. subsequent operations to the GRADIENT_COLOR characteristic will operate on that element)
   0-15
 */
 void gradientIndexCallback(BLECharacteristic* pCharacteristic){
+  last_ble_op = millis();
   Parser.loadCharacteristicValue(pCharacteristic);
   paletteIndex = Parser.parseInt();
   storePaletteIndex(paletteIndex);
@@ -320,6 +308,7 @@ void gradientIndexCallback(BLECharacteristic* pCharacteristic){
    0-255 0-255 0-255
 */
 void gradientColorCallback(BLECharacteristic* pCharacteristic){
+  last_ble_op = millis();
   Parser.loadCharacteristicValue(pCharacteristic);
   uint8_t red = Parser.parseInt();
   uint8_t green = Parser.parseInt();

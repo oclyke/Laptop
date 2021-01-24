@@ -1,12 +1,28 @@
+/*
+Copyright (c) 2021 Owen Lyke
+*/
 
+const uint8_t gamma8[] = {
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2,
+  2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5,
+  5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10,
+  10, 10, 11, 11, 11, 12, 12, 13, 13, 13, 14, 14, 15, 15, 16, 16,
+  17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 24, 24, 25,
+  25, 26, 27, 27, 28, 29, 29, 30, 31, 32, 32, 33, 34, 35, 35, 36,
+  37, 38, 39, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 50,
+  51, 52, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 66, 67, 68,
+  69, 70, 72, 73, 74, 75, 77, 78, 79, 81, 82, 83, 85, 86, 87, 89,
+  90, 92, 93, 95, 96, 98, 99,101,102,104,105,107,109,110,112,114,
+  115,117,119,120,122,124,126,127,129,131,133,135,137,138,140,142,
+  144,146,148,150,152,154,156,158,160,162,164,167,169,171,173,175,
+  177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
+  215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255
+};
 
-CRGB* activeLEDs( void ){
-  // // should be used while in control of the output_lock mutex
-  // CRGB* leds = (buf) ? ledbuf1 : ledbuf2;
-  // assert(leds);
-  // return leds;
-
-  return ledbuf1;
+inline CRGB* activeLEDs( void ){
+  return canvas;
 }
 
 void setLEDs(size_t start, CRGB* buf, size_t len){
@@ -15,38 +31,15 @@ void setLEDs(size_t start, CRGB* buf, size_t len){
   for(size_t idx = 0; idx < len; idx++){
     *(current + idx) = *(buf + idx);
   }
-  
 }
 
 void setLED(size_t idx, CRGB val){
   setLEDs(idx, &val, 1);
 }
 
-
-void output_task(void* args){
-  while(1){
-    vTaskDelay((MS_PER_S/OUTPUT_RATE_HZ)/portTICK_PERIOD_MS);
-
-    // take output lock
-    xSemaphoreTake(output_lock, portMAX_DELAY);
-
-    // copy current buffer to leds and output
-    CRGB* current = activeLEDs();
-    if(!current){
-      ESP_LOGE(OUTPUT_TAG, "no output buffer");
-      continue;
-    }
-    for (int idx = 0; idx < NUM_LEDS; idx++){
-      output[idx] = *(current + idx);
-    }
-
-    // give output lock
-    xSemaphoreGive(output_lock);
-
-    // change active buffer
-    buf = !buf;
-
-    // push the output data out
-    FastLED.show();
+void gammaCorrectFromInto(CRGB* from, CRGB* into, size_t len){
+  for(size_t idx = 0; idx < len; idx++){
+    CRGB c = *(from + idx);
+    *(into + idx) = CRGB(gamma8[c.r], gamma8[c.g], gamma8[c.b]);
   }
 }

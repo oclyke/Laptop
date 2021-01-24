@@ -15,20 +15,10 @@ CustomLittBLE BLE;
 
 uint8_t brightness = 255;
 
-#define OUTPUT_RATE_HZ (60)
-#define ANIMATION_RATE_HZ (4*OUTPUT_RATE_HZ)
-#define MS_PER_S (1000)
-#define US_PER_MS (1000)
-
-#define OUTPUT_TASK_PRIO (configMAX_PRIORITIES - 1)
-#define ANIMATION_TASK_PRIO (OUTPUT_TASK_PRIO - 1)
-
-#if OUTPUT_TASK_PRIO >= configMAX_PRIORITIES
-#error output task priority is too high
-#endif
-
 #define MIC true
 #define JACK false
+
+#define MS_PER_S (1000)
 
 typedef void (*frame_fn_t)(uint32_t time, void* args);
 typedef struct _animation_t {
@@ -55,12 +45,12 @@ bool wifiStatus = false;
 const char* ANIMATION_TAG = "animation";
 const char* OUTPUT_TAG = "output";
 
-uint8_t singleColorIndex = 0;
 uint8_t paletteIndex = 0;
 CRGBPalette16 currentPalette = RainbowColors_p;
 TBlendType    currentBlending = LINEARBLEND;
 bool audioReaction = true;
 
+float speedFactorISRVal = 0.0;
 float speedFactor = 0.5;
 
 uint8_t WIDTH = 0;
@@ -73,15 +63,11 @@ uint8_t TOP = 0;
 uint8_t BOTTOM = 0;
 uint8_t Y_CENTER = 0;
 
-// double buffered output
-SemaphoreHandle_t output_lock = NULL;
-volatile bool buf = false;
-CRGB ledbuf1[NUM_LEDS];
-CRGB ledbuf2[NUM_LEDS];
-CRGB output[NUM_LEDS];  // todo: send data out directly from either of the two buffers
-                        //       FastLED may not support this
+CRGB canvas[NUM_LEDS]; // allows for using previous led values
+CRGB output[NUM_LEDS]; // gamma corrected output
 
-CRGB customColor = CHSV(0, 255, 255);
+volatile uint32_t last_ble_op = 0;
+volatile bool speed_changed = false;
 
 void initLedArray()
 {
@@ -165,7 +151,6 @@ void setup(){
   BLE.setSpeedFactor(speedFactor);
   BLE.setAudioReactivity((audioReaction) ? 1 : 0);
   BLE.setFFTBounds(avgLowEnd, avgHighEnd);
-  BLE.setColor(customColor.r, customColor.g, customColor.b);
   BLE.setGradientIndex(paletteIndex);
   BLE.setGradientBlending((currentBlending) ? 1 : 0);
 
@@ -173,14 +158,25 @@ void setup(){
   BLE.setGradientColor(color.r, color.g, color.b);
 
   onPatternChange(patternNum); // set initial animation function
-
-  output_lock = xSemaphoreCreateMutex();
-  assert(output_lock);
-  xTaskCreate(output_task, OUTPUT_TAG, 10000, NULL, OUTPUT_TASK_PRIO, NULL);
-  xTaskCreate(animation_task, ANIMATION_TAG, 10000, NULL, ANIMATION_TASK_PRIO, NULL);
 }
 
 void loop()
 {
-  // sample 
+  computeFFT();
+  uint32_t now = millis();
+
+  if(current_animation.get_frame != NULL){
+    current_animation.get_frame(now, current_animation.arg);
+  }else{
+    ESP_LOGE(ANIMATION_TAG, "no frame function available");
+  }
+  if(speed_changed){ // reset speed changed flag
+    speedFactor = speedFactorISRVal;
+    speed_changed = false;
+  }
+
+  if((now - last_ble_op) > 200){ // try just not outputting when ble ops are happening
+    gammaCorrectFromInto(canvas, output, NUM_LEDS);
+    FastLED.show();
+  }
 }

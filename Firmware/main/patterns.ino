@@ -7,6 +7,9 @@
 
 uint8_t colorBuffer[X_LEDS][3];
 
+uint8_t frameSkip = 1; // temporary - silences compiler
+int frameDelay = 15; // temporary
+
 void mirrorFFT()
 {
   uint8_t fadeValue = 0;

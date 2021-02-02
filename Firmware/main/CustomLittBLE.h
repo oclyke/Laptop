@@ -77,7 +77,7 @@ public:
   void setNetworkStatus(bool status);
 
   void setPattern(uint8_t pattern);
-  void setDelay(uint8_t frames, uint16_t ms);
+  void setSpeedFactor(float factor);
   void setAudioReactivity(uint8_t reactivity);
   void setFFTBounds(uint8_t low, uint8_t high);
   void setColor(uint8_t r, uint8_t g, uint8_t b);
@@ -113,7 +113,7 @@ private:
   
   BLEService *pExpressionPropertiesService = NULL;
   BLECharacteristic * pPatternChar = NULL;
-  BLECharacteristic * pDelayChar = NULL;
+  BLECharacteristic * pSpeedFactorChar = NULL;
   BLECharacteristic * pAudioReactivityChar = NULL;
   BLECharacteristic * pFFTBoundsChar = NULL;
   BLECharacteristic * pColorChar = NULL;

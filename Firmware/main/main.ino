@@ -33,8 +33,7 @@ String password = "dummy";
 bool wifiStatus = false;
 
 uint8_t singleColorIndex = 0;
-uint8_t frameSkip = 1;
-uint8_t frameDelay = 0;
+float speedFactor = 0.5;
 uint8_t paletteIndex = 0;
 CRGBPalette16 currentPalette = RainbowColors_p;
 TBlendType    currentBlending = LINEARBLEND;
@@ -145,7 +144,7 @@ void setup()
   BLE.setNetworkStatus(wifiStatus);
 
   BLE.setPattern(patternNum);
-  BLE.setDelay(frameSkip, frameDelay);
+  BLE.setSpeedFactor(speedFactor);
   BLE.setAudioReactivity((audioReaction) ? 1 : 0);
   BLE.setFFTBounds(avgLowEnd, avgHighEnd);
   BLE.setColor(customColor.r, customColor.g, customColor.b);

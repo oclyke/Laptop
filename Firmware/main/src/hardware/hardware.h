@@ -27,7 +27,7 @@
 #endif
 
 #ifdef CL_HW_13NR
-#define MISSING0 4
+#define MISSING0 5
 #define MISSING1 0
 #define MISSING2 0
 #define MISSING3 0
@@ -38,8 +38,8 @@
 #define MISSING8 0
 #define MISSING9 0
 #define MISSING10 0
-#define MISSING11 4
-#define MISSING12 7
+#define MISSING11 1
+#define MISSING12 8
 
 #define X_LEDS (21)
 #define Y_LEDS (13)

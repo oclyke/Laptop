@@ -4,7 +4,8 @@
 #define _CL_HW_CONFIG_H_
 
 // #define CL_HW_13R
-#define CL_HW_13NR
+// #define CL_HW_13NR
+#define CL_HW_15TB
 // #define CL_HW_ET_PROTOTYPE
 
 #include "hardware.h"

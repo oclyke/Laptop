@@ -51,8 +51,6 @@ uint8_t Y_CENTER = 0;
 
 CRGB leds[NUM_LEDS];
 
-CRGB customColor = CHSV(0, 255, 255);
-
 void initLedArray()
 {
   for (size_t x = 0; x < X_LEDS; x++){
@@ -147,7 +145,6 @@ void setup()
   BLE.setSpeedFactor(speedFactor);
   BLE.setAudioReactivity((audioReaction) ? 1 : 0);
   BLE.setFFTBounds(avgLowEnd, avgHighEnd);
-  BLE.setColor(customColor.r, customColor.g, customColor.b);
   BLE.setGradientIndex(paletteIndex);
   BLE.setGradientBlending((currentBlending) ? 1 : 0);
 
@@ -211,7 +208,7 @@ void loop()
       bottomToTopFade();
       break;
     case 17:
-      colorSet(customColor);
+      colorSet(currentPalette[0]);
       break;
     case 18:
       artRead();

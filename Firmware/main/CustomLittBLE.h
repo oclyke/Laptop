@@ -116,7 +116,6 @@ private:
   BLECharacteristic * pSpeedFactorChar = NULL;
   BLECharacteristic * pAudioReactivityChar = NULL;
   BLECharacteristic * pFFTBoundsChar = NULL;
-  BLECharacteristic * pColorChar = NULL;
   BLECharacteristic * pGradientIndexChar = NULL;
   BLECharacteristic * pGradientColorChar = NULL;
   BLECharacteristic * pGradientBlendingChar = NULL;

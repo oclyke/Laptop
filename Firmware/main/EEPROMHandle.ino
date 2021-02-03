@@ -48,7 +48,6 @@ void initializeEEPROM()
     audioSource = getAudioSource();
     audioScale = getAudioScale();
     brightness = getBrightness();
-    customColor = getCustomColor();
     speedFactor = getSpeedFactor();
     avgLowEnd = getAvgLowEnd();
     avgHighEnd = getAvgHighEnd();
@@ -74,7 +73,6 @@ void initializeEEPROM()
     storeAudioSource(audioSource);
     storeAudioScale(audioScale);
     storeBrightness(brightness);
-    storeCustomColor(customColor);
     storeSpeedFactor(speedFactor);
     storeAvgLowEnd(avgLowEnd);
     storeAvgHighEnd(avgHighEnd);
@@ -143,36 +141,11 @@ size_t storeBrightness(uint8_t val){
   return preferences.putUChar(PREF_KEY_BRIGHTNESS, val);
 }
 
-//
-// Custom Color
 typedef struct _color_t {
   uint8_t r;
   uint8_t g;
   uint8_t b;
 } color_t;
-
-CRGB getCustomColor( void ){
-  CRGB retval;
-  color_t color;
-  size_t got = preferences.getBytes(PREF_KEY_COLOR, (void*)&color, (sizeof(color_t)/sizeof(uint8_t)));
-  if(!got){
-    retval.r = customColor.r;
-    retval.g = customColor.g;
-    retval.b = customColor.b;
-    return retval;
-  }
-  retval.r = color.r;
-  retval.g = color.g;
-  retval.b = color.b;
-  return retval;
-}
-size_t storeCustomColor(CRGB val){
-  color_t color;
-  color.r = val.r;
-  color.g = val.g;
-  color.b = val.b;
-  return preferences.putBytes(PREF_KEY_COLOR, (const void*)&color, (sizeof(color_t)/sizeof(uint8_t)));
-}
 
 //
 // Speed Factor

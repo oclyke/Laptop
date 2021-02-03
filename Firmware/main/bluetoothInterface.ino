@@ -285,21 +285,6 @@ void fftBoundsCallback(BLECharacteristic* pCharacteristic){
 }
 
 /*
-  Change Color used in colorSet
-  255 0 64 (changes color to all red, no green, and a little blue for a purple, similar use to gradient change)
-  0-255 0-255 0-255
-*/
-void colorCallback(BLECharacteristic* pCharacteristic){
-  Parser.loadCharacteristicValue(pCharacteristic);
-  customColor.red = Parser.parseInt();
-  customColor.green = Parser.parseInt();
-  customColor.blue = Parser.parseInt();
-  storeCustomColor(customColor);
-  Parser.flush();
-}
-
-
-/*
   Change index of current gradient element
   3 (changes the index to the 4th element of the gradient. subsequent operations to the GRADIENT_COLOR characteristic will operate on that element)
   0-15

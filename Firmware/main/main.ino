@@ -32,7 +32,6 @@ String ssid = "dummy";
 String password = "dummy";
 bool wifiStatus = false;
 
-uint8_t singleColorIndex = 0;
 float speedFactor = 0.5;
 uint8_t paletteIndex = 0;
 CRGBPalette16 currentPalette = RainbowColors_p;
@@ -50,6 +49,8 @@ uint8_t BOTTOM = 0;
 uint8_t Y_CENTER = 0;
 
 CRGB leds[NUM_LEDS];
+
+animation_t active_ani;
 
 const uint8_t gamma8[] = {
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -127,17 +128,6 @@ void makeLedArray()
   Serial.println(WIDTH);
 }
 
-/* @brief fadeAll - used to fade leds
-   @param scale - percentage by which leds are faded every step
-*/
-void fadeAll(uint8_t scale = 250)
-{
-  for (int i = 0; i < NUM_LEDS; i++)
-  {
-    leds[i].nscale8(scale);
-  }
-}
-
 void setup()
 {
   Serial.begin(115200);
@@ -169,69 +159,18 @@ void setup()
 
   CRGB color = currentPalette[paletteIndex];
   BLE.setGradientColor(color.r, color.g, color.b);
+
+  onChangePattern();
 }
 
 void loop()
 {
-  switch (patternNum)
-  {
-    case 0:
-      mirrorFFT();
-      break;
-    case 1:
-      centerFFT();
-      break;
-    case 2:
-      diamond();
-      break;
-    case 3:
-      diagonal(0);
-      break;
-    case 4:
-      diagonal(1);
-      break;
-    case 5:
-      diagonal(2);
-      break;
-    case 6:
-      diagonal(3);
-      break;
-    case 7:
-      audioBuffer();
-      break;
-    case 8:
-      centerAudioBuffer();
-      break;
-    case 9:
-      gradient();
-      break;
-    case 10:
-      audioJump();
-      break;
-    case 11:
-      momentaryAudioRamp();
-      break;
-    case 12:
-      sparkle();
-      break;
-    case 13:
-      rightToLeftFade();
-      break;
-    case 14:
-      leftToRightFade();
-      break;
-    case 15:
-      topToBottomFade();
-      break;
-    case 16:
-      bottomToTopFade();
-      break;
-    case 17:
-      colorSet(currentPalette[0]);
-      break;
-    case 18:
-      artRead();
-      break;
+  uint32_t now = millis();
+
+  if(active_ani.get_frame){
+    active_ani.get_frame(now, (void*)active_ani.arg);
+  }else{
+    ESP_LOGE("loop", "no current animation");
   }
 
   CRGB temp;

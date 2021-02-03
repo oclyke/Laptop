@@ -242,6 +242,7 @@ void patternCallback(BLECharacteristic* pCharacteristic){
   Parser.loadCharacteristicValue(pCharacteristic);
   patternNum = Parser.parseInt();
   storePatternNum(patternNum);
+  onChangePattern();
   Parser.flush();
 }
 

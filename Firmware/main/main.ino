@@ -49,6 +49,8 @@ uint8_t BOTTOM = 0;
 uint8_t Y_CENTER = 0;
 
 CRGB leds[NUM_LEDS + 1]; // the extra led at the end is used as an endpoint for any LEDs that do not exist on the board (virtual leds?)
+CRGB output[NUM_LEDS]; // output is used to store the gamma corrected output (so that subsequent loops won't consecutively apply more and more gamma correction...)
+
 
 animation_t active_ani;
 
@@ -133,7 +135,7 @@ void setup()
   Serial.begin(115200);
   initLedArray();
   makeLedArray();
-  LEDS.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS);
+  LEDS.addLeds<WS2812, DATA_PIN, GRB>(output, NUM_LEDS);
   BLE.begin("CustomLitt");
   
   initializeEEPROM();
@@ -179,7 +181,7 @@ void loop()
     temp.r = gamma8[temp.r];
     temp.g = gamma8[temp.g];
     temp.b = gamma8[temp.b];
-    leds[idx] = temp;
+    output[idx] = temp;
   }
 
   FastLED.show();

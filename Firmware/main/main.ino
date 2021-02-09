@@ -48,7 +48,7 @@ uint8_t TOP = 0;
 uint8_t BOTTOM = 0;
 uint8_t Y_CENTER = 0;
 
-CRGB leds[NUM_LEDS];
+CRGB leds[NUM_LEDS + 1]; // the extra led at the end is used as an endpoint for any LEDs that do not exist on the board (virtual leds?)
 
 animation_t active_ani;
 
@@ -75,7 +75,7 @@ void initLedArray()
 {
   for (size_t x = 0; x < X_LEDS; x++){
     for (size_t y = 0; y < Y_LEDS; y++){
-      ledArray[y][x] = -1; // set a sentinel that indicates this led is not set up
+      ledArray[y][x] = NUM_LEDS; // ledArray is initialized with all members set to "NUM_LEDS" so that if a proper index is not assigned any reads/writes will be routed to the last led in the array
     }
   }
 }

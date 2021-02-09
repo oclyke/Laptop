@@ -20,6 +20,14 @@ double getPhase(uint32_t now, double min_hz, double max_hz){
   return phase;
 }
 
+inline size_t indexByXY(uint8_t x, uint8_t y){
+  size_t index = ledArray[y][x];
+  if(index > NUM_LEDS){
+    return NUM_LEDS;
+  }
+  return index;
+}
+
 /* @brief fadeAll - used to fade leds
    @param scale - percentage by which leds are faded every step
 */
@@ -61,9 +69,9 @@ void mirrorFFT(uint32_t now, void* arg)
     for (int y = BOTTOM; y >= yValue; y--)
     {
       CRGB myColor = ColorFromPalette(currentPalette, xValue, xValue, currentBlending);
-      if (myColor.getLuma() > leds[ledArray[y][x]].getLuma())
+      if (myColor.getLuma() > leds[indexByXY(x, y)].getLuma())
       {
-        leds[ledArray[y][x]] = myColor;
+        leds[indexByXY(x, y)] = myColor;
       }
     }
   }
@@ -101,17 +109,17 @@ void centerFFT(uint32_t now, void* arg)
     for (int y = Y_CENTER; y >= Y_CENTER - yValue; y--)
     {
       CRGB myColor = ColorFromPalette(currentPalette, xValue, xValue, currentBlending);
-      if (myColor.getLuma() > leds[ledArray[y][x]].getLuma())
+      if (myColor.getLuma() > leds[indexByXY(x, y)].getLuma())
       {
-        leds[ledArray[y][x]] = myColor;
+        leds[indexByXY(x, y)] = myColor;
       }
     }
     for (int y = Y_CENTER; y <= Y_CENTER + yValue; y++)
     {
       CRGB myColor = ColorFromPalette(currentPalette, xValue, xValue, currentBlending);
-      if (myColor.getLuma() > leds[ledArray[y][x]].getLuma())
+      if (myColor.getLuma() > leds[indexByXY(x, y)].getLuma())
       {
-        leds[ledArray[y][x]] = myColor;
+        leds[indexByXY(x, y)] = myColor;
       }
     }
   }
@@ -158,7 +166,7 @@ void diamond(uint32_t now, void* arg)
       uint8_t offset = colorIndex[y][x]; // existing amount that the color is advanced
       uint8_t basis = phase * 255;
       uint8_t index = basis + offset;
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, index, 255, currentBlending);
+      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, index, 255, currentBlending);
     }
   }
 }
@@ -210,7 +218,7 @@ void diagonal(uint32_t now, void* arg)
         offset = 255 *  getPhase(now, min_freq_hz, max_freq_hz);
         colorIndex[y][x] = offset + ((absX + absY) / 2);
       }
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorIndex[y][x], 255, currentBlending);
+      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, colorIndex[y][x], 255, currentBlending);
     }
   }
   singleColorIndex++;
@@ -226,11 +234,11 @@ void audioBuffer(uint32_t now, void* arg)
   {
     for (int y = Y_CENTER; y >= Y_CENTER - colorBuffer[x][1]; y--)
     {
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[x][0], colorBuffer[x][0], currentBlending);
+      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, colorBuffer[x][0], colorBuffer[x][0], currentBlending);
     }
     for (int y = Y_CENTER; y <= Y_CENTER + colorBuffer[x][1]; y++)
     {
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[x][0], colorBuffer[x][0], currentBlending);
+      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, colorBuffer[x][0], colorBuffer[x][0], currentBlending);
     }
   }
   for (int bufferPosition = RIGHT; bufferPosition >= LEFT; bufferPosition--)
@@ -252,11 +260,11 @@ void centerAudioBuffer(uint32_t now, void* arg)
     uint8_t colorPosition = abs(x - X_CENTER);//rename this variable
     for (int y = Y_CENTER; y >= Y_CENTER - colorBuffer[colorPosition][1]; y--)
     {
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], colorBuffer[colorPosition][0], currentBlending);
+      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], colorBuffer[colorPosition][0], currentBlending);
     }
     for (int y = Y_CENTER; y <= Y_CENTER + colorBuffer[colorPosition][1]; y++)
     {
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], colorBuffer[colorPosition][0], currentBlending);
+      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, colorBuffer[colorPosition][0], colorBuffer[colorPosition][0], currentBlending);
     }
   }
   for (int bufferPosition = RIGHT; bufferPosition >= LEFT; bufferPosition--)
@@ -279,7 +287,7 @@ void rightToLeftFade(uint32_t now, void* arg)
     uint8_t adjustedIndex = index + map(x, LEFT, RIGHT, 0, 255);
     for (int y = TOP; y <= BOTTOM; y++)
     {
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
+      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
     }
   }
   if (audioReaction == true)
@@ -306,7 +314,7 @@ void leftToRightFade(uint32_t now, void* arg)
     uint8_t adjustedIndex = index + map(x, RIGHT, LEFT, 0, 255);
     for (int y = TOP; y <= BOTTOM; y++)
     {
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
+      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
     }
   }
   if (audioReaction == true)
@@ -333,7 +341,7 @@ void bottomToTopFade(uint32_t now, void* arg)
     uint8_t adjustedIndex = index + map(y, TOP, BOTTOM, 0, 255);
     for (int x = LEFT; x <= RIGHT; x++)
     {
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
+      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
     }
   }
   if (audioReaction == true)
@@ -360,7 +368,7 @@ void topToBottomFade(uint32_t now, void* arg)
     uint8_t adjustedIndex = index + map(y, BOTTOM, TOP, 0, 255);
     for (int x = LEFT; x <= RIGHT; x++)
     {
-      leds[ledArray[y][x]] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
+      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
     }
   }
   if (audioReaction == true)

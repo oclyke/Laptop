@@ -7,9 +7,6 @@
 
 uint8_t colorBuffer[X_LEDS][3];
 
-uint8_t frameSkip = 1; // temporary - silences compiler
-int frameDelay = 15; // temporary
-
 #define MS_PER_S (1000)
 double getPhase(uint32_t now, double min_hz, double max_hz){
   double freq_hz = (max_hz - min_hz)*speedFactor + min_hz;
@@ -315,7 +312,6 @@ void rightToLeftFade(uint32_t now, void* arg)
   {
     index = 255 * getPhase(now, min_freq_hz, max_freq_hz);
   }
-  delay(frameDelay);//Delay
 }
 
 void leftToRightFade(uint32_t now, void* arg)
@@ -342,7 +338,6 @@ void leftToRightFade(uint32_t now, void* arg)
   {
     index = 255 * getPhase(now, min_freq_hz, max_freq_hz);
   }
-  delay(frameDelay);//Delay
 }
 
 void bottomToTopFade(uint32_t now, void* arg)
@@ -369,7 +364,6 @@ void bottomToTopFade(uint32_t now, void* arg)
   {
     index = 255 * getPhase(now, min_freq_hz, max_freq_hz);
   }
-  delay(frameDelay);//Delay
 }
 
 void topToBottomFade(uint32_t now, void* arg)
@@ -396,7 +390,6 @@ void topToBottomFade(uint32_t now, void* arg)
   {
     index = 255 * getPhase(now, min_freq_hz, max_freq_hz);
   }
-  delay(frameDelay);//Delay
 }
 
 void gradient(uint32_t now, void* arg)

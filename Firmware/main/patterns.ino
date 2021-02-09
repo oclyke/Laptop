@@ -41,7 +41,16 @@ void fadeAll(uint8_t scale = 250)
 
 void mirrorFFT(uint32_t now, void* arg)
 {
-  uint8_t fadeValue = 0;
+  static uint8_t fadeValue = 255;
+  static float phase = 0.0;
+  
+  const float fade_freq_hz = 30.0; // choose how often to fade old colors
+  float new_phase = getPhase(now, fade_freq_hz, fade_freq_hz);
+  if(new_phase < phase){
+    fadeAll(fadeValue);
+  }
+  phase = new_phase;
+
   computeFFT(audioSource);
   for (uint8_t x = LEFT; x < RIGHT; x++)
   {
@@ -75,12 +84,20 @@ void mirrorFFT(uint32_t now, void* arg)
       }
     }
   }
-  fadeAll(fadeValue);
 }
 
 void centerFFT(uint32_t now, void* arg)
 {
-  uint8_t fadeValue;
+  static uint8_t fadeValue = 255;
+  static float phase = 0.0;
+  
+  const float fade_freq_hz = 30.0; // choose how often to fade old colors
+  float new_phase = getPhase(now, fade_freq_hz, fade_freq_hz);
+  if(new_phase < phase){
+    fadeAll(fadeValue);
+  }
+  phase = new_phase;
+
   computeFFT(audioSource);
   for (uint8_t x = LEFT; x <= RIGHT; x++)
   {
@@ -123,7 +140,6 @@ void centerFFT(uint32_t now, void* arg)
       }
     }
   }
-  fadeAll(fadeValue);
 }
 
 void diamond(uint32_t now, void* arg)

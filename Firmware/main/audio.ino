@@ -108,6 +108,5 @@ uint8_t fftAvg()
   average /= (avgHighEnd - avgLowEnd);
   if(average > 255.0){ average = 255.0; }
   if(average < 0.0){ average = 0.0; }
-  Serial.println(average);
   return average;
 }

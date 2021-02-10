@@ -412,7 +412,7 @@ void topToBottomFade(uint32_t now, void* arg)
 
 void gradient(uint32_t now, void* arg)
 {
-  const float min_freq_hz = 0.1;
+  const float min_freq_hz = 0.01;
   const float max_freq_hz = 0.5;
 
   static uint8_t index = 0;

@@ -239,6 +239,16 @@ void diagonal(uint32_t now, void* arg)
 
 void audioBuffer(uint32_t now, void* arg)
 {
+  static uint8_t fadeValue = 127;
+  static float phase = 0.0;
+  
+  const float fade_freq_hz = 30.0; // choose how often to fade old colors
+  float new_phase = getPhase(now, fade_freq_hz, fade_freq_hz);
+  if(new_phase < phase){
+    fadeAll(fadeValue);
+  }
+  phase = new_phase;
+
   computeFFT(audioSource, 128);
   uint8_t temp = vReal[LOWEST_HZ_BIN];
   colorBuffer[0][0] = temp;
@@ -259,11 +269,20 @@ void audioBuffer(uint32_t now, void* arg)
     colorBuffer[bufferPosition][0] = colorBuffer[bufferPosition - 1][0];
     colorBuffer[bufferPosition][1] = colorBuffer[bufferPosition - 1][1];
   }
-  fadeAll(127);
 }
 
 void centerAudioBuffer(uint32_t now, void* arg)
 {
+  static uint8_t fadeValue = 127;
+  static float phase = 0.0;
+  
+  const float fade_freq_hz = 30.0; // choose how often to fade old colors
+  float new_phase = getPhase(now, fade_freq_hz, fade_freq_hz);
+  if(new_phase < phase){
+    fadeAll(fadeValue);
+  }
+  phase = new_phase;
+
   computeFFT(audioSource);
   uint8_t temp = vReal[LOWEST_HZ_BIN];
   colorBuffer[0][0] = temp;
@@ -285,7 +304,6 @@ void centerAudioBuffer(uint32_t now, void* arg)
     colorBuffer[bufferPosition][0] = colorBuffer[bufferPosition - 1][0];
     colorBuffer[bufferPosition][1] = colorBuffer[bufferPosition - 1][1];
   }
-  fadeAll(127);
 }
 
 void rightToLeftFade(uint32_t now, void* arg)

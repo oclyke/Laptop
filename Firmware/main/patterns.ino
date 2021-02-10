@@ -326,7 +326,7 @@ void leftToRightFade(uint32_t now, void* arg)
     uint8_t adjustedIndex = index + map(x, RIGHT, LEFT, 0, 255);
     for (int y = TOP; y <= BOTTOM; y++)
     {
-      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
+      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, 255 - adjustedIndex, 255, currentBlending);
     }
   }
   if (audioReaction == true)
@@ -378,7 +378,7 @@ void topToBottomFade(uint32_t now, void* arg)
     uint8_t adjustedIndex = index + map(y, BOTTOM, TOP, 0, 255);
     for (int x = LEFT; x <= RIGHT; x++)
     {
-      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, adjustedIndex, 255, currentBlending);
+      leds[indexByXY(x, y)] = ColorFromPalette(currentPalette, 255 - adjustedIndex, 255, currentBlending);
     }
   }
   if (audioReaction == true)

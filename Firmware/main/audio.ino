@@ -100,13 +100,15 @@ uint8_t strengthMajorPeak()
 
 uint8_t fftAvg()
 {
-  int average = 0;
-  for (uint8_t i = avgLowEnd; i < avgHighEnd; i++)
-  {
-    average += vReal[i];
-  }
-  average /= (avgHighEnd - avgLowEnd);
-  if(average > 255.0){ average = 255.0; }
-  if(average < 0.0){ average = 0.0; }
-  return average;
+  // int average = 0;
+  // for (uint8_t i = avgLowEnd; i < avgHighEnd; i++)
+  // {
+  //   average += vReal[i];
+  // }
+  // average /= (avgHighEnd - avgLowEnd);
+  // if(average > 255.0){ average = 255; }
+  // if(average < 0.0){ average = 0; }
+  // return average;
+
+  return (uint8_t)vReal[5];
 }
